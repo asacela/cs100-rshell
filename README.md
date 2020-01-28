@@ -9,6 +9,12 @@ This project is to create a CLI shell.
 # Diagram
 
 # Classes
+class Adapter{
+	variables:
+
+	functions:
+
+};
 
 # Prototypes/Research
 
