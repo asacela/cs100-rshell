@@ -23,8 +23,14 @@ int main(){
 	if(pid == 0){
 		execvp(args[0],args);
 	}
-
 	wpid = waitpid(pid, &status, 0);
+
+	if(wpid == -1){
+
+		perror("waitpid");
+		exit(EXIT_FAILURE);
+	}
+
 	if(WIFEXITED(status)){
 
 		int exit_status = WEXITSTATUS(status);
@@ -36,6 +42,7 @@ int main(){
 		perror("Error: ASA");
 	}
 
+	exit(EXIT_SUCCESS);
 	return 0;
 }
 
