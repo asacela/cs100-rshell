@@ -7,10 +7,10 @@ Alec Asatoorian 	SID: 862026505
 
 
 ## Introduction
-This project is to create a CLI shell.
+The purpose of this project is to gain experience in developing a shell that utilizes system calls. Our objective is to utilized object oriented programming to develope a codebase that is reusable, maintainable, and upgradable. Our intended pipeline currently includes feeding user input into a parsing system which determines the user's intent. The parsing system will decide how to execute the given input piece by piece. It will examine input and check to see what type of input a string is, then will use the base class, which utilizes the composite design pattern, and allows other classes to inherit its functions. These functions, command, argument, and connector, will describe what actions to take based on a given parsed token.
 
 ## Diagram
-![](images/FlowChart.jpeg)
+![Flowchart](images/FlowChart.jpeg)
 
 ## Classes
 
@@ -112,6 +112,7 @@ Links previous and next commands as logical "and" operator
 
 ## Prototypes/Research
 
+Our prototype directory includes two files (example.cpp, parser_example.cpp). The first file, example.cpp, includes a trial of our use of the three functions waitpid(), execvp(), and fork(). Here, we use fork() to enter a new process which calls execvp(). The sub-process ends and the original process finishes once waitpid() checks the child process and determines its termination. The second file, parser_example.cpp, illustrates our desired method for tackling the problems of parsing. We intend on using the boost library and creating a parsing grammar using boost's spirit parser framework. In the given example, we have included a tokenizer which parses user input, as well as an incomplete parser grammer, which has currently been commented out.  
 
 ## Development and Testing Roadmap
 - Construct Base class and its virtual functions and variables
