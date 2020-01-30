@@ -1,22 +1,26 @@
 # CS 100 Programming Project
 Winter 2020
+
 Justin Gomez 		SID: 862035390
+
 Alec Asatoorian 	SID: 862026505
 
-# Introduction
 
+## Introduction
 This project is to create a CLI shell.
 
-# Diagram
+## Diagram
 
-# Classes
-class Adapter{
-	variables:
 
-	functions:
+## Classes
+    class Base{
+    	virtual execute();
+    };
+    class Adapter{
+    };
+    class Command{
+    };
 
-};
+## Prototypes/Research
 
-# Prototypes/Research
-
-# Development and Testing Roadmap
+## Development and Testing Roadmap
