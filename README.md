@@ -15,12 +15,48 @@ This project is to create a CLI shell.
 
 ## Classes
     class Base{
+    	base nextCom;
+        base currCom;
     	virtual execute();
+        virtual connect();;
+        void toString();
     };
-    class Adapter{
+
+
+    class Command : public Base{
+    	void execute();
+        void connect();;
     };
-    class Command{
+    class Prompt : public Command{ };
+    class Flag : public Command{ };
+
+
+    class Argument : public Base{
+    	void hasFailed();
     };
+
+    class Executable : public Argument{
+    	bool isFailed;
+    };
+
+    class Connector : public Argument{
+    	void nextStat();
+   	void currStat();
+    	void prevStat();
+    };
+    class Semicolin : public Connector{
+    	void execute();
+    	void connect();
+    };
+    class OR : public Connector{
+        void execute();
+        void connect();
+    };
+    class AND : public Connector{
+        void execute();
+        void connect();
+    };
+
 
 ## Prototypes/Research
 
