@@ -10,7 +10,8 @@ Alec Asatoorian 	SID: 862026505
 This project is to create a CLI shell.
 
 ## Diagram
-
+![FlowChart.jpeg]
+(https://github.com/JGomez89/assignment-git_got/blob/master/images/FlowChart.jpeg)
 
 ## Classes
     class Base{
