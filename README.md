@@ -14,7 +14,7 @@ This project is to create a CLI shell.
 
 ## Classes
 
-* Base
+### Base
 
 This class will contain basic functions that  parse, execute, and connect strings of commands as a list 
 
@@ -28,7 +28,7 @@ This class will contain basic functions that  parse, execute, and connect string
     };
 
 
-* Command
+### Command
 
 This class will contain its own implementation of execute() and connecting
 
@@ -39,7 +39,7 @@ This class will contain its own implementation of execute() and connecting
     };
 
 
-* Prompt, Flag
+### Prompt, Flag
 
 This class will contain objects such as -a
 
@@ -48,7 +48,7 @@ This class will contain objects such as -a
     class Flag : public Command{ };
 
 
-* Argument
+### Argument
 
 
     class Argument : public Base{
@@ -56,7 +56,7 @@ This class will contain objects such as -a
     };
 
 
-* Executable
+### Executable
 
 
     class Executable : public Argument{
@@ -64,7 +64,7 @@ This class will contain objects such as -a
     };
 
 
-* Connector
+### Connector
 
 Base connector class for generic pass or fail statuses
 
@@ -76,7 +76,7 @@ Base connector class for generic pass or fail statuses
     };
 
 
-* Semicolon
+### Semicolon
 
 Links previous and next commands like newline
 
@@ -87,7 +87,7 @@ Links previous and next commands like newline
     };
 
 
-* OR
+### OR
 
 Links previous and next commands as logical "or" operator
 
@@ -98,7 +98,7 @@ Links previous and next commands as logical "or" operator
     };
 
 
-* AND
+### AND
 
 Links previous and next commands as logical "and" operator
 
@@ -112,5 +112,20 @@ Links previous and next commands as logical "and" operator
 
 ## Prototypes/Research
 
-## Development and Testing Roadmap
 
+## Development and Testing Roadmap
+- Construct Base class and its virtual functions and variables
+- Unit test Base class
+- Code parser to split input into individual strings/ commands
+- Unit test parser
+- Construct Command class and its associated execute and connector functions
+- Unit test Command class
+- Integration testing with Command class and parser code, this includes testing with parents Base class
+- Construct Connector class to adapt commands
+- Construct Semicolon class to join prev and after commands
+- Unit test Semicolon class
+- Construct AND class to logicaly join commands
+- Unit test AND class
+- Construct OR class to logicaly join commands
+- Unit test OR class
+- Integration test parser and semicolon class, AND class, and OR class
