@@ -4,7 +4,7 @@
 #include<iostream>
 #include<string>
 
-class Base(){
+class Base {
 
 public:
 
@@ -12,7 +12,8 @@ public:
 	Base(){ };
 
 	/* Pure Virtual Functions */
-	virtual void Execute() = 0;
+	virtual void display() = 0;
+	virtual void execute() = 0;
 };
 
 #endif  //__BASE_HPP__
