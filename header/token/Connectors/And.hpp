@@ -4,7 +4,7 @@
 #include<iostream>
 #include<string>
 #include<vector>
-#include "Connector.hpp"
+#include "../Base.hpp"
 
 using namespace std;
 
@@ -18,7 +18,7 @@ public:
 	/* Pure Virtual Functions */
 	virtual void display(){
 
-		cout << lhs << "\n     " << "&&" << "\n" << rhs;
+		cout << lhs->display() << "\n     " << "&&" << "\n" << rhs->display();
 	}
 	virtual void execute(){
 

@@ -7,9 +7,11 @@
 #include<cstring>
 #include<boost/tokenizer.hpp>
 
-#include "../header/token/Base.hpp"
 #include "../header/token/Command.hpp"
-#include "../header/token/Connector.hpp"
+#include "../header/token/Connectors/And.hpp"
+#include "../header/token/Connectors/Or.hpp"
+#include "../header/token/Connectors/Semicolon.hpp"
+
 #include "../header/execute.hpp"
 
 using namespace std;
@@ -89,6 +91,7 @@ private:
 	string cmdLine;
 	vector<string> cmdList;
 	vector<Base*> objList;
+	char **
 };
 
 #endif __PARSER_HPP__

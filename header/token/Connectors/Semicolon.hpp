@@ -4,7 +4,7 @@
 #include<iostream>
 #include<string>
 #include<vector>
-#include "Connector.hpp"
+#include "../Base.hpp"
 
 class Semicolon : public Connector {
 

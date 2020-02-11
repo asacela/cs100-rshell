@@ -4,7 +4,7 @@
 #include<iostream>
 #include<string>
 #include<vector>
-#include "Connector.hpp"
+#include "../Base.hpp"
 
 class Or : public Connector {
 
@@ -24,7 +24,7 @@ public:
 
 			if(rhs->execute() == false){
 
-			
+
 			}
 		}
 	}
