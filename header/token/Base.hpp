@@ -10,12 +10,9 @@ class Base {
 
 public:
 
-	/* Constructors */
-	Base(){ };
-
 	/* Pure Virtual Functions */
 	virtual void display() = 0;
-	virtual void execute() = 0;
+	virtual bool execute() = 0;
 };
 
 #endif  //__BASE_HPP__

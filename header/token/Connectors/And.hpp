@@ -4,6 +4,7 @@
 #include<iostream>
 #include<string>
 #include<vector>
+#include "Connector.hpp"
 
 using namespace std;
 
@@ -12,24 +13,33 @@ class And : public Connector {
 public:
 
 	/* Constructors */
-	And(Base* x1, Base* x2):lhs(x1),rhs(x2) {}
+	And(Base* lhs_, Base* rhs_):lhs(lhs_),rhs(rhs_) {}
 
 	/* Pure Virtual Functions */
-	virtual void display(Base* lhs, Base* rhs){
+	virtual void display(){
 
-		cout << lhs << "\n     " << connector << "\n" << rhs;
+		cout << lhs << "\n     " << "&&" << "\n" << rhs;
 	}
+	virtual void execute(){
 
-	virtual void execute(Base* lhs, Base* rhs){
+		if(lhs->execute() == true){
 
+			if(rhs->execute() == true){
+
+				//
+			}
+		}
+		else{
+
+			//
+		}
 	}
 
 private:
 
-	string connector;
-  Base* lhs;
-  Base* rhs;
 
+	Base* lhs;
+	Base* rhs;
 };
 
-#endif
+#endif __AND_HPP__

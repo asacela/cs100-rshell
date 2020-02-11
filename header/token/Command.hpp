@@ -4,6 +4,8 @@
 #include<iostream>
 #include<string>
 #include<vector>
+#include<sys/types.h>
+#include "Base.hpp"
 
 using namespace std;
 
@@ -12,32 +14,56 @@ class Command : public Base {
 public:
 
 	/* Constructors */
-	Command(vector<string> cmdList){
 
-		exec = cmdList.front();
-		argList = cmdList.erase(cmdList.begin());
+	Command(char** argList_){ 
+		
+		argList = argList_;
+
 	};
 
 	/* Pure Virtual Functions */
 	virtual void display(){
 
-		cout << exec << ": " << endl;
+		cout << argList[0] << ": " << endl;
 
-		for(int i = 0; i < argList.size(); i++){
 
-			cout << "     " << argList.at(i) << endl;
+		int i = 1;
+		while(argList[i] != '\0'){
+
+			cout << "     " << argList[i] << endl;
+		}
+	}
+	//incomplete
+	virtual bool execute(){
+
+		pid_t pid;
+		int status;
+
+		pid = fork();
+
+		if(pid < 0){
+
+			return false;
 		}
 
-	}
-	virtual int execute(){
+		else if(pid == 0){
+			if(execvp(argArray[0], argArray) < 0){
 
+				return false;
+			}
+		}
 
+		else{
+			//waitpid
+			while(wait(&status) != pid);
+		}
+
+		return true;
 	}
 
 private:
 
-	string exec;
-	vector<string> argList;
+	char** argList;
 };
 
 #endif  //__COMMAND_HPP__

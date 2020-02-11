@@ -1,3 +1,6 @@
+#ifndef __PARSER_HPP__
+#define __PARSER_HPP__
+
 #include<iostream>
 #include<vector>
 #include<string>
@@ -12,10 +15,10 @@
 using namespace std;
 using namespace boost;
 
-class parser{
+class Parser{
 
 public:
-	parser(string cmdLine) : cmdLine(cmdLine) {
+	Parser(string cmdLine) : cmdLine(cmdLine) {
 		parse();
 		assign();
 	}
@@ -87,3 +90,5 @@ private:
 	vector<string> cmdList;
 	vector<Base*> objList;
 };
+
+#endif __PARSER_HPP__
