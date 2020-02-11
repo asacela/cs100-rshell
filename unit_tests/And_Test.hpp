@@ -15,4 +15,4 @@ TEST(AndTest, AndExecute) {
     EXPECT_EQ(test->execute(), true);
 }
 
-#endif __AND_TEST_HPP__
+#endif 

@@ -29,6 +29,17 @@ public:
 	// FIX THIS: Alec
 	vector<Base*> objectify(){ return objList; }
 
+	void print(){
+		if(argList[0] != '\0'){
+			cout << argList[0];
+		}
+		for(int i = 1; argList[i] != '\0'; ++i){
+			cout << '\n' << argList[i];
+		}
+	}
+
+
+
 
 private:
 
@@ -126,10 +137,15 @@ private:
 		}
 	}
 
+
+
+
+	// Private variables
 	string cmdLine;
 	vector<string> parsed;
 	vector<Base*> objList;
 	const char** argList;
+
 };
 
 #endif //__PARSER_HPP__

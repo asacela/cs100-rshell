@@ -15,4 +15,4 @@ TEST(CommandTest, CommandExecute) {
     EXPECT_EQ(test->execute(), true);
 }
 
-#endif __COMMAND_TEST_HPP__
+#endif 
