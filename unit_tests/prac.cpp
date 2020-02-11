@@ -11,18 +11,18 @@ int main(){
 	string cmdLine;
 	getline(cin,cmdLine);
 
-	parser* list = new parser(cmdLine);
+	Parser* list = new Parser(cmdLine);
 	int length = 1;
-
-	vector<string> vec1 = list->stringify();
-	for(int i = 0; i < vec1.size(); ++i){
-		cout << vec1.at(i) << endl;
-	}
-
-	vector<Base*> vec2 = list->objectify();
-	for(int i = 0; i < vec2.size(); ++i){
-		cout << vec2.at(i)->display() << endl;
-	}
+	//
+	// vector<string> vec1 = list->stringify();
+	// for(int i = 0; i < vec1.size(); ++i){
+	// 	cout << vec1.at(i) << endl;
+	// }
+	//
+	// vector<Base*> vec2 = list->objectify();
+	// for(int i = 0; i < vec2.size(); ++i){
+	// 	cout << vec2.at(i)->display() << endl;
+	// }
 
 
 	return 0;

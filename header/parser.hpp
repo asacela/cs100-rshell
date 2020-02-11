@@ -20,13 +20,13 @@ using namespace boost;
 class Parser{
 
 public:
-	Parser(string cmdLine) : cmdLine(cmdLine) {
+	Parser(string cmdLine_) : cmdLine(cmdLine_) {
 		parse();
-		assign();
+		argList();
+		// assign();
 	}
 
-	vector<string> stringify(){ return cmdList; }
-
+	char **cstring(){ return argList; }
 
 	// FIX THIS: Alec
 	vector<Base*> objectify(){ return objList; }
@@ -62,9 +62,23 @@ private:
 	}
 
 
+	void argList(){
+		int size = cmdList.size();
+
+		argList = new char*[size];
+
+		// Populate the argList variable with c_string copies of the cmdList
+		for(int i = 0; i < size; ++i){
+			strcpy(argList*[i],cmdList.at(i).c_str());
+
+		}
+
+	}
+
+
 	void assign(){
 		for(int i = 0; i < cmdList.size(); ++i){
-			obj(i);
+			// obj(i);
 		}
 	}
 
@@ -91,7 +105,7 @@ private:
 	string cmdLine;
 	vector<string> cmdList;
 	vector<Base*> objList;
-	char **
+	char** argList;
 };
 
 #endif __PARSER_HPP__
