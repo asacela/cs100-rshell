@@ -7,7 +7,7 @@
 #include<cstring>
 #include<boost/tokenizer.hpp>
 
-#include "../header/token/Command.hpp"
+// #include "../header/token/Command.hpp"
 #include "../header/token/Connectors/And.hpp"
 #include "../header/token/Connectors/Or.hpp"
 #include "../header/token/Connectors/Semicolon.hpp"
@@ -20,11 +20,11 @@ class Parser{
 public:
 	Parser(string cmdLine_) : cmdLine(cmdLine_) {
 		parse();
-		cstring();
+		to_cstring();
 		// assign();
 	}
 
-	char ** arguments(){ return argList; }
+	const char** arguments(){ return argList; }
 
 	// FIX THIS: Alec
 	vector<Base*> objectify(){ return objList; }
@@ -35,24 +35,43 @@ private:
 	void parse(){
 
 		bool isComment = false;
-
 		for(int i = 0; i < cmdLine.size() && !isComment; ++i){
+
 			char c = cmdLine.at(i);
+
+			// If it is a comment
 			if(c == '#'){
 				isComment = true;
 			}
+
+			// If it's a quote
 			else if(c == '\"'){
-				int end = cmdLine.find('\"',i);
+				int end = cmdLine.find('\"',i + 1);
+
+				// Acount for a possible \"
+				while(cmdLine.at(end-1) == '\\'){
+					cmdLine.erase(cmdLine.begin() + end-1);
+					end = cmdLine.find('\"',end);
+				}
+
 				string str = cmdLine.substr(i + 1,end - i - 1);
-				cmdList.push_back(str);
+				parsed.push_back(str);
+
+				i = end;
 			}
+
+			// If it's a semicolon
 			else if (c == ';'){
-				cout << "FIX ME" << endl;
+				cout << "FIX_ME: Semicolon" << endl;
 			}
+
+			// If it's a space
 			else if(c != ' '){
 				int end = cmdLine.find(' ',i);
 				string str = cmdLine.substr(i,end - i);
-				cmdList.push_back(str);
+				parsed.push_back(str);
+
+				i = end - 1;
 			}
 			else{
 				// Ignore white space
@@ -62,14 +81,15 @@ private:
 	}
 
 
-	void cstring(){
-		int size = cmdList.size();
+	void to_cstring(){
+		int size = parsed.size();
 
-		argList = new char*[size];
+		argList = new const char*[size+1];
+		argList[size] =  nullptr;
 
-		// Populate the argList variable with c_string copies of the cmdList
+		// Populate the argList variable with c_string copies of the parsed
 		for(int i = 0; i < size; ++i){
-			strcpy(argList*[i],cmdList.at(i).c_str());
+			argList[i] = parsed.at(i).c_str();
 
 		}
 
@@ -77,33 +97,39 @@ private:
 
 
 	void assign(){
-		for(int i = 0; i < cmdList.size(); ++i){
+		for(int i = 0; i < parsed.size(); ++i){
 			// obj(i);
 		}
 	}
-
+	// Helper function
 	Base* obj(int i){
 
-		if(cmdList.at(i) == "&&"){
+		if(parsed.at(i) == "&&"){
 			Base* lhs = objList.at(i-1);
 			Base* rhs =	obj(i+1);
-			And* andObj = new And(lhs,rhs);
+			Base* andObj = new And(lhs,rhs);
+			return andObj;
 			objList.push_back(andObj);
+		}
+		else if(parsed.at(i) == "||"){
+			Base* lhs = objList.at(i-1);
+			Base* rhs =	obj(i+1);
+			Base* orObj = new Or(lhs,rhs);
+			objList.push_back(orObj);
+			return orObj;
 
 		}
-		else if(cmdList.at(i) == "||"){
-			Base* lhs = objList.at(i-1);
-			Base* rhs =	obj(i+1);
-			Or* orObj = new Or(lhs,rhs);
-			objList.push_back(orObj);
+		else{
+			Base* argObj = nullptr;
+			return argObj;
 
 		}
 	}
 
 	string cmdLine;
-	vector<string> cmdList;
+	vector<string> parsed;
 	vector<Base*> objList;
-	char** argList;
+	const char** argList;
 };
 
 #endif //__PARSER_HPP__

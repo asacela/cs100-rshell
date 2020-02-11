@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "../header/token/Command.hpp"
+// #include "../header/token/Command.hpp"
 #include "../header/Parser.hpp"
 
 using namespace std;
@@ -12,17 +12,14 @@ int main(){
 	getline(cin,cmdLine);
 
 	Parser* list = new Parser(cmdLine);
-	// int length = 1;
-	//
-	// vector<string> vec1 = list->stringify();
-	// for(int i = 0; i < vec1.size(); ++i){
-	// 	cout << vec1.at(i) << endl;
-	// }
-	//
-	// vector<Base*> vec2 = list->objectify();
-	// for(int i = 0; i < vec2.size(); ++i){
-	// 	cout << vec2.at(i)->display() << endl;
-	// }
+
+	const char** arguments = list->arguments();
+
+	for(int i = 0; arguments[i] != '\0'; ++i){
+		cout << arguments[i] << " ";
+
+	}
+
 
 
 	return 0;
