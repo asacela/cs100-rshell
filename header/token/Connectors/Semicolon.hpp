@@ -6,19 +6,19 @@
 #include<vector>
 #include "../Base.hpp"
 
-class Semicolon : public Connector {
+class Semicolon : public Base {
 
 public:
 
 	/* Constructors */
-	And(Base* lhs_, Base* rhs_):lhs(lhs_),rhs(rhs_) {}
+	Semicolon(Base* lhs_, Base* rhs_):lhs(lhs_),rhs(rhs_) {}
 
 	/* Pure Virtual Functions */
 	virtual void display(){
 
 	}
 
-	virtual void execute(){
+	virtual bool execute(){
 
 
 	}
@@ -29,4 +29,4 @@ private:
 	Base* rhs;
 };
 
-#endif __SEMICOLON_HPP__
+#endif //__SEMICOLON_HPP__

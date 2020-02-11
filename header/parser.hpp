@@ -12,8 +12,6 @@
 #include "../header/token/Connectors/Or.hpp"
 #include "../header/token/Connectors/Semicolon.hpp"
 
-#include "../header/execute.hpp"
-
 using namespace std;
 using namespace boost;
 
@@ -22,11 +20,11 @@ class Parser{
 public:
 	Parser(string cmdLine_) : cmdLine(cmdLine_) {
 		parse();
-		argList();
+		cstring();
 		// assign();
 	}
 
-	char **cstring(){ return argList; }
+	char ** arguments(){ return argList; }
 
 	// FIX THIS: Alec
 	vector<Base*> objectify(){ return objList; }
@@ -44,15 +42,17 @@ private:
 				isComment = true;
 			}
 			else if(c == '\"'){
-				end = cmdLine.find('\"',i);
-				str = cmdLine.substr(i + 1,end - i - 1);
+				int end = cmdLine.find('\"',i);
+				string str = cmdLine.substr(i + 1,end - i - 1);
+				cmdList.push_back(str);
 			}
 			else if (c == ';'){
 				cout << "FIX ME" << endl;
 			}
 			else if(c != ' '){
-				end = cmdLine.find(' ',i);
-				str = cmdLine.substr(i,end - i);
+				int end = cmdLine.find(' ',i);
+				string str = cmdLine.substr(i,end - i);
+				cmdList.push_back(str);
 			}
 			else{
 				// Ignore white space
@@ -62,7 +62,7 @@ private:
 	}
 
 
-	void argList(){
+	void cstring(){
 		int size = cmdList.size();
 
 		argList = new char*[size];
@@ -82,7 +82,7 @@ private:
 		}
 	}
 
-	void obj(int i){
+	Base* obj(int i){
 
 		if(cmdList.at(i) == "&&"){
 			Base* lhs = objList.at(i-1);
@@ -98,8 +98,6 @@ private:
 			objList.push_back(orObj);
 
 		}
-
-
 	}
 
 	string cmdLine;
@@ -108,4 +106,4 @@ private:
 	char** argList;
 };
 
-#endif __PARSER_HPP__
+#endif //__PARSER_HPP__

@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class And : public Connector {
+class And : public Base {
 
 public:
 
@@ -17,10 +17,11 @@ public:
 
 	/* Pure Virtual Functions */
 	virtual void display(){
-
-		cout << lhs->display() << "\n     " << "&&" << "\n" << rhs->display();
+    lhs->display();
+		cout << "\n     " << "&&" << "\n";
+    rhs->display();
 	}
-	virtual void execute(){
+	virtual bool execute(){
 
 		if(lhs->execute() == true){
 
@@ -42,4 +43,4 @@ private:
 	Base* rhs;
 };
 
-#endif __AND_HPP__
+#endif //__AND_HPP__

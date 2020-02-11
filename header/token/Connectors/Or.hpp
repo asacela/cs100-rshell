@@ -6,7 +6,7 @@
 #include<vector>
 #include "../Base.hpp"
 
-class Or : public Connector {
+class Or : public Base {
 
 public:
 
@@ -15,10 +15,12 @@ public:
 
 	/* Pure Virtual Functions */
 	virtual void display(){
+		lhs->display();
+		cout << "\n     " << "||" << "\n";
+    rhs->display();
 
-		cout << lhs << "\n     " << "||" << "\n" << rhs;
 	}
-	virtual void execute(){
+	virtual bool execute(){
 
 		if(lhs->execute() == false){
 
@@ -35,4 +37,4 @@ private:
 	Base* rhs;
 };
 
-#endif __OR_HPP__
+#endif //__OR_HPP__

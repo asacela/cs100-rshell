@@ -12,7 +12,7 @@ int main(){
 	getline(cin,cmdLine);
 
 	Parser* list = new Parser(cmdLine);
-	int length = 1;
+	// int length = 1;
 	//
 	// vector<string> vec1 = list->stringify();
 	// for(int i = 0; i < vec1.size(); ++i){
