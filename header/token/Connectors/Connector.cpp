@@ -5,13 +5,15 @@
 #include<string>
 #include<vector>
 
+using namespacestd;
+
 class Connector : public Base {
 
 public:
 
 	/* Constructors */
-	Connector(string connector_){ 
-		
+	Connector(string connector_){
+
 		connector = connector_;
 	};
 

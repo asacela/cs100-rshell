@@ -5,6 +5,8 @@
 #include<string>
 #include<vector>
 
+using namespace std;
+
 class And : public Connector {
 
 public:
@@ -25,8 +27,8 @@ public:
 private:
 
 	string connector;
-  *Base lhs;
-  *Base rhs;
+  Base* lhs;
+  Base* rhs;
 
 };
 

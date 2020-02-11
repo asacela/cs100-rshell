@@ -5,13 +5,15 @@
 #include<string>
 #include<vector>
 
+using namespace std;
+
 class Command : public Base {
 
 public:
 
 	/* Constructors */
-	Command(vector<string> cmdList){ 
-		
+	Command(vector<string> cmdList){
+
 		exec = cmdList.front();
 		argList = cmdList.erase(cmdList.begin());
 	};
@@ -29,7 +31,7 @@ public:
 	}
 	virtual int execute(){
 
-		
+
 	}
 
 private:

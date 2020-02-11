@@ -2,7 +2,9 @@
 #include <string>
 #include "../header/token/Base.hpp"
 #include "../header/token/Command.hpp"
-#include "../header/token/Connector.hpp"
+#include "../header/token/Connectors/Connector.hpp"
+#include "../header/token/Connectors/And.hpp"
+
 #include "../header/execute.hpp"
 #include "../header/parser.hpp"
 

@@ -4,6 +4,8 @@
 #include<iostream>
 #include<string>
 
+using namespace std;
+
 class Base {
 
 public:

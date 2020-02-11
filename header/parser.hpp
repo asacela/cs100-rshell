@@ -31,12 +31,12 @@ private:
 
 	void parse(){
 
-		bool isPound = false;
+		bool isComment = false;
 
-		for(int i = 0; i < cmdLine.size() && !isPound; ++i){
+		for(int i = 0; i < cmdLine.size() && !isComment; ++i){
 			char c = cmdLine.at(i);
 			if(c == '#'){
-				isPound = true;
+				isComment = true;
 			}
 			else if(c == '\"'){
 				end = cmdLine.find('\"',i);
