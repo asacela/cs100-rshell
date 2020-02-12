@@ -5,7 +5,7 @@
 #include<vector>
 #include<string>
 #include<cstring>
-#include<boost/tokenizer.hpp>
+// #include<boost/tokenizer.hpp>
 
 // #include "../header/token/Command.hpp"
 #include "../header/token/Connectors/And.hpp"
@@ -13,7 +13,7 @@
 #include "../header/token/Connectors/Semicolon.hpp"
 
 using namespace std;
-using namespace boost;
+// using namespace boost;
 
 class Parser{
 
@@ -92,6 +92,17 @@ public:
 
 
 
+	void print(){
+		if(argList[0] != '\0'){
+			cout << argList[0];
+		}
+		for(int i = 1; argList[i] != '\0'; ++i){
+			cout << '\n' << argList[i];
+		}
+	}
+
+
+
 
 private:
 
@@ -123,18 +134,34 @@ private:
 				i = end;
 			}
 
-			// If it's a semicolon
-			else if (c == ';'){
-				cout << "FIX_ME: Semicolon" << endl;
-			}
 
 			// If it's a space
 			else if(c != ' '){
-				int end = cmdLine.find(' ',i);
+
+				size_t end = cmdLine.find(' ',i);
+
+				// If no other space found
+				if(end == string::npos){
+					end = cmdLine.size()-1;
+					if(cmdLine.at(end) == ';'){
+
+						cmdLine.erase(cmdLine.begin() + end);
+
+					}
+					end += 1;
+				}
+
+				// If a space is found
+				else if(cmdLine.at(end-1) == ';'){
+
+					cmdLine.erase(cmdLine.begin() + end-1);
+					end -= 1;
+					
+				}
 				string str = cmdLine.substr(i,end - i);
 				parsed.push_back(str);
 
-				i = end - 1;
+				i = end;
 			}
 			else{
 				// Ignore white space

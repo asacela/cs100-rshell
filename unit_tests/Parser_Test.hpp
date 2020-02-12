@@ -32,7 +32,7 @@ TEST(CommandTest, ParserPrint_InnerQuotes) {
 }
 TEST(CommandTest, ParserPrint_Comment) {
     Parser* list = new Parser("This is #a comment");
-    EXPECT_EQ(test->execute(), "This is");
+    EXPECT_EQ(test->execute(), "This\nis");
 }
 // TEST(CommandTest, ParserPrint_And) {
 //     Parser* list = new Parser("This && that");

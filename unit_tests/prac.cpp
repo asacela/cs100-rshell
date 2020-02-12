@@ -15,9 +15,11 @@ int main(){
 
 	const char** arguments = list->arguments();
 
-	for(int i = 0; arguments[i] != '\0'; ++i){
-		cout << arguments[i] << " ";
-
+	if(arguments[0] != '\0'){
+		cout << arguments[0];
+	}
+	for(int i = 1; arguments[i] != '\0'; ++i){
+		cout << '\n' << arguments[i];
 	}
 
 
