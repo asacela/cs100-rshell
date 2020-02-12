@@ -27,7 +27,59 @@ public:
 	const char** arguments(){ return argList; }
 
 	// FIX THIS: Alec
-	vector<Base*> objectify(){ return objList; }
+	Base* objectify(vector<char**> paramList){
+
+		Base* commandTemp;
+		Base* connectorTemp;
+
+		for(int i = 0; i < paramList.size(); i++){
+
+			if(i == 1){
+				
+				commandTemp = new Command ((paramList.at(i - 1))); //at 0
+
+				if((paramList.at(i))[0] == "&&"){
+
+					connectorTemp = new And(commandTemp, (paramList.at(i + 1))); //at 2
+				}
+				else if(paramList.at(i)[0] == "||"){
+
+
+					connectorTemp = new Or(commandTemp, (paramList.at(i + 1))); //at 2
+				}
+
+				else if((paramList.at(i)[0] == ";")){
+
+
+					// add semicolon support
+				}
+			}
+			else if((paramList.at(i))[0] == "&&"){
+
+
+				commandTemp = new Command((paramList.at(i + 1)));
+				connectorTemp = new And(connectorTemp, commandTemp);
+			}
+
+			else if((paramList.at(i))[0] == "||"){
+
+				commandTemp = new Command((paramList.at(i + 1)));
+				connectorTemp = new Or(connectorTemp, commandTemp);
+
+			}
+
+			else if((paramList.at(i))[0] == ";"){
+
+
+			}
+			else{
+
+			}
+		}
+
+
+		return connectorTemp;		
+	}
 
 	void print(){
 		if(argList[0] != '\0'){
