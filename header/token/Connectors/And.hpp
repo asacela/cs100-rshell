@@ -19,10 +19,7 @@ public:
 
 		if(lhs->execute()){
 
-			if(rhs->execute()){
-
-				return true;
-			}
+			return rhs->execute();
 		}
 
 	}

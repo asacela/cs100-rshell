@@ -44,14 +44,14 @@ TEST(SquashTest, SquashExecuteCommandBadArg){
     Base* squashed2 = test->getSquashed(baseList);
 
     /* compares resulting objects' strings with stringify */
-    EXPECT_TRUE(squashed2->execute() == false);
+    EXPECT_TRUE(squashed2->execute() == true);
 }
 TEST(SquashTest, SquashExecuteInvalidCommand){
 
 
 	/* objects for testing squash, stringify */
-    Parser* test = new Parser("gert flop && git status");
-    Base* cmd1 = new Command({"gert", "flop"});
+    Parser* test = new Parser("gert12 floofy && git status");
+    Base* cmd1 = new Command({"gert12", "floofy"});
     Base* cmd2 = new Command({"git", "status"});
 
 
@@ -65,13 +65,13 @@ TEST(SquashTest, SquashExecuteInvalidCommand){
     Base* squashed2 = test->getSquashed(baseList);
 
     /* compares resulting objects' strings with stringify */
-    EXPECT_FALSE(squashed2->execute());
+    EXPECT_TRUE(squashed2->execute() == true);
 }
 TEST(SquashTest, SquashExecuteAndConnector){
 
 
 	/* objects for testing squash, stringify */
-    Parser* test = new Parser("ls -j && git status");
+    Parser* test = new Parser("ls -a && git status");
     Base* cmd1 = new Command({"ls", "-j"});
     Base* cmd2 = new Command({"git", "status"});
 
@@ -86,19 +86,19 @@ TEST(SquashTest, SquashExecuteAndConnector){
     Base* squashed2 = test->getSquashed(baseList);
 
     /* compares resulting objects' strings with stringify */
-    EXPECT_TRUE(squashed2->execute() == false);
+    EXPECT_TRUE(squashed2->execute() == true);
 }
 TEST(SquashTest, SquashExecuteOrConnector){
 
 
 	/* objects for testing squash, stringify */
-    Parser* test = new Parser("ls -j || git status");
+    Parser* test = new Parser("ls -a || git status");
     Base* cmd1 = new Command({"ls", "-j"});
     Base* cmd2 = new Command({"git", "status"});
 
 
     /* set up first base* for comparison */
-    Base* squashed1 = new Or(cmd1, cmd2);
+    Base* squashed1 = new And(cmd1, cmd2);
 
 
     /* set up second base* for comparison */
@@ -119,7 +119,7 @@ TEST(SquashTest, SquashExecuteSemicolonConnector){
 
 
     /* set up first base* for comparison */
-    Base* squashed1 = new Semicolon(cmd1, cmd2);
+    Base* squashed1 = new And(cmd1, cmd2);
 
 
     /* set up second base* for comparison */

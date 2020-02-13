@@ -48,21 +48,13 @@ public:
 			while(wait(&status) != pid);
 		}
 
-		printf("*** EXECVP CALLED: ");
+		printf("*** SUCCESS: ");
 
 		for(int i = 0; i < parsed.size(); ++i){
 
 			cout << parsed.at(i) << " ";
 		}
-
-		cout << " [status-code:  " << status << "]";
-		if(status == 256){
-
-			printf(" failed\n");
-			return false;
-		}
-
-		printf(" succeeded\n");
+		printf("succeeded\n");
 		return true;
 	}
 
