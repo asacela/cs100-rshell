@@ -17,11 +17,11 @@ public:
 	/* Pure Virtual Functions */
 	virtual bool execute(){
 
-		if( !(lhs->execute()) ){
-			return rhs->execute();
+		if(!lhs->execute()){
 
+
+			return rhs->execute();
 		}
-		// else lhs->execute() == true
 		return false;
 	}
 

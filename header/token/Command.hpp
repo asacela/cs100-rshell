@@ -5,6 +5,8 @@
 #include <string>
 #include <cstring>
 #include <vector>
+
+
 #include <stdio.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -31,22 +33,28 @@ public:
 		pid = fork();
 
 		if(pid < 0){
-
+			printf("*** ERROR: forking child process failed\n");
 			return false;
 		}
 
 		else if(pid == 0){
-			// if(execvp(argList[0], argList) < 0){
-			//
-			// 	return false;
-			// }
+			if(execvp(argList[0], (char**)argList) < 0){
+				printf("*** ERROR: exec failed\n");
+			 	return false;
+			}
 		}
 
 		else{
-			//waitpid
 			while(wait(&status) != pid);
 		}
 
+		printf("*** SUCCESS: ");
+
+		for(int i = 0; i < parsed.size(); ++i){
+
+			cout << parsed.at(i) << " ";
+		}
+		printf("succeeded\n");
 		return true;
 	}
 
