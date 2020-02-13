@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "test/Parser_Test.hpp"
+#include "unit_tests/Parser_Test.hpp"
 
 
 int main(int argc, char **argv) {

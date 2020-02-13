@@ -266,4 +266,4 @@ private:
 
 };
 
-#endif //__PARSER_HPP__
+#endif
