@@ -16,16 +16,15 @@ public:
 	And(Base* lhs_ = nullptr, Base* rhs_ = nullptr):lhs(lhs_),rhs(rhs_) {}
 
 	/* Pure Virtual Functions */
-	virtual void display(){
-    lhs->display();
-		cout << "\n     " << "&&" << "\n\n";
-    rhs->display();
-	}
-
 	virtual bool execute(){
 
 		lhs->execute();
 		return rhs->execute();
+	}
+
+	string stringify(){
+
+		return lhs->stringify() + " && " + rhs->stringify();
 	}
 
 private:

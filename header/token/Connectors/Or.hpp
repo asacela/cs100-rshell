@@ -14,13 +14,6 @@ public:
 	Or(Base* lhs_ = nullptr, Base* rhs_ = nullptr):lhs(lhs_),rhs(rhs_) {}
 
 	/* Pure Virtual Functions */
-	virtual void display(){
-		lhs->display();
-		cout << "\n     " << "||" << "\n\n";
-    rhs->display();
-
-	}
-
 	virtual bool execute(){
 
 		if( !(lhs->execute()) ){
@@ -29,6 +22,11 @@ public:
 		}
 		// else lhs->execute() == true
 		return false;
+	}
+
+	virtual string stringify(){
+
+		return lhs->stringify() + " || " + rhs->stringify();
 	}
 
 private:

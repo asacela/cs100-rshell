@@ -4,15 +4,29 @@
 #include "gtest/gtest.h"
 
 #include "../header/token/Connectors/And.hpp"
+#include "../header/token/Connectors/Command.hpp"
 
 
 TEST(AndTest, AndDisplay) {
-    And* test = new And("ls -a", "git status");
-    EXPECT_EQ(test->display(), "ls -a");
+    vector<string> vct1 = {"ls",  "-a"};
+    vector<string> vct2 = {"git", "status"};
+
+    Base* cmd1 = new Command(vct1);
+    Base* cmd2 = new Command(vct2);
+
+    Base* test = new And(cmd1, cmd2);
+    EXPECT_EQ(test->stringify(), "ls -a && git status");
 }
 TEST(AndTest, AndExecute) {
-    And* test = new And("ls -a", "git status");
-    EXPECT_EQ(test->execute(), true);
+  vector<string> vct1 = {"ls",  "-a"};
+  vector<string> vct2 = {"git", "status"};
+
+  Base* cmd1 = new Command(vct1);
+  Base* cmd2 = new Command(vct2);
+
+  Base* test = new And(cmd1, cmd2);
+  bool rhsResult = true;
+  EXPECT_EQ(test->execute(), rhsResult);
 }
 
-#endif 
+#endif

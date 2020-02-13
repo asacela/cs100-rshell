@@ -17,7 +17,7 @@ int main(){
 		Base* compObj = parserObj->parse();
 		if(compObj != nullptr){
 			cout << endl << "--DISPLAY--" << endl;
-			compObj->display();
+			cout << compObj->stringify();
 			cout << endl << "--EXECUTE--" << endl;
 			compObj->execute();
 

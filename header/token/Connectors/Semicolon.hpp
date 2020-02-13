@@ -14,24 +14,6 @@ public:
 	Semicolon(Base* lhs_ = nullptr, Base* rhs_ = nullptr):lhs(lhs_),rhs(rhs_) {}
 
 	/* Pure Virtual Functions */
-	virtual void display(){
-
-		if(lhs != nullptr){
-
-			lhs->display();
-
-		}
-
-		cout << "\n" << ";" << "\n\n";
-
-		if(rhs != nullptr){
-			rhs->display();
-
-		}
-
-
-	}
-
 	virtual bool execute(){
 
 		if(lhs != nullptr){
@@ -43,6 +25,18 @@ public:
 		}
 
 		return false;
+	}
+
+	string stringify(){
+		if(lhs != nullptr){
+			if(rhs != nullptr){
+				return lhs->stringify() + "; " + rhs->stringify();
+			}
+			return lhs->stringify() + ";";
+
+		}
+		return ";";
+
 	}
 
 private:
