@@ -35,7 +35,7 @@ public:
 		for(int i = 0; i < paramList.size(); i++){
 
 			if(i == 1){
-				
+
 				commandTemp = new Command ((paramList.at(i - 1))); //at 0
 
 				if((paramList.at(i))[0] == "&&"){
@@ -65,7 +65,6 @@ public:
 
 				commandTemp = new Command((paramList.at(i + 1)));
 				connectorTemp = new Or(connectorTemp, commandTemp);
-
 			}
 
 			else if((paramList.at(i))[0] == ";"){
