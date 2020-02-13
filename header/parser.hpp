@@ -200,20 +200,6 @@ private:
 		return objTemp;
 	}
 
-	// void to_cstring(){
-	// 	int size = parsed.size();
-	//
-	// 	argList = new const char*[size+1];
-	// 	argList[size] =  nullptr;
-	//
-	// 	// Populate the argList variable with c_string copies of the parsed
-	// 	for(int i = 0; i < size; ++i){
-	// 		argList[i] = parsed.at(i).c_str();
-	//
-	// 	}
-	//
-	// }
-
 	Base* squash(vector<Base*> objectList){
 
 		
