@@ -4,29 +4,36 @@
 #include<iostream>
 #include<string>
 #include<vector>
-#include "../Base.hpp"
+#include "Connector.hpp"
 
-class Semicolon : public Base {
+class Semicolon : public Connector {
 
 public:
 
 	/* Constructors */
-	Semicolon(Base* lhs_, Base* rhs_):lhs(lhs_),rhs(rhs_) {}
+	Semicolon(Base* lhs_ = nullptr, Base* rhs_ = nullptr):lhs(lhs_),rhs(rhs_) {}
 
 	/* Pure Virtual Functions */
 	virtual void display(){
+		lhs->display();
+		cout << "\n     " << ";" << "\n";
+    rhs->display();
 
 	}
 
 	virtual bool execute(){
 
+		if(lhs != nullptr){
+			lhs->execute();
+		}
+
+		if(rhs != nullptr){
+			return rhs->execute();
+		}
+		
 		return false;
 	}
 
-private:
-
-	Base* lhs;
-	Base* rhs;
 };
 
 #endif //__SEMICOLON_HPP__

@@ -15,8 +15,8 @@ public:
 
 	/* Constructors */
 
-	Command(char** argList_){ 
-		
+	Command(char** argList_){
+
 		argList = argList_;
 
 	};

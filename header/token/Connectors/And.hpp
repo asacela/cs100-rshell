@@ -4,16 +4,16 @@
 #include<iostream>
 #include<string>
 #include<vector>
-#include "../Base.hpp"
+#include "Connector.hpp"
 
 using namespace std;
 
-class And : public Base {
+class And : public Connector {
 
 public:
 
 	/* Constructors */
-	And(Base* lhs_, Base* rhs_):lhs(lhs_),rhs(rhs_) {}
+	And(Base* lhs_ = nullptr, Base* rhs_ = nullptr):lhs(lhs_),rhs(rhs_) {}
 
 	/* Pure Virtual Functions */
 	virtual void display(){
@@ -21,27 +21,13 @@ public:
 		cout << "\n     " << "&&" << "\n";
     rhs->display();
 	}
+
 	virtual bool execute(){
 
-		if(lhs->execute() == true){
-
-			if(rhs->execute() == true){
-
-				//
-			}
-		}
-		else{
-
-			//
-		}
-    return false;
+		lhs->execute();
+		return rhs->execute();
 	}
 
-private:
-
-
-	Base* lhs;
-	Base* rhs;
 };
 
 #endif //__AND_HPP__
