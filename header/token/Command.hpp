@@ -1,10 +1,10 @@
 #ifndef __COMMAND_HPP__
 #define __COMMAND_HPP__
 
-#include<iostream>
-#include<string>
-#include<vector>
-
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <vector>
 #include <stdio.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -18,7 +18,9 @@ class Command : public Base {
 
 public:
 
-	Command(const char** argList_) : argList(argList_) {}
+	Command(vector<string> parsed_) : parsed(parsed_){
+		to_cstring();
+	}
 
 	virtual void display(){
 
@@ -46,10 +48,10 @@ public:
 		}
 
 		else if(pid == 0){
-		/*	if(execvp(argList[0], argList) < 0){
-
-				return false;
-			}*/
+			// if(execvp(argList[0], argList) < 0){
+			//
+			// 	return false;
+			// }
 		}
 
 		else{
@@ -60,8 +62,34 @@ public:
 		return true;
 	}
 
-private:
 
+protected:
+	void to_cstring(){
+		int size = parsed.size();
+
+		argList = new const char*[size+1];
+		argList[size] =  nullptr;
+
+		// Populate the argList variable with c_string copies of the parsed
+		for(int i = 0; i < size; ++i){
+			argList[i] = parsed.at(i).c_str();
+
+		}
+
+	}
+
+	void print(){
+		if(argList[0] != '\0'){
+			cout << argList[0];
+		}
+		for(int i = 1; argList[i] != '\0'; ++i){
+			cout << '\n' << argList[i];
+		}
+	}
+
+
+private:
+	vector<string> parsed;
 	const char** argList;
 };
 

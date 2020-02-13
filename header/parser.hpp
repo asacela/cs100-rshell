@@ -15,23 +15,11 @@
 
 using namespace std;
 
+
 class Parser{
 
 public:
 	Parser(string cmdLine_) : cmdLine(cmdLine_) { }
-
-	void print(){
-		if(argList[0] != '\0'){
-			cout << argList[0];
-		}
-		for(int i = 1; argList[i] != '\0'; ++i){
-			cout << '\n' << argList[i];
-		}
-	}
-
-	const char** arguments(){
-		return argList;
-	}
 
 	Base* parse(){
 		// cout << "TEST 1" << endl;
@@ -63,13 +51,6 @@ public:
 				i = end;
 			}
 
-			// KEEP THIS CASE (e.g. echo "hello";)
-			// If it's a semicolon
-			else if(c == ';'){
-
-				return objectify(";",i+1);
-			}
-
 			// If it's not a space
 			else if(c != ' '){
 
@@ -88,7 +69,9 @@ public:
 					if(str.back() == ';'){
 						// Remove semicolon from sub string, push into parsed, make obj
 						str.pop_back();
-						parsed.push_back(str);
+						if(str != ""){
+							parsed.push_back(str);
+						}
 						return objectify(";",end);
 					}
 
@@ -106,8 +89,9 @@ public:
 
 						// Remove semicolon then push into parsed
 						str.pop_back();
-						parsed.push_back(str);
-
+						if(str != ""){
+							parsed.push_back(str);
+						}
 						return objectify(";", end);
 					}
 					else if(str == "&&"){
@@ -120,11 +104,6 @@ public:
 					parsed.push_back(str);
 					i = end - 1;
 				}
-
-			}
-			else{
-				// Ignore white space
-
 			}
 		}
 
@@ -142,16 +121,14 @@ private:
 
 	Base* objectify(string objType, int startInd){
 
-		to_cstring();
-
-		Base* lhs = new Command(argList);
+		Base* lhs = new Command(parsed);
 		Base* objTemp = nullptr;
 
-		// Check if argList is to exit
-		if(argList[0] != nullptr){
-			if(strcmp(argList[0],"exit") && argList[1] == nullptr){
+		// Check if parsed is to exit
+		if(parsed.size() == 1){
+			if(parsed.at(0) == "exit"){
 				// delete lhs;
-				lhs = new Exit(argList);
+				lhs = new Exit(parsed);
 			}
 		}
 
@@ -202,25 +179,25 @@ private:
 		return objTemp;
 	}
 
-	void to_cstring(){
-		int size = parsed.size();
-
-		argList = new const char*[size+1];
-		argList[size] =  nullptr;
-
-		// Populate the argList variable with c_string copies of the parsed
-		for(int i = 0; i < size; ++i){
-			argList[i] = parsed.at(i).c_str();
-
-		}
-
-	}
+	// void to_cstring(){
+	// 	int size = parsed.size();
+	//
+	// 	argList = new const char*[size+1];
+	// 	argList[size] =  nullptr;
+	//
+	// 	// Populate the argList variable with c_string copies of the parsed
+	// 	for(int i = 0; i < size; ++i){
+	// 		argList[i] = parsed.at(i).c_str();
+	//
+	// 	}
+	//
+	// }
 
 
 	// Private variables
 	string cmdLine;
 	vector<string> parsed;
-	const char** argList;
+	// const char** argList;
 
 };
 
