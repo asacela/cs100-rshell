@@ -11,20 +11,20 @@ class Exit : public Command {
 public:
 
 	/* Constructors */
-	Exit(char** argList_){
+	Exit(const char** argList_) : Command(argList_) {
 
     argList = argList_;
-
-	};
+  }
 
 	/* Pure Virtual Functions */
+
 	virtual bool execute(){
     exit(0);
     return true;
 	}
 
 private:
-  char** argList;
+  const char** argList;
 };
 
 #endif

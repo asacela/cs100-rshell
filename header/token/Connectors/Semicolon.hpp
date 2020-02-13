@@ -15,9 +15,20 @@ public:
 
 	/* Pure Virtual Functions */
 	virtual void display(){
-		lhs->display();
-		cout << "\n     " << ";" << "\n";
-    rhs->display();
+
+		if(lhs != nullptr){
+
+			lhs->display();
+
+		}
+
+		cout << "\n" << ";" << "\n\n";
+
+		if(rhs != nullptr){
+			rhs->display();
+
+		}
+
 
 	}
 
@@ -30,9 +41,14 @@ public:
 		if(rhs != nullptr){
 			return rhs->execute();
 		}
-		
+
 		return false;
 	}
+
+private:
+	Base* lhs;
+	Base* rhs;
+
 
 };
 

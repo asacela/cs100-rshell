@@ -4,7 +4,12 @@
 #include<iostream>
 #include<string>
 #include<vector>
-#include<sys/types.h>
+
+#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/wait.h>
+
 #include "Base.hpp"
 
 using namespace std;
@@ -13,26 +18,20 @@ class Command : public Base {
 
 public:
 
-	/* Constructors */
+	Command(const char** argList_) : argList(argList_) {}
 
-	Command(char** argList_){
-
-		argList = argList_;
-
-	};
-
-	/* Pure Virtual Functions */
 	virtual void display(){
 
-		cout << argList[0] << ": " << endl;
+		cout << argList[0] << ":" << endl;
 
+		for(int i = 1; argList[i] != nullptr; ++i){
 
-		int i = 1;
-		while(argList[i] != '\0'){
+			cout << "      " << argList[i] << endl;
 
-			cout << "     " << argList[i] << endl;
 		}
+
 	}
+
 	//incomplete
 	virtual bool execute(){
 
@@ -47,10 +46,10 @@ public:
 		}
 
 		else if(pid == 0){
-			if(execvp(argArray[0], argArray) < 0){
+		/*	if(execvp(argList[0], argList) < 0){
 
 				return false;
-			}
+			}*/
 		}
 
 		else{
@@ -63,7 +62,7 @@ public:
 
 private:
 
-	char** argList;
+	const char** argList;
 };
 
 #endif  //__COMMAND_HPP__

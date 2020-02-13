@@ -8,12 +8,12 @@
 
 #include "../header/token/Base.hpp"
 #include "../header/token/Command.hpp"
+#include "../header/token/Exit.hpp"
 #include "../header/token/Connectors/And.hpp"
 #include "../header/token/Connectors/Or.hpp"
 #include "../header/token/Connectors/Semicolon.hpp"
 
 using namespace std;
-// using namespace boost;
 
 class Parser{
 
@@ -34,11 +34,13 @@ public:
 	}
 
 	Base* parse(){
+		// cout << "TEST 1" << endl;
 
 		bool isComment = false;
 		for(int i = 0; i < cmdLine.size() && !isComment; ++i){
 
 			char c = cmdLine.at(i);
+			string str;
 
 			// If it's a comment
 			if(c == '#'){
@@ -80,7 +82,7 @@ public:
 					end = cmdLine.size();
 
 					// Create substring
-					string str = cmdLine.substr(i,end - i);
+					str = cmdLine.substr(i,end - i);
 
 					// If very last character of sub string is semicolon
 					if(str.back() == ';'){
@@ -92,23 +94,21 @@ public:
 
 					// Else that is the end of the string
 					parsed.push_back(str);
-					return objectify("arg",end);
+					return objectify("list",end);
 				}
-
-				// Else a space is found
 				else{
-					
+
 					// Create substring
-					string str = cmdLine.substr(i,end - i);
+					str = cmdLine.substr(i,end - i);
 
 					// If the char before the space is ';'
 					if(str.back() == ';'){
 
 						// Remove semicolon then push into parsed
 						str.pop_back();
-						parser.push_back(str);
+						parsed.push_back(str);
 
-						return objectify(";", end - 1);
+						return objectify(";", end);
 					}
 					else if(str == "&&"){
 						return objectify("&&",end);
@@ -117,7 +117,8 @@ public:
 						return objectify("||", end);
 					}
 					// Else it is a regular command -> continue
-
+					parsed.push_back(str);
+					i = end - 1;
 				}
 
 			}
@@ -133,8 +134,7 @@ public:
 			return nullptr;
 		}
 
-		// Last string received was an argument
-		return objectify("arg",cmdLine.size());
+		return objectify("list",cmdLine.size());
 	}
 
 
@@ -149,22 +149,29 @@ private:
 
 		// Check if argList is to exit
 		if(argList[0] != nullptr){
-			if(argList[0] == "exit" && argList[1] == nullptr){
-				delete lhs;
-				lhs = new Exit();
+			if(strcmp(argList[0],"exit") && argList[1] == nullptr){
+				// delete lhs;
+				lhs = new Exit(argList);
 			}
 		}
 
-		newSize = cmdLine.size() - startInd;
+		int newSize = cmdLine.size() - startInd;
 
 		// If we reach the end of the cmdLine
 		if(newSize <= 0){
-			if(objType == "arg"){
+			if(objType == "list"){
 				objTemp = lhs;
 
 			}
 			else if(objType == ";"){
-				objTemp = new Semicolon(lhs, nullptr);
+				if(parsed.size() == 0){
+					objTemp = new Semicolon(nullptr, nullptr);
+
+				}
+				else{
+					objTemp = new Semicolon(lhs, nullptr);
+
+				}
 
 			}
 		}
@@ -185,7 +192,7 @@ private:
 				objTemp = new Semicolon(lhs, parserTemp->parse());
 
 			}
-			else if(objType == "arg"){
+			else if(objType == "list"){
 				objTemp = lhs;
 
 			}

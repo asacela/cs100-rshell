@@ -16,7 +16,7 @@ public:
 	/* Pure Virtual Functions */
 	virtual void display(){
 		lhs->display();
-		cout << "\n     " << "||" << "\n";
+		cout << "\n     " << "||" << "\n\n";
     rhs->display();
 
 	}
@@ -26,11 +26,15 @@ public:
 		if( !(lhs->execute()) ){
 			return rhs->execute();
 
-			}
 		}
 		// else lhs->execute() == true
 		return false;
 	}
+
+private:
+	Base* lhs;
+	Base* rhs;
+
 
 };
 
