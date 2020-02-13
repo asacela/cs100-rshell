@@ -21,7 +21,7 @@ public:
 	Command(vector<string> parsed_) : parsed(parsed_){
 		to_cstring();
 	}
-	
+
 	//incomplete
 	virtual bool execute(){
 
@@ -55,14 +55,15 @@ public:
 protected:
 
 	string stringify(){
+		string str;
 		if(parsed.size() != 0){
-			cout << parsed.at(0);
+			str = parsed.at(0);
 			for(int i = 1; i < parsed.size(); ++i){
-				cout << " " << parsed.at(i);
+				str = str + " " + parsed.at(i);
 			}
 		}
 
-
+		return str;
 	}
 
 	void to_cstring(){

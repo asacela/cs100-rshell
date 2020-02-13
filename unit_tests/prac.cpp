@@ -14,14 +14,14 @@ int main(){
 		getline(cin,cmdLine);
 
 		Parser* parserObj = new Parser(cmdLine);
-		Base* compObj = parserObj->parse();
-		if(compObj != nullptr){
-			cout << endl << "--DISPLAY--" << endl;
-			cout << compObj->stringify();
-			cout << endl << "--EXECUTE--" << endl;
-			compObj->execute();
-
-		}
+		parserObj->parse();
+		// Base* compObj = parserObj->parse();
+		// if(compObj != nullptr){
+		// 	cout << endl << "--DISPLAY--" << endl;
+		// 	cout << compObj->stringify();
+		// 	cout << endl << "--EXECUTE--" << endl;
+		// 	compObj->execute();
+		// }
 
 	}
 

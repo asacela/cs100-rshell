@@ -22,7 +22,6 @@ public:
 	Parser(string cmdLine_) : cmdLine(cmdLine_) { }
 
 	Base* parse(){
-		// cout << "TEST 1" << endl;
 
 		bool isComment = false;
 		for(int i = 0; i < cmdLine.size() && !isComment; ++i){
@@ -104,6 +103,7 @@ public:
 					parsed.push_back(str);
 					i = end - 1;
 				}
+
 			}
 		}
 
@@ -120,9 +120,9 @@ public:
 private:
 
 	Base* objectify(string objType, int startInd){
-
 		Base* lhs = new Command(parsed);
 		Base* objTemp = nullptr;
+		Parser* parserTemp = nullptr;
 
 		// Check if parsed is to exit
 		if(parsed.size() == 1){
@@ -142,11 +142,13 @@ private:
 			}
 			else if(objType == ";"){
 				if(parsed.size() == 0){
+					// delete lhs;
+					lhs = nullptr;
 					objTemp = new Semicolon(nullptr, nullptr);
 
 				}
 				else{
-					objTemp = new Semicolon(lhs, nullptr);
+					objTemp = new Semicolon(nullptr, nullptr);
 
 				}
 
@@ -155,18 +157,18 @@ private:
 		// Else not finished reading through cmdLine
 		else{
 			string remainingString = cmdLine.substr(startInd,newSize);
-			Parser* parserTemp = new Parser(remainingString);
+			parserTemp = new Parser(remainingString);
 
 			if(objType == "&&"){
-				objTemp = new And(lhs, parserTemp->parse());
+				objTemp = new And();
 
 			}
 			else if(objType == "||"){
-				objTemp = new Or(lhs, parserTemp->parse());
+				objTemp = new Or();
 
 			}
 			else if(objType == ";"){
-				objTemp = new Semicolon(lhs, parserTemp->parse());
+				objTemp = new Semicolon();
 
 			}
 			else if(objType == "list"){
@@ -175,6 +177,19 @@ private:
 			}
 
 		}
+
+		if(lhs != nullptr){
+			baseList.push_back(lhs);
+
+			if(objTemp != lhs){
+				baseList.push_back(objTemp);
+			}
+		}
+		else if(objTemp != nullptr){
+			baseList.push_back(objTemp);
+		}
+
+		parserTemp->parse();
 
 		return objTemp;
 	}
@@ -258,10 +273,10 @@ private:
 		return squashed;
 	}
 
-
 	// Private variables
 	string cmdLine;
 	vector<string> parsed;
+	vector<Base*> baseList;
 	// const char** argList;
 
 };
