@@ -11,8 +11,20 @@ class Base {
 public:
 
 	/* Pure Virtual Functions */
-	virtual void display() = 0;
+	virtual string stringify() = 0;
 	virtual bool execute() = 0;
+	virtual const string getID() = 0;
+
+	/* Virtual Functions */
+	virtual void set_lhs(Base* lhs){
+
+		// leave empty
+	}
+	virtual void set_rhs(Base* rhs){
+
+		// leave empty
+	}
+
 };
 
 #endif  //__BASE_HPP__

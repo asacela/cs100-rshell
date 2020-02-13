@@ -5,115 +5,31 @@
 #include<vector>
 #include<string>
 #include<cstring>
-// #include<boost/tokenizer.hpp>
 
-// #include "../header/token/Command.hpp"
+#include "../header/token/Base.hpp"
+#include "../header/token/Command.hpp"
+#include "../header/token/Exit.hpp"
 #include "../header/token/Connectors/And.hpp"
 #include "../header/token/Connectors/Or.hpp"
 #include "../header/token/Connectors/Semicolon.hpp"
 
 using namespace std;
-// using namespace boost;
+
 
 class Parser{
 
 public:
-	Parser(string cmdLine_) : cmdLine(cmdLine_) {
-		parse();
-		to_cstring();
-		// assign();
-	}
+	Parser(string cmdLine_) : cmdLine(cmdLine_) { }
 
-	const char** arguments(){ return argList; }
-
-	// FIX THIS: Alec
-	Base* objectify(vector<char**> paramList){
-
-		Base* commandTemp;
-		Base* connectorTemp;
-
-		for(int i = 0; i < paramList.size(); i++){
-
-			if(i == 1){
-				
-				commandTemp = new Command ((paramList.at(i - 1))); //at 0
-
-				if((paramList.at(i))[0] == "&&"){
-
-					connectorTemp = new And(commandTemp, (paramList.at(i + 1))); //at 2
-				}
-				else if(paramList.at(i)[0] == "||"){
-
-
-					connectorTemp = new Or(commandTemp, (paramList.at(i + 1))); //at 2
-				}
-
-				else if((paramList.at(i)[0] == ";")){
-
-
-					// add semicolon support
-				}
-			}
-			else if((paramList.at(i))[0] == "&&"){
-
-
-				commandTemp = new Command((paramList.at(i + 1)));
-				connectorTemp = new And(connectorTemp, commandTemp);
-			}
-
-			else if((paramList.at(i))[0] == "||"){
-
-				commandTemp = new Command((paramList.at(i + 1)));
-				connectorTemp = new Or(connectorTemp, commandTemp);
-
-			}
-
-			else if((paramList.at(i))[0] == ";"){
-
-
-			}
-			else{
-
-			}
-		}
-
-
-		return connectorTemp;		
-	}
-
-	void print(){
-		if(argList[0] != '\0'){
-			cout << argList[0];
-		}
-		for(int i = 1; argList[i] != '\0'; ++i){
-			cout << '\n' << argList[i];
-		}
-	}
-
-
-
-	void print(){
-		if(argList[0] != '\0'){
-			cout << argList[0];
-		}
-		for(int i = 1; argList[i] != '\0'; ++i){
-			cout << '\n' << argList[i];
-		}
-	}
-
-
-
-
-private:
-
-	void parse(){
+	Base* parse(){
 
 		bool isComment = false;
 		for(int i = 0; i < cmdLine.size() && !isComment; ++i){
 
 			char c = cmdLine.at(i);
+			string str;
 
-			// If it is a comment
+			// If it's a comment
 			if(c == '#'){
 				isComment = true;
 			}
@@ -134,97 +50,257 @@ private:
 				i = end;
 			}
 
-
-			// If it's a space
+			// If it's not a space
 			else if(c != ' '){
 
+				// Look for next appreance of a space
 				size_t end = cmdLine.find(' ',i);
 
-				// If no other space found
+				// If no other space found -> have reached the end of cmdLine string
 				if(end == string::npos){
-					end = cmdLine.size()-1;
-					if(cmdLine.at(end) == ';'){
 
-						cmdLine.erase(cmdLine.begin() + end);
+					end = cmdLine.size();
 
+					// Create substring
+					str = cmdLine.substr(i,end - i);
+
+					// If very last character of sub string is semicolon
+					if(str.back() == ';'){
+						// Remove semicolon from sub string, push into parsed, make obj
+						str.pop_back();
+						if(str != ""){
+							parsed.push_back(str);
+						}
+						return objectify(";",end);
 					}
-					end += 1;
+
+					// Else that is the end of the string
+					parsed.push_back(str);
+					return objectify("list",end);
+				}
+				else{
+
+					// Create substring
+					str = cmdLine.substr(i,end - i);
+
+					// If the char before the space is ';'
+					if(str.back() == ';'){
+
+						// Remove semicolon then push into parsed
+						str.pop_back();
+						if(str != ""){
+							parsed.push_back(str);
+						}
+						return objectify(";", end);
+					}
+					else if(str == "&&"){
+						return objectify("&&",end);
+					}
+					else if(str == "||"){
+						return objectify("||", end);
+					}
+					// Else it is a regular command -> continue
+					parsed.push_back(str);
+					i = end - 1;
 				}
 
-				// If a space is found
-				else if(cmdLine.at(end-1) == ';'){
+			}
+		}
 
-					cmdLine.erase(cmdLine.begin() + end-1);
-					end -= 1;
-					
+		// Base cases: you reach the end of the string (i.e. no more connectors)
+		// No arguments received
+		if(parsed.size() == 0){
+			return nullptr;
+		}
+
+		return objectify("list",cmdLine.size());
+	}
+
+	Base* getSquashed(vector<Base*> objectList){
+
+		Base* squashed = squash(objectList);
+		return squashed;
+	}
+
+
+private:
+
+	Base* objectify(string objType, int startInd){
+		Base* lhs = new Command(parsed);
+		Base* objTemp = nullptr;
+		Parser* parserTemp = nullptr;
+
+		// Check if parsed is to exit
+		if(parsed.size() == 1){
+			if(parsed.at(0) == "exit"){
+				// delete lhs;
+				lhs = new Exit(parsed);
+			}
+		}
+
+		int newSize = cmdLine.size() - startInd;
+
+		// If we reach the end of the cmdLine
+		if(newSize <= 0){
+			if(objType == "list"){
+				objTemp = lhs;
+
+			}
+			else if(objType == ";"){
+				if(parsed.size() == 0){
+					// delete lhs;
+					lhs = nullptr;
+					objTemp = new Semicolon(nullptr, nullptr);
+
 				}
-				string str = cmdLine.substr(i,end - i);
-				parsed.push_back(str);
+				else{
+					objTemp = new Semicolon(nullptr, nullptr);
 
-				i = end;
-			}
-			else{
-				// Ignore white space
+				}
+
 			}
 		}
-
-	}
-
-
-	void to_cstring(){
-		int size = parsed.size();
-
-		argList = new const char*[size+1];
-		argList[size] =  nullptr;
-
-		// Populate the argList variable with c_string copies of the parsed
-		for(int i = 0; i < size; ++i){
-			argList[i] = parsed.at(i).c_str();
-
-		}
-
-	}
-
-
-	void assign(){
-		for(int i = 0; i < parsed.size(); ++i){
-			// obj(i);
-		}
-	}
-	// Helper function
-	Base* obj(int i){
-
-		if(parsed.at(i) == "&&"){
-			Base* lhs = objList.at(i-1);
-			Base* rhs =	obj(i+1);
-			Base* andObj = new And(lhs,rhs);
-			return andObj;
-			objList.push_back(andObj);
-		}
-		else if(parsed.at(i) == "||"){
-			Base* lhs = objList.at(i-1);
-			Base* rhs =	obj(i+1);
-			Base* orObj = new Or(lhs,rhs);
-			objList.push_back(orObj);
-			return orObj;
-
-		}
+		// Else not finished reading through cmdLine
 		else{
-			Base* argObj = nullptr;
-			return argObj;
+			string remainingString = cmdLine.substr(startInd,newSize);
+			parserTemp = new Parser(remainingString);
+
+			if(objType == "&&"){
+				objTemp = new And();
+
+			}
+			else if(objType == "||"){
+				objTemp = new Or();
+
+			}
+			else if(objType == ";"){
+				objTemp = new Semicolon();
+
+			}
+			else if(objType == "list"){
+				objTemp = lhs;
+
+			}
 
 		}
+
+		if(lhs != nullptr){
+			baseList.push_back(lhs);
+
+			if(objTemp != lhs){
+				baseList.push_back(objTemp);
+			}
+		}
+		else if(objTemp != nullptr){
+			baseList.push_back(objTemp);
+		}
+
+		parserTemp->parse();
+
+		return objTemp;
 	}
 
+	Base* squash(vector<Base*> objectList){
 
+		
+		Base* squashed;
+		
+		for(int i = 0; i < objectList.size(); ++i){
 
+			try{
+
+				if(i == 0){
+
+					squashed = objectList.at(i);
+				}
+				else if(i == 1){
+
+					if(objectList.at(i)->getID() == "&&"){
+						
+						objectList.at(i)->set_lhs(objectList.at(i - 1));
+						if(objectList.at(i + 1) != nullptr){
+
+							objectList.at(i)->set_rhs(objectList.at(i + 1));
+						}
+						
+
+						squashed = objectList.at(i);
+					}
+					
+					else if(objectList.at(i)->getID() == "||"){
+
+						objectList.at(i)->set_lhs(objectList.at(i - 1));
+						if(objectList.at(i + 1) != nullptr){
+
+							objectList.at(i)->set_rhs(objectList.at(i + 1));
+						}
+
+						squashed = objectList.at(i);
+					}
+
+					else if(objectList.at(i)->getID() == ";"){
+
+						objectList.at(i)->set_lhs(objectList.at(i - 1));
+						if(objectList.at(i + 1) != nullptr){
+
+							objectList.at(i)->set_rhs(objectList.at(i + 1));
+						}
+
+						squashed = objectList.at(i);
+					}			
+				}
+				else if(objectList.at(i)->getID() == "&&"){
+
+					objectList.at(i)->set_lhs(squashed);
+					if(objectList.at(i + 1) != nullptr){
+
+							objectList.at(i)->set_rhs(objectList.at(i + 1));
+					}
+
+					squashed = objectList.at(i);		
+				}
+				
+				else if(objectList.at(i)->getID() == "||"){
+
+					objectList.at(i)->set_lhs(squashed);
+					if(objectList.at(i + 1) != nullptr){
+
+							objectList.at(i)->set_rhs(objectList.at(i + 1));
+					}
+
+					squashed = objectList.at(i);
+				}
+				else if(objectList.at(i)->getID() == ";"){
+
+					objectList.at(i)->set_lhs(squashed);
+					if(objectList.at(i + 1) != nullptr){
+
+							objectList.at(i)->set_rhs(objectList.at(i + 1));
+					}
+
+					squashed = objectList.at(i);
+				} 
+			}
+			catch(const std::out_of_range& e){
+
+				cout << "out_of_range error:" << e.what() << endl;
+				exit(1);
+			}
+
+		}	
+		return squashed;
+	}
 
 	// Private variables
 	string cmdLine;
 	vector<string> parsed;
-	vector<Base*> objList;
-	const char** argList;
+	vector<Base*> baseList;
+	// const char** argList;
+
+	const string andOperator = "&&";
+	const string orOperator = "||";
+	const string scOperator = ";";
 
 };
 
-#endif //__PARSER_HPP__
+#endif

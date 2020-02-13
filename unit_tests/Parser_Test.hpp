@@ -4,47 +4,137 @@
 #include "gtest/gtest.h"
 
 #include "../header/Parser.hpp"
+#include<vector>
+
+using namespace testing;
 
 
-TEST(CommandTest, ParserPrint_Empty) {
-    Parser* test = new Parser("");
-    EXPECT_EQ(test->print(), "");
+TEST(SquashTest, SquashSmallInput){
+
+
+	/* objects for testing squash, stringify */
+    Parser* test = new Parser("ls -a && git status");
+    Base* cmd1 = new Command({"ls", "-a"});
+    Base* cmd2 = new Command({"git", "status"});
+
+
+    /* set up first base* for comparison */
+    Base* squashed1 = new And(cmd1, cmd2);
+
+
+    /* set up second base* for comparison */
+    vector<Base*> baseList;
+    baseList.push_back(squashed1);
+    Base* squashed2 = test->getSquashed(baseList);
+
+    /* compares resulting objects' strings with stringify */
+    EXPECT_EQ(squashed1->stringify(), squashed2->stringify());
 }
-TEST(CommandTest, ParserPrint_Spaces) {
-    Parser* test = new Parser("   ");
-    EXPECT_EQ(test->print(), "");
+TEST(SquashTest, SquashExecuteCommandBadArg){
+
+
+	/* objects for testing squash, stringify */
+    Parser* test = new Parser("ls -j");
+    Base* cmd1 = new Command({"ls", "-j"});
+
+
+    /* set up second base* for comparison */
+    vector<Base*> baseList;
+    baseList.push_back(cmd1);
+    Base* squashed2 = test->getSquashed(baseList);
+
+    /* compares resulting objects' strings with stringify */
+    EXPECT_TRUE(squashed2->execute() == true);
 }
-TEST(CommandTest, ParserPrint_AlphaNumeric) {
-    Parser* test = new Parser("Hello12345");
-    EXPECT_EQ(test->print(), "Hello12345");
+TEST(SquashTest, SquashExecuteInvalidCommand){
+
+
+	/* objects for testing squash, stringify */
+    Parser* test = new Parser("gert12 floofy && git status");
+    Base* cmd1 = new Command({"gert12", "floofy"});
+    Base* cmd2 = new Command({"git", "status"});
+
+
+    /* set up first base* for comparison */
+    Base* squashed1 = new And(cmd1, cmd2);
+
+
+    /* set up second base* for comparison */
+    vector<Base*> baseList;
+    baseList.push_back(squashed1);
+    Base* squashed2 = test->getSquashed(baseList);
+
+    /* compares resulting objects' strings with stringify */
+    EXPECT_TRUE(squashed2->execute() == true);
 }
-TEST(CommandTest, ParserPrint_Multiple) {
-    Parser* test = new Parser("H3llo w0rld!");
-    EXPECT_EQ(test->print(), "H3llo\nw0rld!");
+TEST(SquashTest, SquashExecuteAndConnector){
+
+
+	/* objects for testing squash, stringify */
+    Parser* test = new Parser("ls -a && git status");
+    Base* cmd1 = new Command({"ls", "-j"});
+    Base* cmd2 = new Command({"git", "status"});
+
+
+    /* set up first base* for comparison */
+    Base* squashed1 = new And(cmd1, cmd2);
+
+
+    /* set up second base* for comparison */
+    vector<Base*> baseList;
+    baseList.push_back(squashed1);
+    Base* squashed2 = test->getSquashed(baseList);
+
+    /* compares resulting objects' strings with stringify */
+    EXPECT_TRUE(squashed2->execute() == true);
 }
-TEST(CommandTest, ParserPrint_Quotes) {
-    Parser* test = new Parser("\"Quote this\"");
-    EXPECT_EQ(test->print(), "Quote this");
+TEST(SquashTest, SquashExecuteOrConnector){
+
+
+	/* objects for testing squash, stringify */
+    Parser* test = new Parser("ls -a || git status");
+    Base* cmd1 = new Command({"ls", "-j"});
+    Base* cmd2 = new Command({"git", "status"});
+
+
+    /* set up first base* for comparison */
+    Base* squashed1 = new And(cmd1, cmd2);
+
+
+    /* set up second base* for comparison */
+    vector<Base*> baseList;
+    baseList.push_back(squashed1);
+    Base* squashed2 = test->getSquashed(baseList);
+
+    /* compares resulting objects' strings with stringify */
+    EXPECT_TRUE(squashed2->execute() == true);
 }
-TEST(CommandTest, ParserPrint_InnerQuotes) {
-    Parser* test = new Parser("\"I \\\"like\\\"\" you");
-    EXPECT_EQ(test->print(), "I \"like\"\nyou");
+TEST(SquashTest, SquashExecuteSemicolonConnector){
+
+
+	/* objects for testing squash, stringify */
+    Parser* test = new Parser("ls -a; git status");
+    Base* cmd1 = new Command({"ls", "-j"});
+    Base* cmd2 = new Command({"git", "status"});
+
+
+    /* set up first base* for comparison */
+    Base* squashed1 = new And(cmd1, cmd2);
+
+
+    /* set up second base* for comparison */
+    vector<Base*> baseList;
+    baseList.push_back(squashed1);
+    Base* squashed2 = test->getSquashed(baseList);
+
+    /* compares resulting objects' strings with stringify */
+    EXPECT_TRUE(squashed2->execute() == true);
 }
-TEST(CommandTest, ParserPrint_Comment) {
-    Parser* list = new Parser("This is #a comment");
-    EXPECT_EQ(test->execute(), "This\nis");
-}
-// TEST(CommandTest, ParserPrint_And) {
-//     Parser* list = new Parser("This && that");
-//     EXPECT_EQ(test->execute(), "This\n&&\nthat");
-// }
-// TEST(CommandTest, ParserPrint_Or) {
-//   Parser* list = new Parser("This || that");
-//   EXPECT_EQ(test->execute(), "This\n||\nthat");
-// }
-// TEST(CommandTest, ParserPrint_Semicolon) {
-//     Parser* list = new Parser("How; about; this;");
-//     EXPECT_EQ(test->execute(), "How\nabout\nthis");
-}
+
+
+
+
+
+
 
 #endif

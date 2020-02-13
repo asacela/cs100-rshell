@@ -13,35 +13,48 @@ class And : public Base {
 public:
 
 	/* Constructors */
-	And(Base* lhs_, Base* rhs_):lhs(lhs_),rhs(rhs_) {}
+	And(Base* lhs_ = nullptr, Base* rhs_ = nullptr):lhs(lhs_),rhs(rhs_) {}
 
 	/* Pure Virtual Functions */
-	virtual void display(){
-    lhs->display();
-		cout << "\n     " << "&&" << "\n";
-    rhs->display();
-	}
 	virtual bool execute(){
 
-		if(lhs->execute() == true){
+		if(lhs->execute()){
 
-			if(rhs->execute() == true){
-
-				//
-			}
+			return rhs->execute();
 		}
-		else{
-
-			//
-		}
-    return false;
+		
+		return false;
 	}
 
+	virtual string stringify(){
+
+		string cmdString = lhs->stringify() + " && " + rhs->stringify();
+
+		return cmdString;
+	}
+
+	virtual const string getID(){
+
+		return connectorID;
+	}
+
+	virtual void set_lhs(Base* left){
+
+		lhs = left;
+
+	}
+
+	virtual void set_rhs(Base* right){
+
+		rhs = right;
+	}
+
+
 private:
-
-
 	Base* lhs;
 	Base* rhs;
+	const string connectorID = "&&";
+
 };
 
-#endif //__AND_HPP__
+#endif

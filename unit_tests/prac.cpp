@@ -7,22 +7,23 @@ using namespace std;
 
 int main(){
 
-	cout << "$ ";
-	string cmdLine;
-	getline(cin,cmdLine);
+	int num = 1;
+	for(int i = 0; i < num; ++i){
+		cout << "$ ";
+		string cmdLine;
+		getline(cin,cmdLine);
 
-	Parser* list = new Parser(cmdLine);
+		Parser* parserObj = new Parser(cmdLine);
+		parserObj->parse();
+		// Base* compObj = parserObj->parse();
+		// if(compObj != nullptr){
+		// 	cout << endl << "--DISPLAY--" << endl;
+		// 	cout << compObj->stringify();
+		// 	cout << endl << "--EXECUTE--" << endl;
+		// 	compObj->execute();
+		// }
 
-	const char** arguments = list->arguments();
-
-	if(arguments[0] != '\0'){
-		cout << arguments[0];
 	}
-	for(int i = 1; arguments[i] != '\0'; ++i){
-		cout << '\n' << arguments[i];
-	}
-
-
 
 	return 0;
 }
