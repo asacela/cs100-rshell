@@ -4,7 +4,12 @@
 #include<iostream>
 #include<string>
 #include<vector>
-#include<sys/types.h>
+
+#include <stdio.h> 
+#include <sys/types.h> 
+#include <unistd.h> 
+#include <sys/wait.h>
+
 #include "Base.hpp"
 
 using namespace std;
@@ -42,13 +47,13 @@ public:
 		pid = fork();
 
 		if(pid < 0){
-
+			printf("*** ERROR: forking child process failed\n");
 			return false;
 		}
 
 		else if(pid == 0){
-			if(execvp(argArray[0], argArray) < 0){
-
+			if(execvp(argList[0], argList) < 0){
+				printf("*** ERROR: exec failed\n");
 				return false;
 			}
 		}

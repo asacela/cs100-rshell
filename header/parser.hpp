@@ -5,15 +5,14 @@
 #include<vector>
 #include<string>
 #include<cstring>
-#include<boost/tokenizer.hpp>
+#include<string.h>
 
-// #include "../header/token/Command.hpp"
+#include "../header/token/Command.hpp"
 #include "../header/token/Connectors/And.hpp"
 #include "../header/token/Connectors/Or.hpp"
 #include "../header/token/Connectors/Semicolon.hpp"
 
 using namespace std;
-using namespace boost;
 
 class Parser{
 
@@ -24,7 +23,10 @@ public:
 		// assign();
 	}
 
-	const char** arguments(){ return argList; }
+	char** arguments(){ 
+		//concat();
+		return argList; 
+	}
 
 	// FIX THIS: Alec
 	Base* objectify(vector<char**> paramList){
@@ -36,39 +38,43 @@ public:
 
 			if(i == 1){
 
-				commandTemp = new Command ((paramList.at(i - 1))); //at 0
+				commandTemp = new Command((paramList.at(i - 1))); //at 0
 
-				if((paramList.at(i))[0] == "&&"){
+				Base* commandTemp2 = new Command((paramList.at(i + 1)));
 
-					connectorTemp = new And(commandTemp, (paramList.at(i + 1))); //at 2
+				if(strcmp((paramList.at(i))[0],"&&")){
+
+					connectorTemp = new And(commandTemp, commandTemp2); //at 2
 				}
-				else if(paramList.at(i)[0] == "||"){
+				else if(strcmp((paramList.at(i))[0],"||")){
 
 
-					connectorTemp = new Or(commandTemp, (paramList.at(i + 1))); //at 2
+					connectorTemp = new And(commandTemp, commandTemp2); //at 2
 				}
 
-				else if((paramList.at(i)[0] == ";")){
+				else if(strcmp((paramList.at(i))[0],";")){
 
 
 					// add semicolon support
 				}
 			}
-			else if((paramList.at(i))[0] == "&&"){
+			else if(strcmp((paramList.at(i))[0],"&&")){
 
 
 				commandTemp = new Command((paramList.at(i + 1)));
 				connectorTemp = new And(connectorTemp, commandTemp);
 			}
 
-			else if((paramList.at(i))[0] == "||"){
+			else if(strcmp((paramList.at(i))[0],"||")){
 
 				commandTemp = new Command((paramList.at(i + 1)));
 				connectorTemp = new Or(connectorTemp, commandTemp);
 			}
 
-			else if((paramList.at(i))[0] == ";"){
+			else if(strcmp((paramList.at(i))[0],"||")){
 
+				commandTemp = new Command((paramList.at(i + 1)));
+				connectorTemp = new Semicolon(connectorTemp, commandTemp);
 
 			}
 			else{
@@ -146,12 +152,12 @@ private:
 	void to_cstring(){
 		int size = parsed.size();
 
-		argList = new const char*[size+1];
+		argList = new char*[size+1];
 		argList[size] =  nullptr;
 
 		// Populate the argList variable with c_string copies of the parsed
 		for(int i = 0; i < size; ++i){
-			argList[i] = parsed.at(i).c_str();
+			 argList[i] = (char*)(parsed.at(i).c_str());
 
 		}
 
@@ -188,6 +194,46 @@ private:
 		}
 	}
 
+	char** concat(){
+
+		int j = 0;
+		char** newList;
+		for(int i = 0; argList[i] != '\0'; ++i){
+
+			if(strcmp(argList[i],"&&")){
+
+				j += 1;
+				
+			}
+			else if(strcmp(argList[i],"||")){
+
+				j += 1;
+				strcat(newList[j], argList[i]);
+			}
+			else if(strcmp(argList[i],";")){
+
+				j += 1;
+				strcat(newList[j], argList[i]);
+			}
+			else{
+
+				if(newList[j] == nullptr){
+
+					newList[j] = new char(1 + newList[j]+ argList[i])
+				}
+				else{
+
+
+				}
+				strcat(newList[j], argList[i]);
+
+
+			}
+
+		}
+
+		return newList;
+	}
 
 
 
@@ -195,7 +241,7 @@ private:
 	string cmdLine;
 	vector<string> parsed;
 	vector<Base*> objList;
-	const char** argList;
+	char** argList;
 
 };
 
