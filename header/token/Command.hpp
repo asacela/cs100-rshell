@@ -50,11 +50,7 @@ public:
 		return true;
 	}
 
-
-
-protected:
-
-	string stringify(){
+	virtual string stringify(){
 		string str;
 		if(parsed.size() != 0){
 			str = parsed.at(0);
@@ -65,6 +61,15 @@ protected:
 
 		return str;
 	}
+
+	virtual const string getID(){
+
+		return connectorID;
+	}
+
+
+
+protected:
 
 	void to_cstring(){
 		int size = parsed.size();
@@ -80,19 +85,11 @@ protected:
 
 	}
 
-	void print(){
-		if(argList[0] != '\0'){
-			cout << argList[0];
-		}
-		for(int i = 1; argList[i] != '\0'; ++i){
-			cout << '\n' << argList[i];
-		}
-	}
-
 
 private:
 	vector<string> parsed;
 	const char** argList;
+	const string connectorID = "cmd";
 };
 
 #endif  //__COMMAND_HPP__

@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class And : public Connector {
+class And : public Base {
 
 public:
 
@@ -24,12 +24,32 @@ public:
 
 	virtual string stringify(){
 
-		return lhs->stringify() + " && " + rhs->stringify();
+		string cmdString = lhs->stringify() + " && " + rhs->stringify();
+
+		return cmdString;
 	}
+
+	virtual const string getID(){
+
+		return connectorID;
+	}
+
+	virtual void set_lhs(Base* left){
+
+		lhs = left;
+
+	}
+
+	virtual void set_rhs(Base* right){
+
+		rhs = right;
+	}
+
 
 private:
 	Base* lhs;
 	Base* rhs;
+	const string connectorID = "&&";
 
 };
 

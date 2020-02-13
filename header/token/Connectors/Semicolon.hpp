@@ -6,7 +6,7 @@
 #include<vector>
 #include "../Base.hpp"
 
-class Semicolon : public Connector {
+class Semicolon : public Base {
 
 public:
 
@@ -28,20 +28,50 @@ public:
 	}
 
 	virtual string stringify(){
+		string cmdString;
+
+		
+
 		if(lhs != nullptr){
 			if(rhs != nullptr){
-				return lhs->stringify() + "; " + rhs->stringify();
+
+				cmdString = lhs->stringify() + "; " + rhs->stringify();
+
+				return cmdString;
 			}
-			return lhs->stringify() + ";";
+
+			cmdString = lhs->stringify() + "; ";
+
+			return cmdString;
 
 		}
-		return ";";
+		cmdString = ";";
+
+		return cmdString;
+	}
+
+	virtual const string getID(){
+
+		return connectorID;
+	}
+
+	virtual void set_lhs(Base* left){
+
+		lhs = left;
 
 	}
+
+	virtual void set_rhs(Base* right){
+
+		rhs = right;
+	}
+
+	
 
 private:
 	Base* lhs;
 	Base* rhs;
+	const string connectorID = ";";
 
 
 };
