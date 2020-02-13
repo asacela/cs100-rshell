@@ -11,7 +11,7 @@ class Base {
 public:
 
 	/* Pure Virtual Functions */
-	virtual void stringify() = 0;
+	virtual string stringify() = 0;
 	virtual bool execute() = 0;
 
 };

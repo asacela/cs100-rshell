@@ -4,7 +4,7 @@
 #include<iostream>
 #include<string>
 #include<vector>
-#include "Connector.hpp"
+#include "../Base.hpp"
 
 class Semicolon : public Connector {
 
@@ -27,7 +27,7 @@ public:
 		return false;
 	}
 
-	string stringify(){
+	virtual string stringify(){
 		if(lhs != nullptr){
 			if(rhs != nullptr){
 				return lhs->stringify() + "; " + rhs->stringify();
@@ -46,4 +46,4 @@ private:
 
 };
 
-#endif //__SEMICOLON_HPP__
+#endif

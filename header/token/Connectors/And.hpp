@@ -4,7 +4,7 @@
 #include<iostream>
 #include<string>
 #include<vector>
-#include "Connector.hpp"
+#include "../Base.hpp"
 
 using namespace std;
 
@@ -22,7 +22,7 @@ public:
 		return rhs->execute();
 	}
 
-	string stringify(){
+	virtual string stringify(){
 
 		return lhs->stringify() + " && " + rhs->stringify();
 	}
@@ -33,4 +33,4 @@ private:
 
 };
 
-#endif //__AND_HPP__
+#endif

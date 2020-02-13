@@ -193,6 +193,71 @@ private:
 	//
 	// }
 
+	Base* squash(vector<Base*> objectList){
+
+		Base* squashed;
+
+
+
+		for(int i = 0; i < objectList.size(); i++){
+
+
+			if(i == 1){
+
+
+				if(objectList.at(i)->getID() == "&&"){
+
+					objectList.at(i)->set_lhs(i - 1);
+					objectList.at(i)->set_rhs(objectList.at(i + 1));
+
+					squashed = objectList;
+				}
+
+				else if(objectList.at(i)->getID() == "||"){
+
+					objectList.at(i)->set_lhs(i - 1);
+					objectList.at(i)->set_rhs(objectList.at(i + 1));
+
+					squashed = objectList;
+				}
+
+				else if(objectList.at(i)->getID() == ";"){
+
+					objectList.at(i)->set_lhs(i - 1);
+					objectList.at(i)->set_rhs(objectList.at(i + 1));
+
+					squashed = objectList;
+				}				
+			}
+
+			if(objectList.at(i)->getID() == "&&"){
+
+				objectList.at(i)->set_lhs(squashed);
+				objectList.at(i)->set_rhs(objectList.at(i + 1));
+
+				squashed = objectList.at(i);		
+			}
+
+			else if(objectList.at(i)->getID() == "||"){
+
+				objectList.at(i)->set_lhs(squashed);
+				objectList.at(i)->set_rhs(objectList.at(i + 1));
+
+				squashed = objectList.at(i);
+			}
+
+			else if(objectList.at(i)->getID() == ";"){
+
+				objectList.at(i)->set_lhs(squashed);
+				objectList.at(i)->set_rhs(objectList.at(i + 1));
+
+				squashed = objectList.at(i);
+			}
+		}
+
+		return squashed;
+	}
+
 
 	// Private variables
 	string cmdLine;

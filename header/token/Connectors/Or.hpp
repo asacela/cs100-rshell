@@ -4,7 +4,8 @@
 #include<iostream>
 #include<string>
 #include<vector>
-#include "Connector.hpp"
+
+#include "../Base.hpp"
 
 class Or : public Connector {
 
@@ -36,4 +37,4 @@ private:
 
 };
 
-#endif //__OR_HPP__
+#endif

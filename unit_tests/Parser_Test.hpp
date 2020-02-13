@@ -3,9 +3,20 @@
 
 #include "gtest/gtest.h"
 
-#include "../header/Parser.hpp"
+#include "../header/parser.hpp"
 
 
+TEST(SquashTest, SquashSmallInput){
+
+    Parser* test = new Parser("ls -a && git status");
+
+    Base* cmd1 = new Command("ls -a");
+    Base* cmd2 = new Command("git status");
+    Base* squashed = new Connector(cmd1, cmd2);
+    EXPECT_EQ(test->squash(), squashed);
+}
+
+/*
 TEST(CommandTest, ParserPrint_Empty) {
     Parser* test = new Parser("");
     EXPECT_EQ(test->print(), "");
@@ -46,5 +57,6 @@ TEST(CommandTest, ParserPrint_Comment) {
 //     Parser* list = new Parser("How; about; this;");
 //     EXPECT_EQ(test->execute(), "How\nabout\nthis");
 }
+*/
 
-#endif
+#endif __PARSER_TEST_HPP__
