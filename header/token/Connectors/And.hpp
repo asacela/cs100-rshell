@@ -13,7 +13,6 @@ class And : public Base {
 public:
 
 	/* Constructors */
-	And(Base* lhs_ = nullptr, Base* rhs_ = nullptr):lhs(lhs_),rhs(rhs_) {}
 
 	/* Pure Virtual Functions */
 	virtual bool execute(){
@@ -25,15 +24,7 @@ public:
 				return true;
 			}
 		}
-		
-		return false;
-	}
 
-	virtual string stringify(){
-
-		string cmdString = lhs->stringify() + " && " + rhs->stringify();
-
-		return cmdString;
 	}
 
 	virtual const string getID(){
