@@ -47,14 +47,24 @@ public:
 		else{
 			while(wait(&status) != pid);
 		}
-
-		printf("*** SUCCESS: ");
+    
+		printf("*** EXECVP CALLED: ");
 
 		for(int i = 0; i < parsed.size(); ++i){
 
 			cout << parsed.at(i) << " ";
 		}
-		printf("succeeded\n");
+
+
+		cout << " [status-code:  " << status << "]";
+		if(status == 256){
+
+			printf(" failed\n");
+			return false;
+		}
+
+		printf(" succeeded\n");
+
 		return true;
 	}
 
@@ -74,8 +84,6 @@ public:
 
 		return connectorID;
 	}
-
-
 
 protected:
 

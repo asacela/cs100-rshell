@@ -20,7 +20,10 @@ public:
 
 		if(lhs->execute()){
 
-			return rhs->execute();
+			if(rhs->execute()){
+
+				return true;
+			}
 		}
 		
 		return false;
