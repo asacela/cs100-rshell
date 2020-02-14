@@ -9,6 +9,7 @@
 using namespace testing;
 
 
+/* Squash Tests*/
 TEST(SquashTest, SquashSmallInput){
 
 
@@ -41,7 +42,7 @@ TEST(SquashTest, SquashExecuteLongCommand){
     Base* cmd4 = new And();
     Base* cmd5 = new Command({"echo", "hello"});
     Base* cmd6 = new Or();
-    Base* cmd7 = new Command({"fuck", "-h"});
+    Base* cmd7 = new Command({"ma19d", "-h"});
 
 
 
@@ -157,9 +158,36 @@ TEST(SquashTest, SquashExecuteSemicolonConnector){
 }
 
 
+/* Parse Tests*/
+TEST(ParseTest, ParseAndShortCommand){
 
+	Parser* test = new Parser("ls -a && git status");
+    EXPECT_EQ(test->test().size(), 3);
+}
+TEST(ParseTest, ParseOrShortCommand){
 
+	Parser* test = new Parser("ls -a || git status");
+    EXPECT_EQ(test->test().size(), 3);
+}
+TEST(ParseTest, ParseSemicolonShortCommand){
 
+	Parser* test = new Parser("ls -a; git status");
+    EXPECT_EQ(test->test().size(), 3);
+}
+TEST(ParseTest, ParseLongCommand){
 
+	Parser* test = new Parser("ls -a && git status || echo hello; git status; git status || echo \"bye\"");
+    EXPECT_EQ(test->test().size(), 11);
+}
+TEST(ParseTest, ParseLongBrokenCommand){
+
+	Parser* test = new Parser("ls123 -a && gi1234t status || echo h1234ello; git stat1234us; git s1234tatus || e1234cho \"bye\"");
+    EXPECT_EQ(test->test().size(), 11);
+}
+TEST(ParseTest, ParseExtraLongCommand){
+
+	Parser* test = new Parser("ls -a && git status || echo hello; git status; git status || echo \"bye\"; git status || echo hello; ; git status || echo hello;");
+    EXPECT_EQ(test->test().size(), 21);
+}
 
 #endif

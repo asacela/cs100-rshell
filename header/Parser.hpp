@@ -137,15 +137,16 @@ public:
 		return;
 	}
 
-	void test(){
+	vector<Base*> test(){
 		cout << endl << "--TEST--" << endl;
 		cout << "parsed: (size "<<parsed.size()<<")" << endl;
 		for(int i = 0; i < parsed.size(); ++i){
-			// cout << baseList.at(i)->ID();
 			cout << parsed.at(i) << " ";
 
 		}
 		cout << endl << "baseList: (size "<<baseList.size()<<")" << endl;
+
+		return baseList;
 	}
 
 	Base* getSquashed(){
@@ -177,8 +178,34 @@ private:
 
 		// If there exists new commands
 		if(subParsed.size() != 0){
-			lhs = new Command(subParsed);
 
+			lhs = new Command(subParsed);
+		}
+
+		if(subParsed.size() == 1){
+
+			if(subParsed.at(0) == "exit"){
+
+				lhs = new Exit(subParsed);
+			}
+		}
+
+
+		if(objType == "&&"){
+
+			objTemp = new And();
+		}
+		else if(objType == "||"){
+
+			objTemp = new Or();
+		}
+		else if(objType == ";"){
+
+			objTemp = new Semicolon();
+		}
+		else if(objType == "list"){
+
+			objTemp = lhs;
 		}
 
 		if(lhs != nullptr){
@@ -191,6 +218,7 @@ private:
 
 
 	void updateSize(){
+
 		oldParsedSize = parsed.size();
 	}
 
