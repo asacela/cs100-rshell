@@ -305,7 +305,7 @@ private:
 			}
 			catch(const std::out_of_range& e){
 
-				cout << "out_of_range error:" << e.what() << endl;
+				cout << "out_of_range ERROR:" << e.what() << endl;
 				exit(1);
 			}
 
