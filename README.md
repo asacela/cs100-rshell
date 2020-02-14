@@ -16,98 +16,37 @@ The purpose of this project is to gain experience in developing a shell that uti
 
 ### Base
 
-This class will contain basic functions that  parse, execute, and connect strings of commands as a list 
-
-
-    class Base{
-    	base nextCom;
-    	base currCom;
-    	virtual execute();
-    	virtual connect();;
-    	void toString();
-    };
+This class contains basic virtual functions that the Command, And, Or, and Semicolon classes will inherit from and will be the bases of our composite structure.
 
 
 ### Command
 
-This class will contain its own implementation of execute() and connecting
+This class will act as the leaf obj in our structure. It will contain its own implementation of execute() which will be making the direct calls to execvp() and return a bool value to let any connector executing it know whether it failed or not.
 
 
-    class Command : public Base{
-    	void execute();
-    	void connect();;
-    };
+### Exit
 
-
-### Prompt, Flag
-
-This class will contain objects such as -a
-
-
-    class Prompt : public Command{ };
-    class Flag : public Command{ };
-
-
-### Argument
-
-
-    class Argument : public Base{
-    	void hasFailed();
-    };
-
-
-### Executable
-
-
-    class Executable : public Argument{
-    	bool isFailed;
-    };
-
-
-### Connector
-
-Base connector class for generic pass or fail statuses
-
-
-    class Connector : public Argument{
-    	void nextStat();
-    	void currStat();
-    	void prevStat();
-    };
-
-
-### Semicolon
-
-Links previous and next commands like newline
-
-
-    class Semicolin : public Connector{
-    	void execute();
-    	void connect();
-    };
+This class will inherit from Command class and will contain its own implementation of execute() which will call exit(0) to exit the rshell program.
 
 
 ### OR
 
-Links previous and next commands as logical "or" operator
-
-
-    class OR : public Connector{
-    	void execute();
-    	void connect();
-    };
+Links previous and next command objects to execute() as logical "or" operator.
 
 
 ### AND
 
-Links previous and next commands as logical "and" operator
+Links previous and next commands objects to execute() as logical "and" operator.
 
 
-    class AND : public Connector{
-    	void execute();
-    	void connect();
-    };
+### Semicolon
 
+Links previous and next command objects to execute() like newline.
+
+
+### Parser
+
+This class takes in a string for its constructor and has private function parse() which parses each string into it's associate object, taking into acount quotes and comments. This creates a vector of Base pointer objects which get passed into a function getSquashed which returns all of the objects compositely "squashed" into a single Base pointer to be executed.
 
 
 ## Prototypes/Research
