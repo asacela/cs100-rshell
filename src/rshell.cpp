@@ -7,13 +7,15 @@ using namespace std;
 
 int main(){
 
-	int num = 0;
+	int num = 1;
 	while(num){
 		cout << "$ ";
 		string cmdLine;
 		getline(cin,cmdLine);
 
 		Parser* parserObj = new Parser(cmdLine);
+		Base* Command = parserObj->getSquashed();
+		Command->execute();
 
 	}
 
