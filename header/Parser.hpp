@@ -19,9 +19,14 @@ using namespace std;
 class Parser{
 
 public:
-	Parser(string cmdLine_) : cmdLine(cmdLine_) { }
 
-	Base* parse(){
+	Parser(string cmdLine_) : cmdLine(cmdLine_) {
+
+		oldParsedSize = 0;
+		parse();
+	}
+
+	void parse(){
 
 		bool isComment = false;
 		for(int i = 0; i < cmdLine.size() && !isComment; ++i){
@@ -43,10 +48,10 @@ public:
 					cmdLine.erase(cmdLine.begin() + end-1);
 					end = cmdLine.find('\"',end);
 				}
-
-				string str = cmdLine.substr(i + 1,end - i - 1);
-				parsed.push_back(str);
-
+				if(i+1 <= end-i-1){
+					str = cmdLine.substr(i + 1,end - i - 1);
+					parsed.push_back(str);
+				}
 				i = end;
 			}
 
@@ -59,11 +64,9 @@ public:
 				// If no other space found -> have reached the end of cmdLine string
 				if(end == string::npos){
 
-					end = cmdLine.size();
-
 					// Create substring
+					end = cmdLine.size();
 					str = cmdLine.substr(i,end - i);
-
 					// If very last character of sub string is semicolon
 					if(str.back() == ';'){
 						// Remove semicolon from sub string, push into parsed, make obj
@@ -71,12 +74,17 @@ public:
 						if(str != ""){
 							parsed.push_back(str);
 						}
-						return objectify(";",end);
-					}
+						objectify(";");
+						i = end;
 
+					}
 					// Else that is the end of the string
-					parsed.push_back(str);
-					return objectify("list",end);
+					else{
+						parsed.push_back(str);
+
+						objectify("list");
+						i = end;
+					}
 				}
 				else{
 
@@ -90,115 +98,117 @@ public:
 						str.pop_back();
 						if(str != ""){
 							parsed.push_back(str);
+
 						}
-						return objectify(";", end);
+						objectify(";");
+						i = end;
+
 					}
 					else if(str == "&&"){
-						return objectify("&&",end);
+						objectify("&&");
+						i = end;
+
 					}
 					else if(str == "||"){
-						return objectify("||", end);
+						objectify("||");
+						i = end;
+
 					}
 					// Else it is a regular command -> continue
-					parsed.push_back(str);
-					i = end - 1;
+					else {
+						parsed.push_back(str);
+
+						i = end - 1;
+					}
 				}
 
 			}
+
 		}
 
 		// Base cases: you reach the end of the string (i.e. no more connectors)
 		// No arguments received
 		if(parsed.size() == 0){
-			return nullptr;
+
+			return;
 		}
 
-		return objectify("list",cmdLine.size());
+		objectify("list");
+		return;
 	}
 
-	Base* getSquashed(vector<Base*> objectList){
+	void test(){
+		cout << endl << "--TEST--" << endl;
+		cout << "parsed: (size "<<parsed.size()<<")" << endl;
+		for(int i = 0; i < parsed.size(); ++i){
+			// cout << baseList.at(i)->ID();
+			cout << parsed.at(i) << " ";
 
-		Base* squashed = squash(objectList);
+		}
+		cout << endl << "baseList: (size "<<baseList.size()<<")" << endl;
+	}
+
+	Base* getSquashed(){
+
+		Base* squashed = squash(baseList);
 		return squashed;
 	}
 
 
 private:
 
-	Base* objectify(string objType, int startInd){
-		Base* lhs = new Command(parsed);
+	void objectify(string objType){
+
 		Base* objTemp = nullptr;
-		Parser* parserTemp = nullptr;
+		Base* lhs = nullptr;
+
+		// Populate subParse with newly read strings
+		vector<string> subParsed;
+		for(int i = oldParsedSize; i < parsed.size(); ++i){
+			subParsed.push_back(parsed.at(i));
+		}
+		updateSize();
+
+		// If there exists new commands
+		if(subParsed.size() != 0){
+			lhs = new Command(subParsed);
+
+		}
 
 		// Check if parsed is to exit
-		if(parsed.size() == 1){
-			if(parsed.at(0) == "exit"){
+		if(subParsed.size() == 1){
+			if(subParsed.at(0) == "exit"){
 				// delete lhs;
-				lhs = new Exit(parsed);
+				lhs = new Exit(subParsed);
 			}
 		}
 
-		int newSize = cmdLine.size() - startInd;
-
-		// If we reach the end of the cmdLine
-		if(newSize <= 0){
-			if(objType == "list"){
-				objTemp = lhs;
-
-			}
-			else if(objType == ";"){
-				if(parsed.size() == 0){
-					// delete lhs;
-					lhs = nullptr;
-					objTemp = new Semicolon(nullptr, nullptr);
-
-				}
-				else{
-					objTemp = new Semicolon(nullptr, nullptr);
-
-				}
-
-			}
+		if(objType == "&&"){
+			objTemp = new And();
 		}
-		// Else not finished reading through cmdLine
-		else{
-			string remainingString = cmdLine.substr(startInd,newSize);
-			parserTemp = new Parser(remainingString);
-
-			if(objType == "&&"){
-				objTemp = new And();
-
-			}
-			else if(objType == "||"){
-				objTemp = new Or();
-
-			}
-			else if(objType == ";"){
-				objTemp = new Semicolon();
-
-			}
-			else if(objType == "list"){
-				objTemp = lhs;
-
-			}
-
+		else if(objType == "||"){
+			objTemp = new Or();
+		}
+		else if(objType == ";"){
+			objTemp = new Semicolon();
+		}
+		else if(objType == "list"){
+			objTemp = lhs;
 		}
 
 		if(lhs != nullptr){
 			baseList.push_back(lhs);
-
-			if(objTemp != lhs){
-				baseList.push_back(objTemp);
-			}
 		}
-		else if(objTemp != nullptr){
+		if(objTemp != nullptr && objTemp != lhs){
 			baseList.push_back(objTemp);
 		}
-
-		parserTemp->parse();
-
-		return objTemp;
 	}
+
+
+	void updateSize(){
+		oldParsedSize = parsed.size();
+	}
+
 
 	Base* squash(vector<Base*> objectList){
 
@@ -295,7 +305,7 @@ private:
 	string cmdLine;
 	vector<string> parsed;
 	vector<Base*> baseList;
-	// const char** argList;
+	int oldParsedSize;
 
 	const string andOperator = "&&";
 	const string orOperator = "||";
