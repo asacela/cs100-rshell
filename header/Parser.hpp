@@ -295,11 +295,14 @@ private:
 				else if(objectList.at(i)->getID() == ";"){
 
 					objectList.at(i)->set_lhs(squashed);
-					if(objectList.at(i + 1) != nullptr){
+					// if(objectList.at(i + 1) != nullptr){
+
+					// 		objectList.at(i)->set_rhs(objectList.at(i + 1));
+					// }
+					if(i != objectList.size() - 1){
 
 							objectList.at(i)->set_rhs(objectList.at(i + 1));
 					}
-
 					squashed = objectList.at(i);
 				} 
 			}
