@@ -57,7 +57,9 @@ public:
 
 
 		cout << " [status-code:  " << status << "]";
-		if(status == 256){
+
+		// Failed Status Code for Hammer: 512, for Local: 256
+		if(status == 512){
 
 			printf(" failed\n");
 			return false;
