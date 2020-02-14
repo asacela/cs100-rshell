@@ -19,10 +19,11 @@ using namespace std;
 class Parser{
 
 public:
+
 	Parser(string cmdLine_) : cmdLine(cmdLine_) {
+
 		oldParsedSize = 0;
 		parse();
-
 	}
 
 	void parse(){
@@ -136,7 +137,6 @@ public:
 		return;
 	}
 
-
 	void test(){
 		cout << endl << "--TEST--" << endl;
 		cout << "parsed: (size "<<parsed.size()<<")" << endl;
@@ -146,7 +146,18 @@ public:
 
 		}
 		cout << endl << "baseList: (size "<<baseList.size()<<")" << endl;
+	}
 
+	Base* getSquashed(){
+
+
+		return squash(baseList);
+	}
+
+	Base* testSquashed(vector<Base*> objectList){
+
+
+		return squash(baseList);
 	}
 
 
@@ -170,27 +181,6 @@ private:
 
 		}
 
-		// Check if parsed is to exit
-		if(subParsed.size() == 1){
-			if(subParsed.at(0) == "exit"){
-				// delete lhs;
-				lhs = new Exit(subParsed);
-			}
-		}
-
-		if(objType == "&&"){
-			objTemp = new And();
-		}
-		else if(objType == "||"){
-			objTemp = new Or();
-		}
-		else if(objType == ";"){
-			objTemp = new Semicolon();
-		}
-		else if(objType == "list"){
-			objTemp = lhs;
-		}
-
 		if(lhs != nullptr){
 			baseList.push_back(lhs);
 		}
@@ -207,66 +197,92 @@ private:
 
 	Base* squash(vector<Base*> objectList){
 
+		
 		Base* squashed;
+		
+		for(int i = 0; i < objectList.size(); ++i){
 
+			try{
 
+				if(i == 0){
 
-		for(int i = 0; i < objectList.size(); i++){
-
-
-			if(i == 1){
-
-
-				if(objectList.at(i)->getID() == "&&"){
-
-					objectList.at(i)->set_lhs(i - 1);
-					objectList.at(i)->set_rhs(objectList.at(i + 1));
-
-					squashed = objectList;
+					squashed = objectList.at(i);
 				}
+				else if(i == 1){
 
+					if(objectList.at(i)->getID() == "&&"){
+						
+						objectList.at(i)->set_lhs(objectList.at(i - 1));
+						if(objectList.at(i + 1) != nullptr){
+
+							objectList.at(i)->set_rhs(objectList.at(i + 1));
+						}
+						
+
+						squashed = objectList.at(i);
+					}
+					
+					else if(objectList.at(i)->getID() == "||"){
+
+						objectList.at(i)->set_lhs(objectList.at(i - 1));
+						if(objectList.at(i + 1) != nullptr){
+
+							objectList.at(i)->set_rhs(objectList.at(i + 1));
+						}
+
+						squashed = objectList.at(i);
+					}
+
+					else if(objectList.at(i)->getID() == ";"){
+
+						objectList.at(i)->set_lhs(objectList.at(i - 1));
+						if(objectList.at(i + 1) != nullptr){
+
+							objectList.at(i)->set_rhs(objectList.at(i + 1));
+						}
+
+						squashed = objectList.at(i);
+					}			
+				}
+				else if(objectList.at(i)->getID() == "&&"){
+
+					objectList.at(i)->set_lhs(squashed);
+					if(objectList.at(i + 1) != nullptr){
+
+							objectList.at(i)->set_rhs(objectList.at(i + 1));
+					}
+
+					squashed = objectList.at(i);		
+				}
+				
 				else if(objectList.at(i)->getID() == "||"){
 
-					objectList.at(i)->set_lhs(i - 1);
-					objectList.at(i)->set_rhs(objectList.at(i + 1));
+					objectList.at(i)->set_lhs(squashed);
+					if(objectList.at(i + 1) != nullptr){
 
-					squashed = objectList;
+							objectList.at(i)->set_rhs(objectList.at(i + 1));
+					}
+
+					squashed = objectList.at(i);
 				}
-
 				else if(objectList.at(i)->getID() == ";"){
 
-					objectList.at(i)->set_lhs(i - 1);
-					objectList.at(i)->set_rhs(objectList.at(i + 1));
+					objectList.at(i)->set_lhs(squashed);
+					if(objectList.at(i + 1) != nullptr){
 
-					squashed = objectList;
-				}
+							objectList.at(i)->set_rhs(objectList.at(i + 1));
+					}
+
+					squashed = objectList.at(i);
+				} 
+			}
+			catch(const std::out_of_range& e){
+
+				cout << "out_of_range error:" << e.what() << endl;
+				exit(1);
 			}
 
-			if(objectList.at(i)->getID() == "&&"){
-
-				objectList.at(i)->set_lhs(squashed);
-				objectList.at(i)->set_rhs(objectList.at(i + 1));
-
-				squashed = objectList.at(i);
-			}
-
-			else if(objectList.at(i)->getID() == "||"){
-
-				objectList.at(i)->set_lhs(squashed);
-				objectList.at(i)->set_rhs(objectList.at(i + 1));
-
-				squashed = objectList.at(i);
-			}
-
-			else if(objectList.at(i)->getID() == ";"){
-
-				objectList.at(i)->set_lhs(squashed);
-				objectList.at(i)->set_rhs(objectList.at(i + 1));
-
-				squashed = objectList.at(i);
-			}
-		}
-
+		}	
 		return squashed;
 	}
 
@@ -275,6 +291,10 @@ private:
 	vector<string> parsed;
 	vector<Base*> baseList;
 	int oldParsedSize;
+
+	const string andOperator = "&&";
+	const string orOperator = "||";
+	const string scOperator = ";";
 
 };
 
