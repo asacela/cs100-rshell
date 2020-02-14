@@ -149,5 +149,6 @@ Our prototype directory includes two files (example.cpp, parser_example.cpp). Th
 	cmake3 . && make && ./test
   
 - For integration tests, run from root dir
+	cd integration_tests
 	./rshell 
 	./single_command_tests.sh && ./multiple_command_tests.sh && ./commented_command_tests.sh && ./exit_command_tests.sh
