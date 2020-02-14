@@ -48,7 +48,7 @@ public:
 			while(wait(&status) != pid);
 		}
 
-		perror("rshell: called: ");
+		perror("rshell: called");
 
 		for(int i = 0; i < parsed.size(); ++i){
 
