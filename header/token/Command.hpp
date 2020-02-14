@@ -33,13 +33,13 @@ public:
 		pid = fork();
 
 		if(pid < 0){
-			perror("*** ERROR: forking child process failed\n");
+			perror("rshell: error forking child process");
 			return false;
 		}
 
 		else if(pid == 0){
 			if(execvp(argList[0], (char**)argList) < 0){
-				perror("*** ERROR: exec failed\n");
+				perror("rshell: exec failed: ");
 			 	return false;
 			}
 		}
@@ -48,7 +48,7 @@ public:
 			while(wait(&status) != pid);
 		}
 
-		perror("*** EXECVP CALLED: ");
+		perror("rshell: called: ");
 
 		for(int i = 0; i < parsed.size(); ++i){
 
@@ -61,11 +61,11 @@ public:
 		// Failed Status Code for Hammer: 512, for Local: 256
 		if(status == 512){
 
-			perror(" failed\n");
+			perror(" failed");
 			return false;
 		}
 
-		perror(" succeeded\n");
+		perror(" succeeded");
 
 		return true;
 	}
