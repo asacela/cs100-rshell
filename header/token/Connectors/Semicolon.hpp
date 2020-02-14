@@ -6,7 +6,7 @@
 #include<vector>
 #include "../Base.hpp"
 
-class Semicolon : public Connector {
+class Semicolon : public Base {
 
 public:
 

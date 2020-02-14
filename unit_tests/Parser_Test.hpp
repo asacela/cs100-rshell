@@ -25,7 +25,7 @@ TEST(SquashTest, SquashSmallInput){
     /* set up second base* for comparison */
     vector<Base*> baseList;
     baseList.push_back(squashed1);
-    Base* squashed2 = test->getSquashed(baseList);
+    Base* squashed2 = test->testSquashed(baseList);
 
     /* compares resulting objects' strings with stringify */
     EXPECT_EQ(squashed1->stringify(), squashed2->stringify());
@@ -41,7 +41,7 @@ TEST(SquashTest, SquashExecuteCommandBadArg){
     /* set up second base* for comparison */
     vector<Base*> baseList;
     baseList.push_back(cmd1);
-    Base* squashed2 = test->getSquashed(baseList);
+    Base* squashed2 = test->testSquashed(baseList);
 
     /* compares resulting objects' strings with stringify */
     EXPECT_TRUE(squashed2->execute() == false);
@@ -63,7 +63,7 @@ TEST(SquashTest, SquashExecuteInvalidCommand){
     /* set up second base* for comparison */
     vector<Base*> baseList;
     baseList.push_back(squashed1);
-    Base* squashed2 = test->getSquashed(baseList);
+    Base* squashed2 = test->testSquashed(baseList);
 
     /* compares resulting objects' strings with stringify */
     EXPECT_FALSE(squashed2->execute());
@@ -85,7 +85,7 @@ TEST(SquashTest, SquashExecuteAndConnector){
     /* set up second base* for comparison */
     vector<Base*> baseList;
     baseList.push_back(squashed1);
-    Base* squashed2 = test->getSquashed(baseList);
+    Base* squashed2 = test->testSquashed(baseList);
 
     /* compares resulting objects' strings with stringify */
     EXPECT_TRUE(squashed2->execute() == false);
@@ -106,7 +106,7 @@ TEST(SquashTest, SquashExecuteOrConnector){
     /* set up second base* for comparison */
     vector<Base*> baseList;
     baseList.push_back(squashed1);
-    Base* squashed2 = test->getSquashed(baseList);
+    Base* squashed2 = test->testSquashed(baseList);
 
     /* compares resulting objects' strings with stringify */
     EXPECT_TRUE(squashed2->execute() == true);
@@ -127,7 +127,7 @@ TEST(SquashTest, SquashExecuteSemicolonConnector){
     /* set up second base* for comparison */
     vector<Base*> baseList;
     baseList.push_back(squashed1);
-    Base* squashed2 = test->getSquashed(baseList);
+    Base* squashed2 = test->testSquashed(baseList);
 
     /* compares resulting objects' strings with stringify */
     EXPECT_TRUE(squashed2->execute() == true);

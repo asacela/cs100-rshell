@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class And : public Connector {
+class And : public Base {
 
 public:
 

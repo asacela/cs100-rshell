@@ -7,7 +7,7 @@
 
 #include "../Base.hpp"
 
-class Or : public Connector {
+class Or : public Base {
 
 public:
 
