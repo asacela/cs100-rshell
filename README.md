@@ -9,6 +9,10 @@ Alec Asatoorian 	SID: 862026505
 ## Introduction
 The purpose of this project is to gain experience in developing a shell that utilizes system calls. Our objective is to utilized object oriented programming to develope a codebase that is reusable, maintainable, and upgradable. Our intended pipeline currently includes feeding user input into a parsing system which determines the user's intent. The parsing system will decide how to execute the given input piece by piece. It will examine input and check to see what type of input a string is, then will use the base class, which utilizes the composite design pattern, and allows other classes to inherit its functions. These classes (command, argument, and connector) will describe what actions to take based on a given parsed token.
 
+- After cloning, run
+
+  git submodule update --init --recursive
+  
 ## Diagram
 ![Flowchart](images/CS100-Assignment2-Flowchart.jpeg)
 
@@ -137,3 +141,13 @@ Our prototype directory includes two files (example.cpp, parser_example.cpp). Th
 - Construct OR class to logicaly join commands
 - Unit test OR class
 - Integration test parser and semicolon class, AND class, and OR class
+
+
+## Testing
+
+- For unit tests, run from root dir
+	cmake3 . && make && ./test
+  
+- For integration tests, run from root dir
+	./rshell 
+	./single_command_tests.sh && ./multiple_command_tests.sh && ./commented_command_tests.sh && ./exit_command_tests.sh
