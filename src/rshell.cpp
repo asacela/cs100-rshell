@@ -14,9 +14,9 @@ int main(){
 		getline(cin,cmdLine);
 
 		Parser* parserObj = new Parser(cmdLine);
-		Base* Command = parserObj->getSquashed();
-		Command->execute();
-
+		Base* executable = parserObj->getSquashed();
+		cout << executable->stringify() << endl;
+		executable->execute();
 	}
 
 	return 0;

@@ -254,7 +254,6 @@ private:
 
 					squashed = objectList.at(i);		
 				}
-				
 				else if(objectList.at(i)->getID() == "||"){
 
 					objectList.at(i)->set_lhs(squashed);

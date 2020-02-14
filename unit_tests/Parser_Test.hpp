@@ -30,21 +30,37 @@ TEST(SquashTest, SquashSmallInput){
     /* compares resulting objects' strings with stringify */
     EXPECT_EQ(squashed1->stringify(), squashed2->stringify());
 }
-TEST(SquashTest, SquashExecuteCommandBadArg){
+TEST(SquashTest, SquashExecuteLongCommand){
 
 
 	/* objects for testing squash, stringify */
     Parser* test = new Parser("ls -j");
     Base* cmd1 = new Command({"ls", "-j"});
+    Base* cmd2 = new Or();
+    Base* cmd3 = new Command({"git", "Status"});
+    Base* cmd4 = new And();
+    Base* cmd5 = new Command({"echo", "hello"});
+    Base* cmd6 = new Or();
+    Base* cmd7 = new Command({"fuck", "-h"});
+
 
 
     /* set up second base* for comparison */
     vector<Base*> baseList;
     baseList.push_back(cmd1);
+    baseList.push_back(cmd2);
+    baseList.push_back(cmd3);
+    baseList.push_back(cmd4);
+    baseList.push_back(cmd5);
+    baseList.push_back(cmd6);
+    baseList.push_back(cmd7);
+
     Base* squashed2 = test->testSquashed(baseList);
 
     /* compares resulting objects' strings with stringify */
-    EXPECT_TRUE(squashed2->execute() == false);
+
+    EXPECT_EQ(squashed2->stringify(), "ls -j || git Status && echo hello || fuck -h");
+    //EXPECT_TRUE(squashed2->execute() == false);
 }
 TEST(SquashTest, SquashExecuteInvalidCommand){
 
@@ -57,12 +73,14 @@ TEST(SquashTest, SquashExecuteInvalidCommand){
 
 
     /* set up first base* for comparison */
-    Base* squashed1 = new And(cmd1, cmd2);
+    Base* squashed1 = new And();
 
 
     /* set up second base* for comparison */
     vector<Base*> baseList;
+    baseList.push_back(cmd1);
     baseList.push_back(squashed1);
+    baseList.push_back(cmd2);
     Base* squashed2 = test->testSquashed(baseList);
 
     /* compares resulting objects' strings with stringify */
@@ -79,12 +97,15 @@ TEST(SquashTest, SquashExecuteAndConnector){
 
 
     /* set up first base* for comparison */
-    Base* squashed1 = new And(cmd1, cmd2);
+    Base* squashed1 = new And();
 
 
     /* set up second base* for comparison */
     vector<Base*> baseList;
+    baseList.push_back(cmd1);
     baseList.push_back(squashed1);
+    baseList.push_back(cmd2);
+
     Base* squashed2 = test->testSquashed(baseList);
 
     /* compares resulting objects' strings with stringify */
@@ -100,12 +121,14 @@ TEST(SquashTest, SquashExecuteOrConnector){
 
 
     /* set up first base* for comparison */
-    Base* squashed1 = new Or(cmd1, cmd2);
+    Base* squashed1 = new Or();
 
 
     /* set up second base* for comparison */
     vector<Base*> baseList;
+    baseList.push_back(cmd1);
     baseList.push_back(squashed1);
+    baseList.push_back(cmd2);
     Base* squashed2 = test->testSquashed(baseList);
 
     /* compares resulting objects' strings with stringify */
@@ -121,7 +144,7 @@ TEST(SquashTest, SquashExecuteSemicolonConnector){
 
 
     /* set up first base* for comparison */
-    Base* squashed1 = new Semicolon(cmd1, cmd2);
+    Base* squashed1 = new Semicolon();
 
 
     /* set up second base* for comparison */
