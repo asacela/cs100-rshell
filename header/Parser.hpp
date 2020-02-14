@@ -157,7 +157,7 @@ public:
 	Base* testSquashed(vector<Base*> objectList){
 
 
-		return squash(baseList);
+		return squash(objectList);
 	}
 
 
