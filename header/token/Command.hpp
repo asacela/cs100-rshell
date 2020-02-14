@@ -33,13 +33,13 @@ public:
 		pid = fork();
 
 		if(pid < 0){
-			printf("*** ERROR: forking child process failed\n");
+			perror("*** ERROR: forking child process failed\n");
 			return false;
 		}
 
 		else if(pid == 0){
 			if(execvp(argList[0], (char**)argList) < 0){
-				printf("*** ERROR: exec failed\n");
+				perror("*** ERROR: exec failed\n");
 			 	return false;
 			}
 		}
@@ -48,7 +48,7 @@ public:
 			while(wait(&status) != pid);
 		}
 
-		printf("*** EXECVP CALLED: ");
+		perror("*** EXECVP CALLED: ");
 
 		for(int i = 0; i < parsed.size(); ++i){
 
@@ -61,11 +61,11 @@ public:
 		// Failed Status Code for Hammer: 512, for Local: 256
 		if(status == 512){
 
-			printf(" failed\n");
+			perror(" failed\n");
 			return false;
 		}
 
-		printf(" succeeded\n");
+		perror(" succeeded\n");
 
 		return true;
 	}
