@@ -6,7 +6,7 @@
 #include<vector>
 #include "../Base.hpp"
 
-class Semicolon : public Base {
+class Semicolon : public Connector {
 
 public:
 
@@ -30,7 +30,7 @@ public:
 	virtual string stringify(){
 		string cmdString;
 
-		
+
 
 		if(lhs != nullptr){
 			if(rhs != nullptr){
@@ -66,7 +66,7 @@ public:
 		rhs = right;
 	}
 
-	
+
 
 private:
 	Base* lhs;

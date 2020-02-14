@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class And : public Base {
+class And : public Connector {
 
 public:
 
@@ -25,7 +25,7 @@ public:
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 

@@ -7,7 +7,7 @@
 
 #include "../Base.hpp"
 
-class Or : public Base {
+class Or : public Connector {
 
 public:
 
@@ -22,6 +22,7 @@ public:
 
 			return rhs->execute();
 		}
+		// else lhs->execute() == true
 		return false;
 	}
 
@@ -49,7 +50,7 @@ public:
 		rhs = right;
 	}
 
-	
+
 
 private:
 	Base* lhs;
