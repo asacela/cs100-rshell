@@ -9,7 +9,7 @@ int main(){
 
 	int num = 1;
 	while(num){
-		cout << "$ ";
+		cout << "\n$ ";
 		string cmdLine;
 		getline(cin,cmdLine);
 
