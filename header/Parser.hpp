@@ -225,9 +225,9 @@ private:
 
 	Base* squash(vector<Base*> objectList){
 
-		
+
 		Base* squashed;
-		
+
 		for(int i = 0; i < objectList.size(); ++i){
 
 			try{
@@ -239,17 +239,17 @@ private:
 				else if(i == 1){
 
 					if(objectList.at(i)->getID() == "&&"){
-						
+
 						objectList.at(i)->set_lhs(objectList.at(i - 1));
 						if(objectList.at(i + 1) != nullptr){
 
 							objectList.at(i)->set_rhs(objectList.at(i + 1));
 						}
-						
+
 
 						squashed = objectList.at(i);
 					}
-					
+
 					else if(objectList.at(i)->getID() == "||"){
 
 						objectList.at(i)->set_lhs(objectList.at(i - 1));
@@ -264,13 +264,13 @@ private:
 					else if(objectList.at(i)->getID() == ";"){
 
 						objectList.at(i)->set_lhs(objectList.at(i - 1));
-						if(objectList.at(i + 1) != nullptr){
+						if(i != objectList.size() - 1){
 
-							objectList.at(i)->set_rhs(objectList.at(i + 1));
+								objectList.at(i)->set_rhs(objectList.at(i + 1));
 						}
 
 						squashed = objectList.at(i);
-					}			
+					}
 				}
 				else if(objectList.at(i)->getID() == "&&"){
 
@@ -280,7 +280,7 @@ private:
 							objectList.at(i)->set_rhs(objectList.at(i + 1));
 					}
 
-					squashed = objectList.at(i);		
+					squashed = objectList.at(i);
 				}
 				else if(objectList.at(i)->getID() == "||"){
 
@@ -295,16 +295,12 @@ private:
 				else if(objectList.at(i)->getID() == ";"){
 
 					objectList.at(i)->set_lhs(squashed);
-					// if(objectList.at(i + 1) != nullptr){
-
-					// 		objectList.at(i)->set_rhs(objectList.at(i + 1));
-					// }
 					if(i != objectList.size() - 1){
 
 							objectList.at(i)->set_rhs(objectList.at(i + 1));
 					}
 					squashed = objectList.at(i);
-				} 
+				}
 			}
 			catch(const std::out_of_range& e){
 
@@ -312,7 +308,7 @@ private:
 				exit(1);
 			}
 
-		}	
+		}
 		return squashed;
 	}
 
