@@ -19,13 +19,9 @@ public:
 
 		if(!lhs->execute()){
 
-			if(rhs->execute()){
-
-				return true;
-			}
-			return false;
+			return rhs->execute();
 		}
-		return true;
+		return false;
 	}
 
 	virtual string stringify(){

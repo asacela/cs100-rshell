@@ -7,16 +7,21 @@ using namespace std;
 
 int main(){
 
-	int num = 1;
-	while(num){
+	int run = 1;
+	while(run){
 		cout << "\n$ ";
+    
 		string cmdLine;
 		getline(cin,cmdLine);
 
 		Parser* parserObj = new Parser(cmdLine);
 		Base* executable = parserObj->getSquashed();
-		cout << executable->stringify() << endl;
-		executable->execute();
+
+		if(executable != nullptr){
+			executable->execute();
+		}
+		delete parserObj;
+
 	}
 
 	return 0;

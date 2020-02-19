@@ -33,13 +33,13 @@ public:
 		if(lhs != nullptr){
 			cmdString += lhs->stringify();
 		}
-
-		cmdString += "; ";
-
+		
+		cmdString += ";";
+		
 		if(rhs != nullptr){
-			cmdString += rhs->stringify();
+			cmdString += " " + rhs->stringify();
 		}
-
+    
 		return cmdString;
 	}
 

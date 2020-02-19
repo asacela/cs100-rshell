@@ -18,15 +18,9 @@ public:
 	/* Pure Virtual Functions */
 	virtual bool execute(){
 
-		if(lhs->execute()){
+		lhs->execute();
 
-			if(rhs->execute()){
-
-				return true;
-			}
-		}
-
-		return false;
+		return rhs->execute();
 	}
 
 	virtual string stringify(){
