@@ -97,6 +97,7 @@ TEST(SemicolonTest, ICSICDisplay) {
     vector<string> vct1 = {"ls",  "-j"};
     vector<string> vct2 = {"gert",  "flop"};
 
+
     Base* cmd1 = new Command(vct1);
     Base* cmd2 = new Command(vct2);
 
@@ -105,13 +106,14 @@ TEST(SemicolonTest, ICSICDisplay) {
     EXPECT_EQ(test->stringify(), "ls -j; gert flop");
 }
 TEST(SemicolonTest, ICSICExecute) {
-  vector<string> vct1 = {"ls",  "-j"};
-  vector<string> vct2 = {"gert",  "flop"};
+    vector<string> vct1 = {"ls",  "-j"};
+    vector<string> vct2 = {"gert",  "flop"};
 
-  Base* cmd1 = new Command(vct1);
-  Base* cmd2 = new Command(vct2);
 
-  Base* test = new Semicolon(cmd1, cmd2);
+    Base* cmd1 = new Command(vct1);
+    Base* cmd2 = new Command(vct2);
+
+    Base* test = new Semicolon(cmd1, cmd2);
 
     EXPECT_FALSE(test->execute());
 }
@@ -168,3 +170,4 @@ TEST(SemicolonTest, SCSExecute) {
 }
 
 #endif
+

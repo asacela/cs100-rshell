@@ -229,7 +229,9 @@ private:
 	Base* squash(vector<Base*> objectList){
 
 
+
 		Base* squashed = nullptr;
+
 
 		for(int i = 0; i < objectList.size(); ++i){
 
@@ -244,18 +246,20 @@ private:
 				if(ID == "&&" || ID == "||" || ID == ";"){
 					if(i != 0){
 						currObj->set_lhs(squashed);
+            
 					}
 					if(i != objectList.size() - 1){
-
 						currObj->set_rhs(objectList.at(i + 1));
+            
 					}
 
 					squashed = currObj;
 				}
+
 			}
 			catch(const std::out_of_range& e){
 
-				cout << "out_of_range error:" << e.what() << endl;
+				cout << "out_of_range ERROR:" << e.what() << endl;
 				exit(1);
 			}
 

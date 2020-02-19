@@ -9,7 +9,8 @@ int main(){
 
 	int run = 1;
 	while(run){
-		cout << "$ ";
+		cout << "\n$ ";
+    
 		string cmdLine;
 		getline(cin,cmdLine);
 

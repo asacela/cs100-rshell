@@ -7,11 +7,11 @@
 
 
 TEST(CommandTest, CommandDisplay) {
-    Command* test = new Command("ls -a");
+    Base* test = new Command("ls -a");
     EXPECT_EQ(test->display(), "ls -a");
 }
 TEST(CommandTest, CommandExecute) {
-    Command* test = new Command("ls -a");
+    Base* test = new Command("ls -a");
     EXPECT_EQ(test->execute(), true);
 }
 

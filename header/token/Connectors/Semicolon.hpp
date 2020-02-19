@@ -28,32 +28,18 @@ public:
 	}
 
 	virtual string stringify(){
-		string cmdString;
-
-
+		string cmdString = "";
 
 		if(lhs != nullptr){
-			if(rhs != nullptr){
-
-				cmdString = lhs->stringify() + "; " + rhs->stringify();
-
-				return cmdString;
-			}
-
-			cmdString = lhs->stringify() + ";";
-
-			return cmdString;
-
+			cmdString += lhs->stringify();
 		}
-		else if(rhs != nullptr){
-
-			cmdString = "; " + rhs->stringify();
-
-			return cmdString;
+		
+		cmdString += ";";
+		
+		if(rhs != nullptr){
+			cmdString += " " + rhs->stringify();
 		}
-
-		cmdString = ";";
-
+    
 		return cmdString;
 	}
 
