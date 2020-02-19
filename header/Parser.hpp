@@ -9,6 +9,7 @@
 #include "../header/token/Base.hpp"
 #include "../header/token/Command.hpp"
 #include "../header/token/Exit.hpp"
+#include "../header/token/Test.hpp"
 #include "../header/token/Connectors/And.hpp"
 #include "../header/token/Connectors/Or.hpp"
 #include "../header/token/Connectors/Semicolon.hpp"
@@ -133,13 +134,12 @@ public:
 
 		}
 
-		// Base cases: you reach the end of the string (i.e. no more connectors)
 		// No arguments received
 		if(parsed.size() == 0){
-
 			return;
 		}
 
+		// Push_back the rest of the commands
 		objectify("list");
 		return;
 	}
@@ -185,13 +185,13 @@ private:
 
 		// If there exists new commands
 		if(subParsed.size() != 0){
-
 			lhs = new Command(subParsed);
-			// if(subParsed.at(0) == "exit"){
-			//
-			// 	delete lhs;
-			// 	lhs = new Exit(subParsed);
-			// }
+
+			if(subParsed.front() == "test" || (subParsed.front() == "[" && subParsed.back() == "]")){
+				delete lhs;
+				lhs = new Test(subParsed);
+				
+			}
 		}
 
 		if(objType == "&&"){
@@ -246,11 +246,11 @@ private:
 				if(ID == "&&" || ID == "||" || ID == ";"){
 					if(i != 0){
 						currObj->set_lhs(squashed);
-            
+
 					}
 					if(i != objectList.size() - 1){
 						currObj->set_rhs(objectList.at(i + 1));
-            
+
 					}
 
 					squashed = currObj;

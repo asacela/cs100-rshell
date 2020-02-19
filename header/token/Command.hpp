@@ -52,7 +52,9 @@ public:
 		else if(pid == 0){
 			if(execvp(argList[0], (char**)argList) < 0){
   			// perror("rshell: exec failed: ");
-				printf("*** ERROR: exec failed\n");
+				// printf("*** ERROR: exec failed\n");
+				printf("rshell: command not found: ");
+				cout << parsed.at(0) << endl;
 			 	// return false;
 				exit(1);
 
@@ -68,24 +70,24 @@ public:
 
 		}
 
-		perror("rshell: called");
+		// perror("rshell: called");
+		//
+		// for(int i = 0; i < parsed.size(); ++i){
+		//
+		// 	cout << parsed.at(i) << " ";
+		// }
 
-		for(int i = 0; i < parsed.size(); ++i){
 
-			cout << parsed.at(i) << " ";
-		}
-
-
-		cout << " [status-code:  " << status << "]";
+		// cout << " [status-code:  " << status << "]";
 
 		// Failed Status Code for Hammer: 512, for Local: 256
 		if(status == 256){
 
-			perror(" failed");
+			// perror(" failed");
 			return false;
 		}
 
-		perror(" succeeded");
+		// perror(" succeeded");
 
 		return true;
 	}
