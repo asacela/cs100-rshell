@@ -8,7 +8,6 @@
 
 #include "../header/token/Base.hpp"
 #include "../header/token/Command.hpp"
-#include "../header/token/Exit.hpp"
 #include "../header/token/Test.hpp"
 #include "../header/token/Connectors/And.hpp"
 #include "../header/token/Connectors/Or.hpp"
@@ -190,7 +189,7 @@ private:
 			if(subParsed.front() == "test" || (subParsed.front() == "[" && subParsed.back() == "]")){
 				delete lhs;
 				lhs = new Test(subParsed);
-				
+
 			}
 		}
 
