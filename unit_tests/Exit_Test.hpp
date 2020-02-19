@@ -3,12 +3,12 @@
 
 #include "gtest/gtest.h"
 
-#include "../header/token/Command.hpp"
+#include "../header/token/Exit.hpp"
 
 
 TEST(ExitTest, ExitExecute) {
-    Base* test = new Exit("exit");
+    Base* test = new Exit({"exit"});
     EXPECT_EQ(test->execute(), true);
 }
 
-#endif 
+#endif

@@ -4,7 +4,6 @@
 #include "gtest/gtest.h"
 
 #include "../header/token/Connectors/Or.hpp"
-#include "../header/token/Connectors/Command.hpp"
 
 
 TEST(OrTest, OrDisplay) {
@@ -25,7 +24,7 @@ TEST(OrTest, OrExecute) {
   Base* cmd2 = new Command(vct2);
 
   Base* test = new Or(cmd1, cmd2);
-  bool rhsResult = true;
+  bool rhsResult = false;
   EXPECT_EQ(test->execute(), rhsResult);
 }
 
