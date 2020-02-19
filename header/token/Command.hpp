@@ -24,8 +24,20 @@ public:
 		to_cstring();
 	}
 
+	virtual ~Command() {
+		delete [] argList;
+	}
+
 	//incomplete
 	virtual bool execute(){
+
+		// Check for exit
+		if(parsed.size() != 0){
+			if(parsed.front() == "exit"){
+				exit(0);
+			}
+		}
+
 
 		pid_t pid;
 		int status;
@@ -40,12 +52,18 @@ public:
 		else if(pid == 0){
 			if(execvp(argList[0], (char**)argList) < 0){
 				printf("*** ERROR: exec failed\n");
-			 	return false;
+			 	// return false;
+				exit(1);
 			}
+
 		}
 
+
+		// Look into this
 		else{
-			while(wait(&status) != pid);
+			pid_t check = wait(&status);
+			while(check != pid);
+
 		}
 
 		printf("*** EXECVP CALLED: ");
@@ -59,7 +77,7 @@ public:
 		cout << " [status-code:  " << status << "]";
 
 		// Failed Status Code for Hammer: 512, for Local: 256
-		if(status == 512){
+		if(status == 256){
 
 			printf(" failed\n");
 			return false;

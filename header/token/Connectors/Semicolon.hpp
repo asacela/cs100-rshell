@@ -24,7 +24,7 @@ public:
 			return rhs->execute();
 		}
 
-		return false;
+		return true;
 	}
 
 	virtual string stringify(){
@@ -40,11 +40,18 @@ public:
 				return cmdString;
 			}
 
-			cmdString = lhs->stringify() + "; ";
+			cmdString = lhs->stringify() + ";";
 
 			return cmdString;
 
 		}
+		else if(rhs != nullptr){
+
+			cmdString = "; " + rhs->stringify();
+
+			return cmdString;
+		}
+
 		cmdString = ";";
 
 		return cmdString;

@@ -20,10 +20,18 @@ class Parser{
 
 public:
 
-	Parser(string cmdLine_) : cmdLine(cmdLine_) {
+	Parser(string cmdLine_ = "") : cmdLine(cmdLine_) {
 
 		oldParsedSize = 0;
 		parse();
+	}
+
+	~Parser() {
+		while(baseList.size() != 0){
+			delete baseList.back();
+			baseList.pop_back();
+		}
+
 	}
 
 	void parse(){
@@ -117,7 +125,6 @@ public:
 					// Else it is a regular command -> continue
 					else {
 						parsed.push_back(str);
-
 						i = end - 1;
 					}
 				}
@@ -180,16 +187,12 @@ private:
 		if(subParsed.size() != 0){
 
 			lhs = new Command(subParsed);
+			// if(subParsed.at(0) == "exit"){
+			//
+			// 	delete lhs;
+			// 	lhs = new Exit(subParsed);
+			// }
 		}
-
-		if(subParsed.size() == 1){
-
-			if(subParsed.at(0) == "exit"){
-
-				lhs = new Exit(subParsed);
-			}
-		}
-
 
 		if(objType == "&&"){
 
@@ -225,83 +228,30 @@ private:
 
 	Base* squash(vector<Base*> objectList){
 
-		
-		Base* squashed;
-		
+
+		Base* squashed = nullptr;
+
 		for(int i = 0; i < objectList.size(); ++i){
 
 			try{
+				Base* currObj = objectList.at(i);
+				string ID = currObj->getID();
 
 				if(i == 0){
 
-					squashed = objectList.at(i);
+					squashed = currObj;
 				}
-				else if(i == 1){
-
-					if(objectList.at(i)->getID() == "&&"){
-						
-						objectList.at(i)->set_lhs(objectList.at(i - 1));
-						if(objectList.at(i + 1) != nullptr){
-
-							objectList.at(i)->set_rhs(objectList.at(i + 1));
-						}
-						
-
-						squashed = objectList.at(i);
+				if(ID == "&&" || ID == "||" || ID == ";"){
+					if(i != 0){
+						currObj->set_lhs(squashed);
 					}
-					
-					else if(objectList.at(i)->getID() == "||"){
+					if(i != objectList.size() - 1){
 
-						objectList.at(i)->set_lhs(objectList.at(i - 1));
-						if(objectList.at(i + 1) != nullptr){
-
-							objectList.at(i)->set_rhs(objectList.at(i + 1));
-						}
-
-						squashed = objectList.at(i);
+						currObj->set_rhs(objectList.at(i + 1));
 					}
 
-					else if(objectList.at(i)->getID() == ";"){
-
-						objectList.at(i)->set_lhs(objectList.at(i - 1));
-						if(objectList.at(i + 1) != nullptr){
-
-							objectList.at(i)->set_rhs(objectList.at(i + 1));
-						}
-
-						squashed = objectList.at(i);
-					}			
+					squashed = currObj;
 				}
-				else if(objectList.at(i)->getID() == "&&"){
-
-					objectList.at(i)->set_lhs(squashed);
-					if(objectList.at(i + 1) != nullptr){
-
-							objectList.at(i)->set_rhs(objectList.at(i + 1));
-					}
-
-					squashed = objectList.at(i);		
-				}
-				else if(objectList.at(i)->getID() == "||"){
-
-					objectList.at(i)->set_lhs(squashed);
-					if(objectList.at(i + 1) != nullptr){
-
-							objectList.at(i)->set_rhs(objectList.at(i + 1));
-					}
-
-					squashed = objectList.at(i);
-				}
-				else if(objectList.at(i)->getID() == ";"){
-
-					objectList.at(i)->set_lhs(squashed);
-					if(objectList.at(i + 1) != nullptr){
-
-							objectList.at(i)->set_rhs(objectList.at(i + 1));
-					}
-
-					squashed = objectList.at(i);
-				} 
 			}
 			catch(const std::out_of_range& e){
 
@@ -309,7 +259,7 @@ private:
 				exit(1);
 			}
 
-		}	
+		}
 		return squashed;
 	}
 
