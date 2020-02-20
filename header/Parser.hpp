@@ -56,7 +56,7 @@ public:
 					cmdLine.erase(cmdLine.begin() + end-1);
 					end = cmdLine.find('\"',end);
 				}
-				if(i+1 <= end){
+				if(i+1 < end){
 					str = cmdLine.substr(i + 1,end - (i+1));
 					parsed.push_back(str);
 				}
