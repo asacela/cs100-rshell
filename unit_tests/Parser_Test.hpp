@@ -85,7 +85,7 @@ TEST(SquashTest, SquashExecuteInvalidCommand){
     Base* squashed2 = test->testSquashed(baseList);
 
     /* compares resulting objects' strings with stringify */
-    EXPECT_TRUE(squashed2->execute());
+    EXPECT_FALSE(squashed2->execute());
 }
 TEST(SquashTest, SquashExecuteAndConnector){
 
@@ -110,7 +110,7 @@ TEST(SquashTest, SquashExecuteAndConnector){
     Base* squashed2 = test->testSquashed(baseList);
 
     /* compares resulting objects' strings with stringify */
-    EXPECT_TRUE(squashed2->execute());
+    EXPECT_FALSE(squashed2->execute());
 }
 TEST(SquashTest, SquashExecuteOrConnector){
 

@@ -46,7 +46,7 @@ TEST(AndTest, ICACExecute) {
   Base* cmd2 = new Command(vct2);
 
   Base* test = new And(cmd1, cmd2);
-  EXPECT_TRUE(test->execute());
+  EXPECT_FALSE(test->execute());
 }
 
 TEST(AndTest, CAICDisplay) {
