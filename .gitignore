@@ -37,6 +37,8 @@ test
 # CMake Temp Files
 CMakeCache.txt
 CMakeFiles
+MakeFile
+cmake_install.cmake
 
 # .DS_Store
 *.DS_Store

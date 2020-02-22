@@ -24,29 +24,22 @@ public:
 			return rhs->execute();
 		}
 
-		return false;
+		return true;
 	}
 
 	virtual string stringify(){
-		string cmdString;
-
-
+		string cmdString = "";
 
 		if(lhs != nullptr){
-			if(rhs != nullptr){
-
-				cmdString = lhs->stringify() + "; " + rhs->stringify();
-
-				return cmdString;
-			}
-
-			cmdString = lhs->stringify() + "; ";
-
-			return cmdString;
-
+			cmdString += lhs->stringify();
 		}
-		cmdString = ";";
-
+		
+		cmdString += ";";
+		
+		if(rhs != nullptr){
+			cmdString += " " + rhs->stringify();
+		}
+    
 		return cmdString;
 	}
 

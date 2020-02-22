@@ -24,8 +24,20 @@ public:
 		to_cstring();
 	}
 
+	virtual ~Command() {
+		delete [] argList;
+	}
+
 	//incomplete
 	virtual bool execute(){
+
+		// Check for exit
+		if(parsed.size() != 0){
+			if(parsed.front() == "exit"){
+				exit(0);
+			}
+		}
+
 
 		pid_t pid;
 		int status;
@@ -33,37 +45,49 @@ public:
 		pid = fork();
 
 		if(pid < 0){
-			printf("*** ERROR: forking child process failed\n");
+			perror("rshell: error forking child process");
 			return false;
 		}
 
 		else if(pid == 0){
 			if(execvp(argList[0], (char**)argList) < 0){
-				printf("*** ERROR: exec failed\n");
-			 	return false;
+  			// perror("rshell: exec failed: ");
+				// printf("*** ERROR: exec failed\n");
+				printf("rshell: command not found: ");
+				cout << parsed.at(0) << endl;
+			 	// return false;
+				exit(1);
+
 			}
+
 		}
 
+
+		// Look into this
 		else{
-			while(wait(&status) != pid);
+			pid_t check = wait(&status);
+			while(check != pid);
+
 		}
 
-		printf("*** EXECVP CALLED: ");
+		// perror("rshell: called");
+		//
+		// for(int i = 0; i < parsed.size(); ++i){
+		//
+		// 	cout << parsed.at(i) << " ";
+		// }
 
-		for(int i = 0; i < parsed.size(); ++i){
 
-			cout << parsed.at(i) << " ";
-		}
+		// cout << " [status-code:  " << status << "]";
 
-
-		cout << " [status-code:  " << status << "]";
+		// Failed Status Code for Hammer: 512, for Local: 256
 		if(status == 256){
 
-			printf(" failed\n");
+			// perror(" failed");
 			return false;
 		}
 
-		printf(" succeeded\n");
+		// perror(" succeeded");
 
 		return true;
 	}

@@ -9,6 +9,7 @@ using namespace std;
 class Base {
 
 public:
+	virtual ~Base() {}
 
 	/* Pure Virtual Functions */
 	virtual string stringify() = 0;

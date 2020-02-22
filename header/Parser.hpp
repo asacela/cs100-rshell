@@ -8,7 +8,7 @@
 
 #include "../header/token/Base.hpp"
 #include "../header/token/Command.hpp"
-#include "../header/token/Exit.hpp"
+#include "../header/token/Test.hpp"
 #include "../header/token/Connectors/And.hpp"
 #include "../header/token/Connectors/Or.hpp"
 #include "../header/token/Connectors/Semicolon.hpp"
@@ -20,10 +20,18 @@ class Parser{
 
 public:
 
-	Parser(string cmdLine_) : cmdLine(cmdLine_) {
+	Parser(string cmdLine_ = "") : cmdLine(cmdLine_) {
 
 		oldParsedSize = 0;
 		parse();
+	}
+
+	~Parser() {
+		while(baseList.size() != 0){
+			delete baseList.back();
+			baseList.pop_back();
+		}
+
 	}
 
 	void parse(){
@@ -48,8 +56,8 @@ public:
 					cmdLine.erase(cmdLine.begin() + end-1);
 					end = cmdLine.find('\"',end);
 				}
-				if(i+1 <= end-i-1){
-					str = cmdLine.substr(i + 1,end - i - 1);
+				if(i+1 < end){
+					str = cmdLine.substr(i + 1,end - (i+1));
 					parsed.push_back(str);
 				}
 				i = end;
@@ -117,7 +125,6 @@ public:
 					// Else it is a regular command -> continue
 					else {
 						parsed.push_back(str);
-
 						i = end - 1;
 					}
 				}
@@ -126,13 +133,12 @@ public:
 
 		}
 
-		// Base cases: you reach the end of the string (i.e. no more connectors)
 		// No arguments received
 		if(parsed.size() == 0){
-
 			return;
 		}
 
+		// Push_back the rest of the commands
 		objectify("list");
 		return;
 	}
@@ -178,18 +184,14 @@ private:
 
 		// If there exists new commands
 		if(subParsed.size() != 0){
-
 			lhs = new Command(subParsed);
-		}
 
-		if(subParsed.size() == 1){
+			if(subParsed.front() == "test" || (subParsed.front() == "[" && subParsed.back() == "]")){
+				delete lhs;
+				lhs = new Test(subParsed);
 
-			if(subParsed.at(0) == "exit"){
-
-				lhs = new Exit(subParsed);
 			}
 		}
-
 
 		if(objType == "&&"){
 
@@ -225,91 +227,42 @@ private:
 
 	Base* squash(vector<Base*> objectList){
 
-		
-		Base* squashed;
-		
+
+
+		Base* squashed = nullptr;
+
+
 		for(int i = 0; i < objectList.size(); ++i){
 
 			try{
+				Base* currObj = objectList.at(i);
+				string ID = currObj->getID();
 
 				if(i == 0){
 
-					squashed = objectList.at(i);
+					squashed = currObj;
 				}
-				else if(i == 1){
+				if(ID == "&&" || ID == "||" || ID == ";"){
+					if(i != 0){
+						currObj->set_lhs(squashed);
 
-					if(objectList.at(i)->getID() == "&&"){
-						
-						objectList.at(i)->set_lhs(objectList.at(i - 1));
-						if(objectList.at(i + 1) != nullptr){
-
-							objectList.at(i)->set_rhs(objectList.at(i + 1));
-						}
-						
-
-						squashed = objectList.at(i);
 					}
-					
-					else if(objectList.at(i)->getID() == "||"){
+					if(i != objectList.size() - 1){
+						currObj->set_rhs(objectList.at(i + 1));
 
-						objectList.at(i)->set_lhs(objectList.at(i - 1));
-						if(objectList.at(i + 1) != nullptr){
-
-							objectList.at(i)->set_rhs(objectList.at(i + 1));
-						}
-
-						squashed = objectList.at(i);
 					}
 
-					else if(objectList.at(i)->getID() == ";"){
-
-						objectList.at(i)->set_lhs(objectList.at(i - 1));
-						if(objectList.at(i + 1) != nullptr){
-
-							objectList.at(i)->set_rhs(objectList.at(i + 1));
-						}
-
-						squashed = objectList.at(i);
-					}			
+					squashed = currObj;
 				}
-				else if(objectList.at(i)->getID() == "&&"){
 
-					objectList.at(i)->set_lhs(squashed);
-					if(objectList.at(i + 1) != nullptr){
-
-							objectList.at(i)->set_rhs(objectList.at(i + 1));
-					}
-
-					squashed = objectList.at(i);		
-				}
-				else if(objectList.at(i)->getID() == "||"){
-
-					objectList.at(i)->set_lhs(squashed);
-					if(objectList.at(i + 1) != nullptr){
-
-							objectList.at(i)->set_rhs(objectList.at(i + 1));
-					}
-
-					squashed = objectList.at(i);
-				}
-				else if(objectList.at(i)->getID() == ";"){
-
-					objectList.at(i)->set_lhs(squashed);
-					if(objectList.at(i + 1) != nullptr){
-
-							objectList.at(i)->set_rhs(objectList.at(i + 1));
-					}
-
-					squashed = objectList.at(i);
-				} 
 			}
 			catch(const std::out_of_range& e){
 
-				cout << "out_of_range error:" << e.what() << endl;
+				cout << "out_of_range ERROR:" << e.what() << endl;
 				exit(1);
 			}
 
-		}	
+		}
 		return squashed;
 	}
 
