@@ -90,7 +90,7 @@ TEST(SemicolonTest, ICSExecute) {
     Base* cmd1 = new Command(vct1);
     Base* test = new Semicolon(cmd1, nullptr);
 
-    EXPECT_TRUE(test->execute());
+    EXPECT_FALSE(test->execute());
 }
 
 TEST(SemicolonTest, ICSICDisplay) {
@@ -170,4 +170,3 @@ TEST(SemicolonTest, SCSExecute) {
 }
 
 #endif
-

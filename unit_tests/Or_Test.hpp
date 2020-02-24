@@ -14,7 +14,7 @@ TEST(OrTest, OrDisplay) {
     Base* cmd2 = new Command(vct2);
 
     Base* test = new Or(cmd1, cmd2);
-    EXPECT_EQ(test->stringify(), "ls -a || git status");
+    EXPECT_EQ(test->stringify(), "(ls -a || git status)");
 }
 TEST(OrTest, OrExecute) {
   vector<string> vct1 = {"ls",  "-a"};
@@ -24,7 +24,7 @@ TEST(OrTest, OrExecute) {
   Base* cmd2 = new Command(vct2);
 
   Base* test = new Or(cmd1, cmd2);
-  bool rhsResult = false;
+  bool rhsResult = true;
   EXPECT_EQ(test->execute(), rhsResult);
 }
 

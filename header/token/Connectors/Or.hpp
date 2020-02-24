@@ -4,8 +4,9 @@
 #include<iostream>
 #include<string>
 #include<vector>
-
 #include "../Base.hpp"
+
+using namespace std;
 
 class Or : public Base {
 
@@ -18,16 +19,16 @@ public:
 	virtual bool execute(){
 
 		if(!lhs->execute()){
-
 			return rhs->execute();
+
 		}
-		return false;
+
+		return true;
 	}
 
 	virtual string stringify(){
 
-
-		string cmdString = lhs->stringify() + " || " + rhs->stringify();
+		string cmdString = "(" + lhs->stringify() + " || " + rhs->stringify() + ")";
 
 		return cmdString;
 	}
@@ -39,15 +40,27 @@ public:
 
 	virtual void set_lhs(Base* left){
 
-		lhs = left;
+		if(lhs == nullptr){
+			lhs = left;
 
+		}
 	}
 
 	virtual void set_rhs(Base* right){
+		if(rhs == nullptr){
+			rhs = right;
 
-		rhs = right;
+		}
 	}
 
+	virtual Base* get_lhs(){
+
+		return lhs;
+	}
+	virtual Base* get_rhs(){
+
+		return rhs;
+	}
 
 
 private:

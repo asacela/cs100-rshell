@@ -26,6 +26,15 @@ public:
 		// leave empty
 	}
 
+	virtual Base* get_lhs(){
+
+		return nullptr;
+	}
+	virtual Base* get_rhs(){
+
+		return nullptr;
+	}
+
 };
 
 #endif  //__BASE_HPP__

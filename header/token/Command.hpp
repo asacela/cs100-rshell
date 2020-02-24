@@ -104,6 +104,11 @@ public:
 		return str;
 	}
 
+	virtual vector<string> getCommands(){
+
+		return parsed;
+	}
+
 	virtual const string getID(){
 
 		return connectorID;

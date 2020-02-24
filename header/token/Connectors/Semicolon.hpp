@@ -6,6 +6,8 @@
 #include<vector>
 #include "../Base.hpp"
 
+using namespace std;
+
 class Semicolon : public Base {
 
 public:
@@ -16,12 +18,16 @@ public:
 	/* Pure Virtual Functions */
 	virtual bool execute(){
 
+		bool left;
 		if(lhs != nullptr){
-			lhs->execute();
+			left = lhs->execute();
 		}
 
 		if(rhs != nullptr){
 			return rhs->execute();
+		}
+		else if(lhs != nullptr){
+			return left;
 		}
 
 		return true;
@@ -33,13 +39,13 @@ public:
 		if(lhs != nullptr){
 			cmdString += lhs->stringify();
 		}
-		
+
 		cmdString += ";";
-		
+
 		if(rhs != nullptr){
 			cmdString += " " + rhs->stringify();
 		}
-    
+
 		return cmdString;
 	}
 
@@ -50,15 +56,27 @@ public:
 
 	virtual void set_lhs(Base* left){
 
-		lhs = left;
+		if(lhs == nullptr){
+			lhs = left;
 
+		}
 	}
 
 	virtual void set_rhs(Base* right){
+		if(rhs == nullptr){
+			rhs = right;
 
-		rhs = right;
+		}
 	}
 
+	virtual Base* get_lhs(){
+
+		return lhs;
+	}
+	virtual Base* get_rhs(){
+
+		return rhs;
+	}
 
 
 private:
