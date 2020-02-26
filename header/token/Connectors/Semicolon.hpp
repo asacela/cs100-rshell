@@ -18,15 +18,26 @@ public:
 	/* Pure Virtual Functions */
 	virtual bool execute(){
 
-		bool left;
+		bool left = true;
 		if(lhs != nullptr){
-			left = lhs->execute();
+			if(lhs->getID() == "cmd" && !lhs->getCommands().empty()){
+				left = lhs->execute();
+			}
+			else if(lhs->getID() != "cmd"){
+				left = lhs->execute();
+			}
 		}
 
 		if(rhs != nullptr){
-			return rhs->execute();
+			if(rhs->getID() == "cmd" && !rhs->getCommands().empty()){
+				return rhs->execute();
+			}
+			else if(rhs->getID() != "cmd"){
+				return rhs->execute();
+			}
 		}
-		else if(lhs != nullptr){
+		if(lhs != nullptr){
+
 			return left;
 		}
 
@@ -43,7 +54,14 @@ public:
 		cmdString += ";";
 
 		if(rhs != nullptr){
-			cmdString += " " + rhs->stringify();
+			if(rhs->getID() == "cmd" && !rhs->getCommands().empty()){
+				cmdString += " " + rhs->stringify();
+
+			}
+			else if(rhs->getID() != "cmd"){
+				cmdString += " " + rhs->stringify();
+
+			}
 		}
 
 		return cmdString;

@@ -225,6 +225,31 @@ TEST(PrecedenceTest, OrCommandExecute){
     EXPECT_TRUE(test->execute());
 }
 
+TEST(PrecedenceTest, SemicolonDisplay_1){
+
+	Parser* parserObj = new Parser("(ls -j; git status)");
+  Base* test = parserObj->getSquashed();
+    EXPECT_EQ(test->stringify(), "ls -j; git status");
+}
+TEST(PrecedenceTest, SemicolonExecute_1){
+
+	Parser* parserObj = new Parser("(ls -j; git status)");
+  Base* test = parserObj->getSquashed();
+    EXPECT_TRUE(test->execute());
+}
+TEST(PrecedenceTest, SemicolonDisplay_2){
+
+	Parser* parserObj = new Parser("(ls -j; )");
+  Base* test = parserObj->getSquashed();
+    EXPECT_EQ(test->stringify(), "ls -j;");
+}
+TEST(PrecedenceTest, SemicolonExecute_2){
+
+	Parser* parserObj = new Parser("(ls -j; )");
+  Base* test = parserObj->getSquashed();
+    EXPECT_FALSE(test->execute());
+}
+
 TEST(PrecedenceTest, MultiCommandDisplay_1){
 
 	Parser* parserObj = new Parser("(echo A && echo B) || (echo C && echo D)");
@@ -263,6 +288,13 @@ TEST(PrecedenceTest, MultiCommandExecute_3){
   Base* test = parserObj->getSquashed();
     EXPECT_FALSE(test->execute());
 }
+
+
+
+
+
+
+
   /* --DANGEROUS-- */
   /* Uncomment at your own risk */
 // TEST(StressTest, BreakDisplay_NoPrecedence){

@@ -353,8 +353,10 @@ private:
 					}
 
 				}
-				else if (ID == "&&" || ID == "||" || ID == ";"){
-					currObj->set_lhs(squashed);
+				if (ID == "&&" || ID == "||" || ID == ";"){
+					if(i != 0){
+						currObj->set_lhs(squashed);
+					}
 					if(i != objectList.size() - 1){
 						currObj->set_rhs(objectList.at(i + 1));
 					}
