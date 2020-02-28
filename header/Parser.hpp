@@ -30,6 +30,7 @@ public:
 
 	~Parser() {
 		while(!baseList.empty()){
+
 			delete baseList.back();
 			baseList.pop_back();
 		}
@@ -121,9 +122,9 @@ public:
 						objectify(")");
 
 					}
+          
 					if(hadSemi){
 						objectify(";");
-
 					}
 
 				}
@@ -195,6 +196,7 @@ private:
 
 		// If there exists new commands
 		if(!subParsed.empty()){
+
 			lhs = new Command(subParsed);
 
 			if(subParsed.front() == "test" || (subParsed.front() == "[" && subParsed.back() == "]")){
@@ -372,6 +374,7 @@ private:
 					}
 
 				}
+
 			}
 			catch(const std::out_of_range& e){
 

@@ -25,6 +25,7 @@ TEST(OrTest, OrExecute) {
 
   Base* test = new Or(cmd1, cmd2);
   bool rhsResult = true;
+
   EXPECT_EQ(test->execute(), rhsResult);
 }
 
