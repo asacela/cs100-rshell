@@ -61,6 +61,7 @@ TEST(SquashTest, SquashExecuteLongCommand){
     /* compares resulting objects' strings with stringify */
 
     EXPECT_EQ(squashed2->stringify(), "(((ls -j || git Status) && echo hello) || ma19d -h)");
+
     //EXPECT_TRUE(squashed2->execute() == false);
 }
 TEST(SquashTest, SquashExecuteInvalidCommand){
