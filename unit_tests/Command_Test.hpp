@@ -24,4 +24,5 @@ TEST(CommandTest, InvalidCommandExecute) {
     EXPECT_FALSE(test->execute());
 }
 
+
 #endif

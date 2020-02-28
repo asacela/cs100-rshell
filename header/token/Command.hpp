@@ -130,8 +130,6 @@ protected:
 
 	}
 
-
-private:
 	vector<string> parsed;
 	const char** argList;
 	const string connectorID = "cmd";
