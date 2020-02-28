@@ -35,7 +35,7 @@ TEST(SquashTest, SquashExecuteLongCommand){
 
 
 	/* objects for testing squash, stringify */
-    Parser* test = new Parser("ls -j");
+    Parser* test = new Parser();
     Base* cmd1 = new Command({"ls", "-j"});
     Base* cmd2 = new Or();
     Base* cmd3 = new Command({"git", "Status"});
@@ -60,7 +60,8 @@ TEST(SquashTest, SquashExecuteLongCommand){
 
     /* compares resulting objects' strings with stringify */
 
-    EXPECT_EQ(squashed2->stringify(), "ls -j || git Status && echo hello || ma19d -h");
+    EXPECT_EQ(squashed2->stringify(), "(((ls -j || git Status) && echo hello) || ma19d -h)");
+
     //EXPECT_TRUE(squashed2->execute() == false);
 }
 TEST(SquashTest, SquashExecuteInvalidCommand){
@@ -161,6 +162,8 @@ TEST(SquashTest, SquashExecuteSemicolonConnector){
 }
 
 
+
+
 /* Parse Tests*/
 TEST(ParseTest, ParseAndShortCommand){
 
@@ -192,5 +195,133 @@ TEST(ParseTest, ParseExtraLongCommand){
 	Parser* test = new Parser("ls -a && git status || echo hello; git status; git status || echo \"bye\"; git status || echo hello; ; git status || echo hello;");
     EXPECT_EQ(test->test().size(), 21);
 }
+
+
+
+
+/* Precedence Tests */
+TEST(PrecedenceTest, AndCommandDisplay){
+
+	Parser* parserObj = new Parser("(ls -a && git status)");
+  Base* test = parserObj->getSquashed();
+    EXPECT_EQ(test->stringify(), "(ls -a && git status)");
+}
+TEST(PrecedenceTest, AndCommandExecute){
+
+	Parser* parserObj = new Parser("(ls -a && git status)");
+  Base* test = parserObj->getSquashed();
+    EXPECT_TRUE(test->execute());
+}
+
+TEST(PrecedenceTest, OrCommandDisplay){
+
+	Parser* parserObj = new Parser("(ls -a || git status)");
+  Base* test = parserObj->getSquashed();
+    EXPECT_EQ(test->stringify(), "(ls -a || git status)");
+}
+TEST(PrecedenceTest, OrCommandExecute){
+
+	Parser* parserObj = new Parser("(ls -a || git status)");
+  Base* test = parserObj->getSquashed();
+    EXPECT_TRUE(test->execute());
+}
+
+TEST(PrecedenceTest, SemicolonDisplay_1){
+
+	Parser* parserObj = new Parser("(ls -j; git status)");
+  Base* test = parserObj->getSquashed();
+    EXPECT_EQ(test->stringify(), "ls -j; git status");
+}
+TEST(PrecedenceTest, SemicolonExecute_1){
+
+	Parser* parserObj = new Parser("(ls -j; git status)");
+  Base* test = parserObj->getSquashed();
+    EXPECT_TRUE(test->execute());
+}
+TEST(PrecedenceTest, SemicolonDisplay_2){
+
+	Parser* parserObj = new Parser("(ls -j; )");
+  Base* test = parserObj->getSquashed();
+    EXPECT_EQ(test->stringify(), "ls -j;");
+}
+TEST(PrecedenceTest, SemicolonExecute_2){
+
+	Parser* parserObj = new Parser("(ls -j; )");
+  Base* test = parserObj->getSquashed();
+    EXPECT_FALSE(test->execute());
+}
+
+TEST(PrecedenceTest, MultiCommandDisplay_1){
+
+	Parser* parserObj = new Parser("(echo A && echo B) || (echo C && echo D)");
+  Base* test = parserObj->getSquashed();
+    EXPECT_EQ(test->stringify(), "((echo A && echo B) || (echo C && echo D))");
+}
+TEST(PrecedenceTest, MultiCommandExecute_1){
+
+	Parser* parserObj = new Parser("(echo A && echo B) || (echo C && echo D)");
+  Base* test = parserObj->getSquashed();
+    EXPECT_TRUE(test->execute());
+}
+
+TEST(PrecedenceTest, MultiCommandDisplay_2){
+
+	Parser* parserObj = new Parser("(echo A || echo B) && (echo C || echo D)");
+  Base* test = parserObj->getSquashed();
+    EXPECT_EQ(test->stringify(), "((echo A || echo B) && (echo C || echo D))");
+}
+TEST(PrecedenceTest, MultiCommandExecute_2){
+
+	Parser* parserObj = new Parser("(echo A || echo B) && (echo C || echo D)");
+  Base* test = parserObj->getSquashed();
+    EXPECT_TRUE(test->execute());
+}
+
+TEST(PrecedenceTest, MultiCommandDisplay_3){
+
+	Parser* parserObj = new Parser("(echo A && ls -j) || (ls -z && echo D)");
+  Base* test = parserObj->getSquashed();
+    EXPECT_EQ(test->stringify(), "((echo A && ls -j) || (ls -z && echo D))");
+}
+TEST(PrecedenceTest, MultiCommandExecute_3){
+
+	Parser* parserObj = new Parser("(echo A && ls -j) || (ls -z && echo D)");
+  Base* test = parserObj->getSquashed();
+    EXPECT_FALSE(test->execute());
+}
+
+
+
+
+
+
+
+  /* --DANGEROUS-- */
+  /* Uncomment at your own risk */
+// TEST(StressTest, BreakDisplay_NoPrecedence){
+//
+// 	Parser* parserObj = new Parser("");
+//   Base* test = parserObj->getSquashed();
+//     EXPECT_EQ(test->stringify(), " ; echo A && echo B && ls -j || ls -z && echo D;  echo no && echo bye;  echo failed ; echo bye \"  #not a comment \" || echo no; bleh   # echo comented this thing ;");
+// }
+// TEST(StressTest, BreakDisplay_Precedence){
+//
+// 	Parser* parserObj = new Parser("");
+//   Base* test = parserObj->getSquashed();
+//     EXPECT_EQ(test->stringify(), "(( ; echo A && (echo B && ls -j) || (ls -z && echo D; )) || echo no && echo bye; ) || echo failed ; (echo bye \"  #not a comment \" || (echo no; bleh  )) # echo comented this thing ;");
+// }
+
+// TEST(PrecedenceTest, LongMultiCommandDisplay_1){
+//
+// 	Parser* parserObj = new Parser("( ; echo A && (echo B && ls -j) || (ls -z && echo D; )) || echo no && echo bye;");
+//   Base* test = parserObj->getSquashed();
+//     EXPECT_EQ(test->stringify(), "(((; (echo A && (echo B && ls -j)) || (ls -z && echo D;)) || echo no) && echo bye);");
+// }
+// TEST(PrecedenceTest, LongMultiCommandExecute_1){
+//
+//   Parser* parserObj = new Parser("( ; echo A && (echo B && ls -j) || (ls -z && echo D; )) || echo no && echo bye;");
+//   Base* test = parserObj->getSquashed();
+//     EXPECT_FALSE(test->execute());
+// }
 
 #endif
