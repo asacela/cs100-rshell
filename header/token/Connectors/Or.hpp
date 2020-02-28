@@ -24,6 +24,7 @@ public:
 		}
 
 		return true;
+
 	}
 
 	virtual string stringify(){

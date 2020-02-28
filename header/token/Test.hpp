@@ -18,7 +18,6 @@ public:
 	/* Constructors */
 	Test(vector<string> parsed_) : Command(parsed_) {
 
-
         if(parsed.size() != 0){
             if(parsed.front() == "[" && parsed.back() == "]"){
                 vector<string>::iterator it = parsed.begin();
@@ -42,6 +41,7 @@ public:
 
 
         to_cstring();
+
 	}
 
 	/* Pure Virtual Functions */
