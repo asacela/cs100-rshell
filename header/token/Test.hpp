@@ -4,6 +4,9 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #include "Command.hpp"
 
 using namespace std;
@@ -38,19 +41,56 @@ public:
 
 	/* Pure Virtual Functions */
 	virtual bool execute(){
-    bool test = Command::execute();
-    if(test){
-      cout << "(TRUE)" << "\n";
-    }
-    else{
-      cout << "(FALSE)" << "\n";
-    }
-    return test;
+		if(parser.size() == 3){
+
+			int status = stat((char*)(*argList[2]), struct stat *buf);
+			bool result = false;
+
+			string flag = parser.at(1);
+			if(flag == "-e"){
+				result = exists();
+			}
+			else if(flag == "-d"){
+				result = isDir();
+			}
+			else if(flag == "-f"){
+				result = isFile();
+			}
+			else{
+				// Unknown flag
+			}
+
+	    bool test = Command::execute();
+	    if(result){
+	      cout << "(TRUE)" << "\n";
+	    }
+	    else{
+	      cout << "(FALSE)" << "\n";
+	    }
+
+			return true;
+		}
+
+    return false;
 	}
 
+
 private:
-	vector<string> parsed;
-  const char** argList;
+	bool isDir(m){
+
+		return S_ISDIR(m);
+	}
+
+	bool isFile(m){
+
+		return S_ISREG(m);
+	}
+
+	bool exists(m){
+
+		return S_ISREG(m) || S_ISDIR(m);
+	}
+
 };
 
 #endif
