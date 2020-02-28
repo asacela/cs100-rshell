@@ -18,57 +18,75 @@ public:
 	/* Constructors */
 	Test(vector<string> parsed_) : Command(parsed_) {
 
-    if(parsed.size() != 0){
-      if(parsed.front() == "[" && parsed.back() == "]"){
-        vector<string>::iterator it = parsed.begin();
-        parsed.erase(it);
-        parsed.pop_back();
-      }
 
-      if(parsed.front() != "test"){
-        vector<string>::iterator it = parsed.begin();
-        parsed.insert(it,"test");
-      }
+        if(parsed.size() != 0){
+            if(parsed.front() == "[" && parsed.back() == "]"){
+                vector<string>::iterator it = parsed.begin();
+                parsed.erase(it);
+                parsed.pop_back();
+            }
 
-      if(parsed.at(1).front() != '-'){
-        vector<string>::iterator it = parsed.begin();
-        parsed.insert(it+1,"-e");
-      }
-    }
+            if(parsed.front() != "test"){
+                vector<string>::iterator it = parsed.begin();
+                parsed.insert(it,"test");
+            }
+          
+            if(parsed.size() >= 2){
+ 
+                if(parsed.at(1).front() != '-'){
+                vector<string>::iterator it = parsed.begin();
+                parsed.insert(it+1,"-e");
+                }
+            }
+        }
 
-    to_cstring();
+
+        to_cstring();
 	}
 
 	/* Pure Virtual Functions */
 	virtual bool execute(){
-		if(parser.size() == 3){
+        struct stat sb;
 
-			int status = stat((char*)(*argList[2]), struct stat *buf);
+		if(parsed.size() == 3){
+
+
+
+			if(stat(argList[2], &sb) < 0){
+
+                perror("rshell: error in running stat()");
+                cout << "(FALSE)" << "\n";
+
+                return true;
+            }
+
 			bool result = false;
 
-			string flag = parser.at(1);
+			string flag = parsed.at(1);
 			if(flag == "-e"){
-				result = exists();
+				result = exists(sb.st_mode);
 			}
 			else if(flag == "-d"){
-				result = isDir();
+				result = isDir(sb.st_mode);
 			}
 			else if(flag == "-f"){
-				result = isFile();
+				result = isFile(sb.st_mode);
 			}
 			else{
 				// Unknown flag
 			}
 
-	    bool test = Command::execute();
+	    // bool test = Command::execute();
 	    if(result){
+
 	      cout << "(TRUE)" << "\n";
 	    }
 	    else{
+
 	      cout << "(FALSE)" << "\n";
 	    }
 
-			return true;
+		return true;
 		}
 
     return false;
@@ -76,19 +94,31 @@ public:
 
 
 private:
-	bool isDir(m){
+	bool isDir(mode_t m){
 
-		return S_ISDIR(m);
+        if(S_ISDIR(m) > 0){
+            return true;
+        }
+
+		return false;
 	}
 
-	bool isFile(m){
+	bool isFile(mode_t m){
 
-		return S_ISREG(m);
+		if(S_ISREG(m) > 0){
+            return true;
+        }
+
+        return false;
 	}
 
-	bool exists(m){
+	bool exists(mode_t m){
 
-		return S_ISREG(m) || S_ISDIR(m);
+        if(S_ISDIR(m) > 0 || S_ISREG(m) > 0){
+            return true;
+        }
+
+        return false;
 	}
 
 };
