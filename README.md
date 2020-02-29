@@ -14,7 +14,7 @@ After cloning, run
 	git submodule update --init --recursive
   
 ## Diagram
-![Flowchart](images/CS100-Assignment2-Flowchart.jpeg)
+![Flowchart](images/CS100-Assignment3-Flowchart.jpeg)
 
 ## Classes
 
