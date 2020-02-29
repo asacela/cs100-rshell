@@ -25,8 +25,11 @@ This class contains basic virtual functions that the Command, And, Or, and Semic
 	virtual string stringify() = 0;
 	virtual bool execute() = 0;
 	virtual const string getID() = 0;
+	virtual vector<string> getCommands()
 	virtual void set_lhs(Base* lhs)
 	virtual void set_rhs(Base* rhs)
+	virtual Base* get_lhs()
+	virtual Base* get_rhs()
   
 
 ### Command
@@ -44,17 +47,18 @@ This class will act as the leaf obj in our structure. It will contain its own im
 	const string connectorID = "cmd";
 
 
-### Exit
+### Tester
 
-This class will inherit from Command class and will contain its own implementation of execute() which will call exit(0) to exit the rshell program.
+This class will inherit from Command class and will contain its own implementation of execute() which can execute using both literal and symbolic test function and its flag will default to -e. This will print (TRUE) or (FALSE) depending on whether the flag passed in is -e, -d, or -f.
 
 	virtual bool execute()
 
-	vector<string> parsed;
-  const char** argList;
+	bool isDir()
+	bool isFile()
+	bool exists()
     
 
-### OR
+### Or
 
 Links previous and next command objects to execute() as logical "or" operator.
 
@@ -70,7 +74,7 @@ Links previous and next command objects to execute() as logical "or" operator.
 	const string connectorID = "||";
 
 
-### AND
+### And
 
 Links previous and next commands objects to execute() as logical "and" operator.
 
@@ -100,6 +104,17 @@ Links previous and next command objects to execute() like newline.
 	Base* lhs;
 	Base* rhs;
 	const string connectorID = ";";
+	
+	
+### Parentheses
+
+This class is used to tell when we reach a closed or open parentheses in the object list.
+
+	virtual string stringify();
+	virtual bool execute();
+	virtual const string getID() ;
+
+	const string connectorID  = "(" or ")";
 
 
 ### Parser
@@ -113,6 +128,7 @@ This class takes in a string for its constructor and has private function parse(
 	void objectify(string)
 	void updateSize()
 	Base* squash(vector<Base*> )
+	vector<Base*> precedence(vector<Base*>)
 
 	string cmdLine;
 	vector<string> parsed;
@@ -153,4 +169,4 @@ For integration tests, run from root dir
 
 	cd integration_tests
 	../rshell 
-	./single_command_tests.sh && ./multiple_command_tests.sh && ./commented_command_tests.sh && ./exit_command_tests.sh
+	./single_command_tests.sh && ./multiple_command_tests.sh && ./commented_command_tests.sh && ./exit_command_tests.sh && ./test_literal_tests.sh && ./test_symbolic_tests.sh && ./precedence_tests.sh
