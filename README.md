@@ -165,8 +165,13 @@ For unit tests, run from root dir
 	
 	cmake3 . && make && ./test
   
-For integration tests, run from root dir
+For assignment 2 integration tests, run from root dir
 
 	cd integration_tests
 	../rshell 
 	./single_command_tests.sh && ./multiple_command_tests.sh && ./commented_command_tests.sh && ./exit_command_tests.sh && ./test_literal_tests.sh && ./test_symbolic_tests.sh && ./precedence_tests.sh
+	
+For assignment 3 integration tests, run from root dir
+	./integration_tests/test_symbolic_tests.sh && ./integration_tests/test_literal_tests.sh && ./integration_tests/precedence_tests.sh
+	
+
