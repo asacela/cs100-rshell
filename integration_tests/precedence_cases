@@ -1,0 +1,4 @@
+(echo foo && ls -j || (git status && (echo bar || echo "bar")))
+(ls -j || echo foo && (echo bar || ls -a && (ls -j && hello)))
+(ls -d && hello; (hello foo && echo bar); (ls -a && echo hello))
+exit
