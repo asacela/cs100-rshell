@@ -173,6 +173,7 @@ For assignment 2 integration tests, run from root dir
 	
 For assignment 3 integration tests, run from root dir
 
-	./integration_tests/test_symbolic_tests.sh && ./integration_tests/test_literal_tests.sh && ./integration_tests/precedence_tests.sh
+	cd integration_tests
+	./test_symbolic_tests.sh && ./test_literal_tests.sh && ./precedence_tests.sh
 	
 
