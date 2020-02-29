@@ -9,7 +9,7 @@
 
 #include "../header/token/Base.hpp"
 #include "../header/token/Command.hpp"
-#include "../header/token/Test.hpp"
+#include "../header/token/Tester.hpp"
 #include "../header/token/Parentheses.hpp"
 #include "../header/token/Connectors/And.hpp"
 #include "../header/token/Connectors/Or.hpp"
@@ -122,7 +122,7 @@ public:
 						objectify(")");
 
 					}
-          
+
 					if(hadSemi){
 						objectify(";");
 					}
@@ -201,7 +201,7 @@ private:
 
 			if(subParsed.front() == "test" || (subParsed.front() == "[" && subParsed.back() == "]")){
 				delete lhs;
-				lhs = new Test(subParsed);
+				lhs = new Tester(subParsed);
 
 			}
 			// cout << lhs->getID() << endl; // ------------------------------------------------
@@ -346,7 +346,7 @@ private:
 					squashed = currObj;
 
 					if(ID == ";"){
-						Base* dummyCmd = new Command({});
+						Base* dummyCmd = new Command();
 						currObj->set_lhs(dummyCmd);
 
 						if(i != objectList.size() - 1){
@@ -364,7 +364,7 @@ private:
 					}
 
 					if(ID == ";" && i == objectList.size() - 1){
-						Base* dummyCmd = new Command({});
+						Base* dummyCmd = new Command();
 						currObj->set_rhs(dummyCmd);
 
 					}
