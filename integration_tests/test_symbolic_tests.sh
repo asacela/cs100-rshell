@@ -1,2 +1,2 @@
 #!/bin/sh
-../rshell < test_symbols_cases
+../rshell < test_symbolic_cases
