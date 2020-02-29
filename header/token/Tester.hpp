@@ -11,14 +11,16 @@
 
 using namespace std;
 
-class Test : public Command {
+class Tester : public Command {
 
 public:
 
 	/* Constructors */
-	Test(vector<string> parsed_) : Command(parsed_) {
+	Tester(vector<string> parsed_) : Command(){
 
-        if(parsed.size() != 0){
+		parsed = parsed_;
+
+        if(!parsed.empty()){
             if(parsed.front() == "[" && parsed.back() == "]"){
                 vector<string>::iterator it = parsed.begin();
                 parsed.erase(it);

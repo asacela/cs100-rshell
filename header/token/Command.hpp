@@ -23,6 +23,7 @@ public:
 	Command(vector<string> parsed_) : parsed(parsed_){
 		to_cstring();
 	}
+	Command(){}
 
 	virtual ~Command() {
 		delete [] argList;

@@ -199,6 +199,137 @@ TEST(ParseTest, ParseExtraLongCommand){
 
 
 
+
+/* Tester Class Tests */
+TEST(TesterClassTest, BasicExecuteLiteral){
+	Base* test = new Tester({"test","-e","names.txt"});
+  testing::internal::CaptureStdout();
+  test->execute();
+  std::string output = testing::internal::GetCapturedStdout();
+    EXPECT_EQ(output, "(TRUE)\n");
+  	EXPECT_TRUE(test->execute());
+}
+TEST(TesterClassTest, BasicStringifyLiteral){
+        Base* test = new Tester({"test","-e","names.txt"});
+        EXPECT_EQ(test->stringify(),"test -e names.txt");
+}
+TEST(TesterClassTest, BasicExecuteSymbolic){
+        Base* test = new Tester({"[","-e","names.txt","]"});
+        testing::internal::CaptureStdout();
+        test->execute();
+        std::string output = testing::internal::GetCapturedStdout();
+          EXPECT_EQ(output, "(TRUE)\n");
+        EXPECT_TRUE(test->execute());
+}
+TEST(TesterClassTest, BasicStringifySymbolic){
+        Base* test = new Tester({"[","-e","names.txt", "]"});
+        EXPECT_EQ(test->stringify(),"test -e names.txt");
+}
+
+TEST(TesterClassTest, StdFlagExecuteLiteral){
+        Base* test = new Tester({"test","names.txt"});
+        testing::internal::CaptureStdout();
+        test->execute();
+        std::string output = testing::internal::GetCapturedStdout();
+          EXPECT_EQ(output, "(TRUE)\n");
+          EXPECT_TRUE(test->execute());
+}
+TEST(TesterClassTest, StdFlagStringifyLiteral){
+        Base* test = new Tester({"test","names.txt"});
+        EXPECT_EQ(test->stringify(),"test -e names.txt");
+}
+TEST(TesterClassTest, StdFlagExecuteSymbolic){
+        Base* test = new Tester({"[","names.txt","]"});
+        testing::internal::CaptureStdout();
+        test->execute();
+        std::string output = testing::internal::GetCapturedStdout();
+          EXPECT_EQ(output, "(TRUE)\n");
+          EXPECT_TRUE(test->execute());
+}
+TEST(TesterClassTest, StdFlagStringifySymbolic){
+        Base* test = new Tester({"[","names.txt", "]"});
+        EXPECT_EQ(test->stringify(),"test -e names.txt");
+}
+
+TEST(TesterClassTest, FFlagExecuteLiteral){
+        Base* test = new Tester({"test","-f","names.txt"});
+        testing::internal::CaptureStdout();
+        test->execute();
+        std::string output = testing::internal::GetCapturedStdout();
+          EXPECT_EQ(output, "(TRUE)\n");
+          EXPECT_TRUE(test->execute());
+}
+TEST(TesterClassTest, FFlagStringifyLiteral){
+        Base* test = new Tester({"test","-f","names.txt"});
+        EXPECT_EQ(test->stringify(),"test -f names.txt");
+}
+TEST(TesterClassTest, FFlagExecuteSymbolic){
+        Base* test = new Tester({"[","-f","names.txt","]"});
+        testing::internal::CaptureStdout();
+        test->execute();
+        std::string output = testing::internal::GetCapturedStdout();
+          EXPECT_EQ(output, "(TRUE)\n");
+          EXPECT_TRUE(test->execute());
+}
+TEST(TesterClassTest, FFlagStringifySymbolic){
+        Base* test = new Tester({"[","-f","names.txt", "]"});
+        EXPECT_EQ(test->stringify(),"test -f names.txt");
+}
+
+TEST(TesterClassTest, DFlagExecuteLiteral){
+        Base* test = new Tester({"test","-d","names.txt"});
+        testing::internal::CaptureStdout();
+        test->execute();
+        std::string output = testing::internal::GetCapturedStdout();
+          EXPECT_EQ(output, "(FALSE)\n");
+          EXPECT_TRUE(test->execute());
+}
+TEST(TesterClassTest, DFlagStringifyLiteral){
+        Base* test = new Tester({"test","-d","names.txt"});
+        EXPECT_EQ(test->stringify(),"test -d names.txt");
+}
+TEST(TesterClassTest, DFlagExecuteSymbolic){
+        Base* test = new Tester({"[","-d","names.txt","]"});
+        testing::internal::CaptureStdout();
+        test->execute();
+        std::string output = testing::internal::GetCapturedStdout();
+          EXPECT_EQ(output, "(FALSE)\n");
+          EXPECT_TRUE(test->execute());
+}
+TEST(TesterClassTest, DFlagStringifySymbolic){
+        Base* test = new Tester({"[","-d","names.txt", "]"});
+        EXPECT_EQ(test->stringify(),"test -d names.txt");
+}
+
+TEST(TesterClassTest, EmptyExecuteLiteral){
+        Base* test = new Tester({"test"});
+        testing::internal::CaptureStdout();
+        test->execute();
+        std::string output = testing::internal::GetCapturedStdout();
+          EXPECT_EQ(output, "");
+          EXPECT_FALSE(test->execute());
+}
+TEST(TesterClassTest, EmptyStringifyLiteral){
+        Base* test = new Tester({"test"});
+        EXPECT_EQ(test->stringify(),"test");
+}
+TEST(TesterClassTest, EmptyExecuteSymbolic){
+        Base* test = new Tester({"[","]"});
+        testing::internal::CaptureStdout();
+        test->execute();
+        std::string output = testing::internal::GetCapturedStdout();
+          EXPECT_EQ(output, "");
+          EXPECT_FALSE(test->execute());
+}
+TEST(TesterClassTest, EmptyStringifySymbolic){
+        Base* test = new Tester({"[","]"});
+        EXPECT_EQ(test->stringify(),"test");
+}
+
+
+
+
+
 /* Precedence Tests */
 TEST(PrecedenceTest, AndCommandDisplay){
 
