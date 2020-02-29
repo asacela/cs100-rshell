@@ -1,4 +1,21 @@
 test -e ../prototypes
 test -d ../prototypes
 test -f ../prototypes
+test ../prototypes
+test ../images
+test -f ../rshell
+(echo hello && test -f ../rshell); -f ../integration_tests
+(echo hello || ls -j && (echo hello && ls -a || (echo hello || (git status || test -f ../test))))
+test foo
+test bar
+test /usr/bin
+test /usr/local
+test -d /usr/local
+test -d /usr/bin
+echo hello && test /usr/bin
+(ls -j && echo hello || test -e test/file/path)
+test -e test/file/path && echo "path exists"
+(test -d ../rshell && (test -f ../test || echo hello) || echo hello)
+(test -a echo && echo hello)
+(echo hello || (test -d ../test || echo hello) && test -e ../header/Parser.hpp
 exit
