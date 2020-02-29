@@ -1,6 +1,7 @@
 test -e ../prototypes
 test -d ../prototypes
 test -f ../prototypes
+<<<<<<< HEAD
 test ../prototypes
 test ../images
 test -f ../rshell
@@ -18,4 +19,6 @@ test -e test/file/path && echo "path exists"
 (test -d ../rshell && (test -f ../test || echo hello) || echo hello)
 (test -a echo && echo hello)
 (echo hello || (test -d ../test || echo hello) && test -e ../header/Parser.hpp
+=======
+>>>>>>> 8c0c59ecef61d96d045af540b76bb17a3146818f
 exit

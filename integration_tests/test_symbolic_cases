@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [ test -e ../prototypes ]
 [ test -d ../prototypes ]
 [ test -f ../prototypes ]
@@ -25,4 +26,9 @@ echo hello && [ test /usr/bin ]
 ([ test -d ../rshell ] && ([ test -f ../test ] || echo hello) || echo hello)
 ([ test -a echo ] && echo hello)
 (echo hello || ([ test -d ../test ] || echo hello) && [ test -e ../header/Parser.hpp ]
+=======
+[ -e ../prototypes ]
+[ -d ../prototypes ]
+[ -f ../prototypes ]
+>>>>>>> 8c0c59ecef61d96d045af540b76bb17a3146818f
 exit
