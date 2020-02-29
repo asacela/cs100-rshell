@@ -53,10 +53,11 @@ public:
 		else if(pid == 0){
 			if(execvp(argList[0], (char**)argList) < 0){
   			perror("rshell: exec failed: ");
+				perror("rshell: exec failed: ");
 				// printf("*** ERROR: exec failed\n");
 				printf("rshell: command not found: ");
 				cout << parsed.at(0) << endl;
-			 	return false;
+			 	// return false;
 				exit(1);
 
 			}
@@ -79,10 +80,10 @@ public:
 		}
 
 
-		cout << " [status-code:  " << status << "]";
+		cout << " [status-code:  " << status << "]" << endl;
 
 		//Failed Status Code for Hammer: 512, for Local: 256
-		if(status == 512){
+		if(status == 512 || status == 256){
 
 			perror(" failed");
 			return false;
