@@ -1,0 +1,4 @@
+test -e ../prototypes
+test -d ../prototypes
+test -f ../prototypes
+exit

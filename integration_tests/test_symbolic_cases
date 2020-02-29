@@ -1,0 +1,4 @@
+[ -e ../prototypes ]
+[ -d ../prototypes ]
+[ -f ../prototypes ]
+exit
