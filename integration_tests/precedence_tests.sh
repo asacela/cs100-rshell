@@ -1,9 +1,8 @@
-INPUTS=("git pull" "echo hello" "ls -a" 
-	"git status" "ls -j")
+INPUTS=("(echo hello && (echo hell nah || (git status && ls -a)))" "(echo making && (ls -j || git status))" "((echo hello || ls -a) && (ls -j))")
 
 for input in "${INPUTS[@]}"
 do
-	echo "---------Single Command Test ${@}:----------"
+	echo "---------Precedence Command Test ${@}:----------"
 	echo " ${input}"
 	${input}
 
