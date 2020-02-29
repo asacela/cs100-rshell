@@ -15,7 +15,7 @@ TEST(AndTest, CACDisplay) {
     Base* cmd2 = new Command(vct2);
 
     Base* test = new And(cmd1, cmd2);
-    EXPECT_EQ(test->stringify(), "ls -a && git status");
+    EXPECT_EQ(test->stringify(), "(ls -a && git status)");
 }
 TEST(AndTest, CACExecute) {
   vector<string> vct1 = {"ls",  "-a"};
@@ -36,7 +36,7 @@ TEST(AndTest, ICACDisplay) {
     Base* cmd2 = new Command(vct2);
 
     Base* test = new And(cmd1, cmd2);
-    EXPECT_EQ(test->stringify(), "ls -j && echo hello");
+    EXPECT_EQ(test->stringify(), "(ls -j && echo hello)");
 }
 TEST(AndTest, ICACExecute) {
   vector<string> vct1 = {"ls",  "-j"};
@@ -46,7 +46,7 @@ TEST(AndTest, ICACExecute) {
   Base* cmd2 = new Command(vct2);
 
   Base* test = new And(cmd1, cmd2);
-  EXPECT_TRUE(test->execute());
+  EXPECT_FALSE(test->execute());
 }
 
 TEST(AndTest, CAICDisplay) {
@@ -57,7 +57,7 @@ TEST(AndTest, CAICDisplay) {
     Base* cmd2 = new Command(vct2);
 
     Base* test = new And(cmd1, cmd2);
-    EXPECT_EQ(test->stringify(), "echo hello && ls -j");
+    EXPECT_EQ(test->stringify(), "(echo hello && ls -j)");
 }
 TEST(AndTest, CAICExecute) {
   vector<string> vct2 = {"ls",  "-j"};
@@ -78,7 +78,7 @@ TEST(AndTest, ICAICDisplay) {
     Base* cmd2 = new Command(vct2);
 
     Base* test = new And(cmd1, cmd2);
-    EXPECT_EQ(test->stringify(), "ls -j && gert flop");
+    EXPECT_EQ(test->stringify(), "(ls -j && gert flop)");
 }
 TEST(AndTest, ICAICExecute) {
   vector<string> vct1 = {"ls",  "-j"};
