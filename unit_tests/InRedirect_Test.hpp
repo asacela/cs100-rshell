@@ -1,5 +1,5 @@
-#ifndef __AND_TEST_HPP__
-#define __AND_TEST_HPP__
+#ifndef __IN_REDIRECT_TEST_HPP__
+#define __IN_REDIRECT_TEST_HPP__
 
 #include "gtest/gtest.h"
 

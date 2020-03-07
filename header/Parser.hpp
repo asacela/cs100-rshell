@@ -86,12 +86,8 @@ public:
 				// Create substring
 				str = cmdLine.substr(i,end - i);
 
-				if(str == "&&"){
-					objectify("&&");
-
-				}
-				else if(str == "||"){
-					objectify("||");
+				if(isConnectorID(str)){
+					objectify(str);
 
 				}
 				// If very last character of sub string is ';' or ')'
@@ -227,6 +223,22 @@ private:
 
 			objTemp = new Parentheses(")");
 		}
+		else if(objType == "<"){
+
+			objTemp = new InRedirect();
+		}
+		else if(objType == ">"){
+
+			objTemp = new OutRedirect();
+		}
+		else if(objType == ">>"){
+
+			objTemp = new OverwriteRedirect();
+		}
+		else if(objType == "|"){
+
+			objTemp = new Pipe();
+		}
 		else if(objType == "list"){
 
 			objTemp = lhs;
@@ -242,10 +254,10 @@ private:
 
 		}
 
-		if(!baseList.empty()){
-			// cout << baseList.back()->getID() << endl; // ------------------------------------------------
-
-		}
+		// if(!baseList.empty()){
+		// 	// cout << baseList.back()->getID() << endl; // ------------------------------------------------
+		//
+		// }
 		// cout << "baseListSize: " << baseList.size() << endl << endl; // ------------------------------------------------
 
 
@@ -260,15 +272,35 @@ private:
 		stack<int> parStack;
 		int index = 0;
 		Base* squashedObj = nullptr;
-		// cout << "--Precedence--" << endl; // ------------------------------------------------
-		// cout << "BEFORE:" << endl; // ------------------------------------------------
+
+		// Add inherent precedence to all redirectors and pipes
 		for(int i = 0; i < objectList.size(); ++i){
 			string ID = objectList.at(i)->getID();
-			// cout << "ID:" << ID << endl; // ------------------------------------------------
+
+			if(ID == "<" || ID == ">" || ID == ">>" || ID == "|"){
+				vector<Base*>::iterator it;
+
+				if(i != 0 && i != objectList.size() - 1){
+					it = objectList.begin();
+					objectList.insert(it + i, new Parentheses("("));
+
+					it = objectList.begin();
+					objectList.insert(it + i + 2, new Parentheses(")"));
+
+					i += 2;
+				}
+			}
 		}
 
+		// cout << "--Precedence--" << endl; // ------------------------------------------------
+		// cout << "BEFORE:" << endl; // ------------------------------------------------
+		// for(int i = 0; i < objectList.size(); ++i){
+		// 	string ID = objectList.at(i)->getID();
+		// 	// cout << "ID:" << ID << endl; // ------------------------------------------------
+		// }
 
-		// Search for parenthese and squash everything in between
+
+		// Search for parenthese and squash everything between
 		for(int i = 0; i < objectList.size(); ++i){
 			string ID = objectList.at(i)->getID();
 
@@ -311,10 +343,10 @@ private:
 		}
 
 		// cout << "AFTER:" << endl; // ------------------------------------------------
-		for(int i = 0; i < objectList.size(); ++i){
-			string ID = objectList.at(i)->getID();
-			// cout << "ID:" << ID << endl; // ------------------------------------------------
-		}
+		// for(int i = 0; i < objectList.size(); ++i){
+		// 	string ID = objectList.at(i)->getID();
+		// 	// cout << "ID:" << ID << endl; // ------------------------------------------------
+		// }
 
 		if(!parStack.empty()){
 			cout << "rshell: Error: Invalid number of parenthese\n";
@@ -355,7 +387,7 @@ private:
 					}
 
 				}
-				if (ID == "&&" || ID == "||" || ID == ";"){
+				if(isConnectorID(ID)){
 					if(i != 0){
 						currObj->set_lhs(squashed);
 					}
@@ -386,15 +418,15 @@ private:
 		return squashed;
 	}
 
+	bool isConnectorID(string ID){
+		return (ID == "&&" || ID == "||" || ID == ";" || ID == "<" || ID == ">" || ID == ">>" || ID == "|");
+	}
+
 	// Private variables
 	string cmdLine;
 	vector<string> parsed;
 	vector<Base*> baseList;
 	int oldParsedSize;
-
-	const string andOperator = "&&";
-	const string orOperator = "||";
-	const string scOperator = ";";
 
 };
 
