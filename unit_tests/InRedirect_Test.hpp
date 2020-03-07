@@ -9,9 +9,9 @@
 
 
 TEST(InRedirect, BasicTest) {
-	
+
     vector<string> vct1 = {"ls",  "-a"};
-    vector<string> vct2 = {"text_files/echo.txt"};
+    vector<string> vct2 = {"echo.txt"};
 
 
     Base* cmd1 = new Command(vct1);
