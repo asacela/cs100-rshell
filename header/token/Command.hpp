@@ -23,6 +23,7 @@ public:
 	Command(vector<string> parsed_) : parsed(parsed_){
 		to_cstring();
 	}
+	Command(){}
 
 	virtual ~Command() {
 		delete [] argList;
@@ -51,7 +52,7 @@ public:
 
 		else if(pid == 0){
 			if(execvp(argList[0], (char**)argList) < 0){
-  			// perror("rshell: exec failed: ");
+  			perror("rshell: exec failed: ");
 				// printf("*** ERROR: exec failed\n");
 				printf("rshell: command not found: ");
 				cout << parsed.at(0) << endl;
@@ -70,18 +71,18 @@ public:
 
 		}
 
-		// perror("rshell: called");
-		//
-		// for(int i = 0; i < parsed.size(); ++i){
-		//
-		// 	cout << parsed.at(i) << " ";
-		// }
+		perror("rshell: called");
+
+		for(int i = 0; i < parsed.size(); ++i){
+
+		 	cout << parsed.at(i) << " ";
+		}
 
 
-		// cout << " [status-code:  " << status << "]";
+		cout << " [status-code:  " << status << "]" << endl;
 
-		// Failed Status Code for Hammer: 512, for Local: 256
-		if(status == 256){
+		//Failed Status Code for Hammer: 512, for Local: 256
+		if(status == 512 || status == 256){
 
 			// perror(" failed");
 			return false;
@@ -102,6 +103,11 @@ public:
 		}
 
 		return str;
+	}
+
+	virtual vector<string> getCommands(){
+
+		return parsed;
 	}
 
 	virtual const string getID(){
@@ -125,8 +131,6 @@ protected:
 
 	}
 
-
-private:
 	vector<string> parsed;
 	const char** argList;
 	const string connectorID = "cmd";

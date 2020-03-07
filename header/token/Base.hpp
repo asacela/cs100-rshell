@@ -2,6 +2,7 @@
 #define __BASE_HPP__
 
 #include<iostream>
+#include<vector>
 #include<string>
 
 using namespace std;
@@ -17,6 +18,10 @@ public:
 	virtual const string getID() = 0;
 
 	/* Virtual Functions */
+	virtual vector<string> getCommands(){
+		vector<string> temp;
+		return temp;
+	}
 	virtual void set_lhs(Base* lhs){
 
 		// leave empty
@@ -24,6 +29,15 @@ public:
 	virtual void set_rhs(Base* rhs){
 
 		// leave empty
+	}
+
+	virtual Base* get_lhs(){
+
+		return nullptr;
+	}
+	virtual Base* get_rhs(){
+
+		return nullptr;
 	}
 
 };
