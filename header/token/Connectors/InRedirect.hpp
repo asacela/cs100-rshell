@@ -1,65 +1,30 @@
-#ifndef __INREDIRECT_HPP__
-#define __INREDIRECT_HPP__
+#ifndef __OUTREDIRECT_HPP__
+#define __OUTREDIRECT_HPP__
 
 #include<iostream>
 #include<string>
 #include<vector>
-#include <unistd.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <sys/types.h>
 #include "../Base.hpp"
 
 using namespace std;
 
-class InRedirect : public Base {
+class OutRedirect : public Base {
 
 public:
 
 	/* Constructors */
-	InRedirect(Base* lhs_ = nullptr, Base* rhs_ = nullptr):lhs(lhs_),rhs(rhs_) {}
+	OutRedirect(Base* lhs_ = nullptr, Base* rhs_ = nullptr):lhs(lhs_),rhs(rhs_) {}
 
 	/* Pure Virtual Functions */
 	virtual bool execute(){
 
-		const char* file = (rhs->stringify()).c_str();
-
-		mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
-
-
-		int savestdin = dup(0);
-
-		int outputfd = open(file, O_WRONLY | O_CREAT | O_TRUNC, mode);
-
-		if(outputfd < 0){
-
-			perror("open(2) file: Error");
-			cout << rhs->stringify();
-        	return false;
-		}
-
-		else if (dup2(outputfd,1) != STDOUT_FILENO) {
-
-        	perror("dup(2)");
-        	close(outputfd);
-        	exit(EXIT_FAILURE);
-    	}
-
-		else{
-
-			lhs->execute();
-			close(outputfd);
-			dup2(1, outputfd);
-		}
-
 		//implement
-		return true;
+		return false;
 	}
 
 	virtual string stringify(){
 
-		string cmdString = lhs->stringify() + " < " + rhs->stringify();
+		string cmdString = lhs->stringify() + " > " + rhs->stringify();
 
 		return cmdString;
 	}
@@ -81,11 +46,10 @@ public:
 	}
 
 
-protected:
-
+private:
 	Base* lhs;
 	Base* rhs;
-	const string connectorID = "<";
+	const string connectorID = ">";
 
 };
 

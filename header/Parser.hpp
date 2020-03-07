@@ -14,6 +14,10 @@
 #include "../header/token/Connectors/And.hpp"
 #include "../header/token/Connectors/Or.hpp"
 #include "../header/token/Connectors/Semicolon.hpp"
+#include "../header/token/Connectors/InRedirect.hpp"
+#include "../header/token/Connectors/OutRedirect.hpp"
+#include "../header/token/Connectors/OverwriteRedirect.hpp"
+#include "../header/token/Connectors/Pipe.hpp"
 
 using namespace std;
 
