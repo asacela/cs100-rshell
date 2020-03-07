@@ -1,5 +1,5 @@
-#ifndef __OUT_REDIRECT_HPP__
-#define __OUT_REDIRECT_HPP__
+#ifndef __OUTREDIRECT_HPP__
+#define __OUTREDIRECT_HPP__
 
 #include<iostream>
 #include<string>

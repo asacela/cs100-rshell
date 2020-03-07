@@ -1,16 +1,16 @@
-#ifndef __AND_TEST_HPP__
-#define __AND_TEST_HPP__
+#ifndef __INREDIRECT_TEST_HPP__
+#define __INREDIRECT_TEST_HPP__
 
 #include "gtest/gtest.h"
 
 #include "../header/token/Connectors/And.hpp"
-#include "../header/token/Connectors/Command.hpp"
+#include "../header/token/Command.hpp"
 #include "../header/token/Connectors/InRedirect.hpp"
 
 
 TEST(InRedirect, BasicTest) {
-    vector<string> vct1 = {"echo",  "hello"};
-    vector<string> vct2 = {"/text_files/new.txt"};
+    vector<string> vct1 = {"ls",  "-a"};
+    vector<string> vct2 = {"text_files/echo.txt"};
 
 
     Base* cmd1 = new Command(vct1);
@@ -18,7 +18,8 @@ TEST(InRedirect, BasicTest) {
 
 
     Base* test = new InRedirect(cmd1, cmd2);
-    EXPECT_EQ(test->stringify(), "ls -a < git status");
+    test->execute();
+    EXPECT_EQ(test->stringify(), "echo hello < text_files/new.txt");
 }
 
 

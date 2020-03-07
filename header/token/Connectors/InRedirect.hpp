@@ -1,10 +1,14 @@
-#ifndef __IN_REDIRECT_HPP__
-#define __IN_REDIRECT_HPP__
+#ifndef __INREDIRECT_HPP__
+#define __INREDIRECT_HPP__
 
 #include<iostream>
 #include<string>
 #include<vector>
 #include <unistd.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include "../Base.hpp"
 
 using namespace std;
@@ -19,22 +23,23 @@ public:
 	/* Pure Virtual Functions */
 	virtual bool execute(){
 
-		string fileName = rhs->stringify();
-		int o_flag = O_WRONLY | O_CREAT | O_TRUNC;
+		const char* file = (rhs->stringify()).c_str();
+
 		mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 
 
 		int savestdin = dup(0);
 
-		int outputfd = open(fileName, o_flag, mode);
+		int outputfd = open(file, O_WRONLY | O_CREAT | O_TRUNC, mode);
 
-		if(fd < 0){
+		if(outputfd < 0){
 
-			perror("open(2) file: " OUTPATH);
+			perror("open(2) file: Error");
+			cout << rhs->stringify();
         	return false;
 		}
 
-		else if (dup(outputfd) != STDOUT_FILENO) {
+		else if (dup2(outputfd,1) != STDOUT_FILENO) {
 
         	perror("dup(2)");
         	close(outputfd);
@@ -44,12 +49,9 @@ public:
 		else{
 
 			lhs->execute();
+			close(outputfd);
+			dup2(1, outputfd);
 		}
-
-		close(fd);
-
-		dup2(savestdin, 0);
-
 
 		//implement
 		return true;
@@ -79,7 +81,8 @@ public:
 	}
 
 
-private:
+protected:
+
 	Base* lhs;
 	Base* rhs;
 	const string connectorID = "<";

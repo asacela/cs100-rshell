@@ -5,6 +5,7 @@
 #include "unit_tests/Or_Test.hpp"
 #include "unit_tests/Parser_Test.hpp"
 #include "unit_tests/Semicolon_Test.hpp"
+#include "unit_tests/InRedirect_Test.hpp"
 
 
 int main(int argc, char **argv) {
