@@ -282,16 +282,29 @@ private:
 			string ID = objectList.at(i)->getID();
 
 			if(ID == "<" || ID == ">" || ID == ">>" || ID == "|"){
-				vector<Base*>::iterator it;
 
 				if(i != 0 && i != objectList.size() - 1){
-					it = objectList.begin();
-					objectList.insert(it + i, new Parentheses("("));
 
-					it = objectList.begin();
-					objectList.insert(it + i + 2, new Parentheses(")"));
+					// Fill in new temp list
+					vector<Base*> tempList;
+					for(int j = i-1; j < i+2; ++j){
+						tempList.push_back(objectList.at(j));
 
-					i += 2;
+					}
+
+					// Delete old objects from objectList
+					vector<Base*>::iterator it = objectList.begin();
+					objectList.erase(it + i - 1, it + i + 2);
+
+					// Insert squashed version of the new temp list
+					if(!tempList.empty()){
+						it = objectList.begin();
+						squashedObj = squash(tempList);
+						objectList.insert(it + i - 1, squashedObj);
+
+						--i;
+					}
+
 				}
 			}
 		}
