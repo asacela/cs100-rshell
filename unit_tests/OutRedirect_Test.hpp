@@ -13,7 +13,7 @@ TEST(OutRedirectOverwrite, BasicTest) {
 
     string textFile = "text_files/OutRedirectOverwrite.txt";
 
-    vector<string> vct1 = {"echo",  "Hello from inside test file"};
+    vector<string> vct1 = {"echo", "HELLO 123"};
     vector<string> vct2 = {textFile};
 
 
@@ -23,13 +23,13 @@ TEST(OutRedirectOverwrite, BasicTest) {
 
     Base* test = new OutRedirect(">",cmd1, cmd2);
     EXPECT_TRUE(test->execute());
-    EXPECT_EQ(test->stringify(), "echo Hello from inside test file > " + textFile);
+    EXPECT_EQ(test->stringify(), "echo HELLO 123 > " + textFile);
 
     std::ifstream fin;
     fin.open(textFile.c_str());
     std::string content( (std::istreambuf_iterator<char>(fin)) ,(std::istreambuf_iterator<char>()));
     fin.close();
-    EXPECT_EQ(content,"Hello from inside test file\n");
+    EXPECT_EQ(content,"HELLO 123\n");
 
     std::ofstream fout;
     fout.open(textFile.c_str(), std::ofstream::out | std::ofstream::trunc);
