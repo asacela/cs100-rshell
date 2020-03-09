@@ -18,7 +18,7 @@ class OutRedirect : public Base {
 public:
 
 	/* Constructors */
-	OutRedirect(Base* lhs_ = nullptr, Base* rhs_ = nullptr):lhs(lhs_),rhs(rhs_) {}
+	OutRedirect(string type, Base* lhs_ = nullptr, Base* rhs_ = nullptr):lhs(lhs_),rhs(rhs_),connectorID(type) {}
 
 	/* Pure Virtual Functions */
 	virtual bool execute(){
@@ -30,7 +30,15 @@ public:
 
 		int savestdout = dup(1);
 
-		int outputfd = open(file, O_WRONLY | O_CREAT | O_TRUNC, mode);
+		int outputfd;
+		if(connectorID == ">"){
+			outputfd = open(file, O_WRONLY | O_CREAT | O_TRUNC, mode);
+
+		}
+		else if(connectorID == ">>"){
+			outputfd = open(file, O_WRONLY | O_APPEND, mode);
+
+		}
 
 		if(outputfd < 0){
 
@@ -59,7 +67,7 @@ public:
 
 	virtual string stringify(){
 
-		string cmdString = lhs->stringify() + " > " + rhs->stringify();
+		string cmdString = lhs->stringify() + " " + connectorID + " " + rhs->stringify();
 
 		return cmdString;
 	}
@@ -70,22 +78,31 @@ public:
 	}
 
 	virtual void set_lhs(Base* left){
-
-		lhs = left;
-
+		if(lhs == nullptr){
+			lhs = left;
+		}
 	}
 
 	virtual void set_rhs(Base* right){
+		if(rhs == nullptr){
+			rhs = right;
+		}
+	}
 
-		rhs = right;
+	virtual Base* get_lhs(){
+
+		return lhs;
+	}
+	virtual Base* get_rhs(){
+
+		return rhs;
 	}
 
 
-protected:
-
+private:
 	Base* lhs;
 	Base* rhs;
-	const string connectorID = ">";
+	const string connectorID;
 
 };
 

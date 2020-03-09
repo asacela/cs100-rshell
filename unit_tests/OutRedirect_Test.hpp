@@ -8,19 +8,35 @@
 #include "../header/token/Connectors/OutRedirect.hpp"
 
 
-TEST(OutRedirect, BasicTest) {
+TEST(OutRedirectOverwrite, BasicTest) {
 
     vector<string> vct1 = {"ls",  "-a"};
-    vector<string> vct2 = {"text_files/new2.txt"};
+    vector<string> vct2 = {"text_files/OutRedirect_BasicTest.txt"};
 
 
     Base* cmd1 = new Command(vct1);
     Base* cmd2 = new Command(vct2);
 
 
-    Base* test = new OutRedirect(cmd1, cmd2);
+    Base* test = new OutRedirect(">",cmd1, cmd2);
     test->execute();
-    EXPECT_EQ(test->stringify(), "echo hello > text_files/new2.txt");
+    EXPECT_EQ(test->stringify(), "ls -a > text_files/OutRedirect_BasicTest.txt");
+}
+
+
+TEST(OutRedirectAppend, BasicTest) {
+
+    vector<string> vct1 = {"echo",  "hello"};
+    vector<string> vct2 = {"text_files/OutRedirectAppend_BasicTest.txt"};
+
+
+    Base* cmd1 = new Command(vct1);
+    Base* cmd2 = new Command(vct2);
+
+
+    Base* test = new OutRedirect(">>",cmd1, cmd2);
+    test->execute();
+    EXPECT_EQ(test->stringify(), "echo hello >> text_files/OutRedirectAppend_BasicTest.txt");
 }
 
 

@@ -67,14 +67,24 @@ public:
 	}
 
 	virtual void set_lhs(Base* left){
-
-		lhs = left;
-
+		if(lhs == nullptr){
+			lhs = left;
+		}
 	}
 
 	virtual void set_rhs(Base* right){
+		if(rhs == nullptr){
+			rhs = right;
+		}
+	}
 
-		rhs = right;
+	virtual Base* get_lhs(){
+
+		return lhs;
+	}
+	virtual Base* get_rhs(){
+
+		return rhs;
 	}
 
 

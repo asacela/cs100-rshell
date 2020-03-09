@@ -8,10 +8,10 @@
 #include "../header/token/Connectors/Pipe.hpp"
 
 
-TEST(InRedirect, BasicTest) {
+TEST(Pipe, BasicTest) {
 
     vector<string> vct1 = {"ls",  "-a"};
-    vector<string> vct2 = {"text_files/new.txt"};
+    vector<string> vct2 = {"text_files/Pipe_BasicTest.txt"};
 
 
     Base* cmd1 = new Command(vct1);
@@ -20,7 +20,7 @@ TEST(InRedirect, BasicTest) {
 
     Base* test = new OutRedirect(cmd1, cmd2);
     test->execute();
-    EXPECT_EQ(test->stringify(), "echo hello < text_files/new.txt");
+    EXPECT_EQ(test->stringify(), "ls -a | text_files/Pipe_BasicTest.txt");
 }
 
 

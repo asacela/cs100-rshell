@@ -16,7 +16,6 @@
 #include "../header/token/Connectors/Semicolon.hpp"
 #include "../header/token/Connectors/InRedirect.hpp"
 #include "../header/token/Connectors/OutRedirect.hpp"
-#include "../header/token/Connectors/OverwriteRedirect.hpp"
 #include "../header/token/Connectors/Pipe.hpp"
 
 using namespace std;
@@ -40,6 +39,33 @@ public:
 		}
 
 	}
+
+	Base* getSquashed(){
+
+
+		return squash(precedence(baseList));
+	}
+
+	Base* testSquashed(vector<Base*> objectList){
+
+
+		return squash(precedence(objectList));
+	}
+
+	vector<Base*> test(){
+		cout << endl << "--TEST--" << endl;
+		cout << "parsed: (size "<<parsed.size()<<")" << endl;
+		for(int i = 0; i < parsed.size(); ++i){
+			cout << parsed.at(i) << " ";
+
+		}
+		cout << endl << "baseList: (size "<<baseList.size()<<")" << endl;
+
+		return baseList;
+	}
+
+
+private:
 
 	void parse(){
 
@@ -150,33 +176,6 @@ public:
 		return;
 	}
 
-	Base* getSquashed(){
-
-
-		return squash(precedence(baseList));
-	}
-
-	Base* testSquashed(vector<Base*> objectList){
-
-
-		return squash(precedence(objectList));
-	}
-
-	vector<Base*> test(){
-		cout << endl << "--TEST--" << endl;
-		cout << "parsed: (size "<<parsed.size()<<")" << endl;
-		for(int i = 0; i < parsed.size(); ++i){
-			cout << parsed.at(i) << " ";
-
-		}
-		cout << endl << "baseList: (size "<<baseList.size()<<")" << endl;
-
-		return baseList;
-	}
-
-
-private:
-
 	void objectify(string objType){
 
 		Base* objTemp = nullptr;
@@ -233,11 +232,11 @@ private:
 		}
 		else if(objType == ">"){
 
-			objTemp = new OutRedirect();
+			objTemp = new OutRedirect(">");
 		}
 		else if(objType == ">>"){
 
-			objTemp = new OverwriteRedirect();
+			objTemp = new OutRedirect(">>");
 		}
 		else if(objType == "|"){
 
@@ -259,7 +258,7 @@ private:
 		}
 
 		// if(!baseList.empty()){
-		// 	// cout << baseList.back()->getID() << endl; // ------------------------------------------------
+		// 	cout << baseList.back()->getID() << endl; // ------------------------------------------------
 		//
 		// }
 		// cout << "baseListSize: " << baseList.size() << endl << endl; // ------------------------------------------------
@@ -276,6 +275,15 @@ private:
 		stack<int> parStack;
 		int index = 0;
 		Base* squashedObj = nullptr;
+
+
+		// cout << "--Precedence--" << endl; // ------------------------------------------------
+		// cout << "BEFORE:" << endl; // ------------------------------------------------
+		// for(int i = 0; i < objectList.size(); ++i){ // ------------------------------------------------
+		// 	string ID = objectList.at(i)->getID(); // ------------------------------------------------
+		// 	cout << "	ID:" << ID << endl; // ------------------------------------------------
+		// } // ------------------------------------------------
+
 
 		// Add inherent precedence to all redirectors and pipes
 		for(int i = 0; i < objectList.size(); ++i){
@@ -297,7 +305,7 @@ private:
 					objectList.erase(it + i - 1, it + i + 2);
 
 					// Insert squashed version of the new temp list
-					if(!tempList.empty()){
+					if(tempList.size() == 3){
 						it = objectList.begin();
 						squashedObj = squash(tempList);
 						objectList.insert(it + i - 1, squashedObj);
@@ -308,14 +316,6 @@ private:
 				}
 			}
 		}
-
-		// cout << "--Precedence--" << endl; // ------------------------------------------------
-		// cout << "BEFORE:" << endl; // ------------------------------------------------
-		// for(int i = 0; i < objectList.size(); ++i){
-		// 	string ID = objectList.at(i)->getID();
-		// 	// cout << "ID:" << ID << endl; // ------------------------------------------------
-		// }
-
 
 		// Search for parenthese and squash everything between
 		for(int i = 0; i < objectList.size(); ++i){
@@ -331,7 +331,6 @@ private:
 					exit(1);
 				}
 				index = parStack.top();
-				// cout << "\'(\' index:" << index << endl; // ------------------------------------------------
 
 				parStack.pop();
 
@@ -360,10 +359,10 @@ private:
 		}
 
 		// cout << "AFTER:" << endl; // ------------------------------------------------
-		// for(int i = 0; i < objectList.size(); ++i){
-		// 	string ID = objectList.at(i)->getID();
-		// 	// cout << "ID:" << ID << endl; // ------------------------------------------------
-		// }
+		// for(int i = 0; i < objectList.size(); ++i){ // ------------------------------------------------
+		// 	string ID = objectList.at(i)->getID(); // ------------------------------------------------
+		// 	cout << "	ID:" << ID << endl; // ------------------------------------------------
+		// } // ------------------------------------------------
 
 		if(!parStack.empty()){
 			cout << "rshell: Error: Invalid number of parenthese\n";
@@ -384,8 +383,7 @@ private:
 
 		for(int i = 0; i < objectList.size(); ++i){
 
-			// string ID = objectList.at(i)->getID();// ------------------------------------------------
-
+			string ID = objectList.at(i)->getID();
 
 			try{
 				Base* currObj = objectList.at(i);
@@ -419,10 +417,12 @@ private:
 					}
 
 					if(currObj->get_lhs() == squashed){
+
 						squashed = currObj;
 					}
 
 				}
+
 
 			}
 			catch(const std::out_of_range& e){

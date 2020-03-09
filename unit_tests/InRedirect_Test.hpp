@@ -10,8 +10,8 @@
 
 TEST(InRedirect, BasicTest) {
 
-    vector<string> vct1 = {"cat", "cat",};
-    vector<string> vct2 = {"text_files/geekfile.txt"};
+    vector<string> vct1 = {"cat"};
+    vector<string> vct2 = {"text_files/InRedirect_BasicTest.txt"};
 
 
     Base* cmd1 = new Command(vct1);
@@ -20,7 +20,7 @@ TEST(InRedirect, BasicTest) {
 
     Base* test = new InRedirect(cmd1, cmd2);
     test->execute();
-    EXPECT_EQ(test->stringify(), "cat < text_files/geekfile.txt");
+    EXPECT_EQ(test->stringify(), "cat < text_files/InRedirect_BasicTest.txt");
 }
 
 

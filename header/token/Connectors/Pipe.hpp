@@ -4,6 +4,11 @@
 #include<iostream>
 #include<string>
 #include<vector>
+#include <unistd.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include "../Base.hpp"
 
 using namespace std;
@@ -35,14 +40,24 @@ public:
 	}
 
 	virtual void set_lhs(Base* left){
-
-		lhs = left;
-
+		if(lhs == nullptr){
+			lhs = left;
+		}
 	}
 
 	virtual void set_rhs(Base* right){
+		if(rhs == nullptr){
+			rhs = right;
+		}
+	}
 
-		rhs = right;
+	virtual Base* get_lhs(){
+
+		return lhs;
+	}
+	virtual Base* get_rhs(){
+
+		return rhs;
 	}
 
 
