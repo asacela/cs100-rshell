@@ -19,7 +19,7 @@ TEST(Pipe, BasicTest) {
 
 
     Base* test = new OutRedirect(cmd1, cmd2);
-    test->execute();
+    EXPECT_TRUE(test->execute());
     EXPECT_EQ(test->stringify(), "ls -a | text_files/Pipe_BasicTest.txt");
 }
 

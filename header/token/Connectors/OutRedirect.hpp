@@ -36,7 +36,7 @@ public:
 
 		}
 		else if(connectorID == ">>"){
-			outputfd = open(file, O_WRONLY | O_APPEND, mode);
+			outputfd = open(file, O_WRONLY |  O_CREAT | O_APPEND, mode);
 
 		}
 
@@ -55,10 +55,10 @@ public:
     	}
 
 		else{
-
 			lhs->execute();
 			close(outputfd);
 			dup2(savestdout, 1);
+
 		}
 
 		//implement

@@ -19,7 +19,12 @@ TEST(InRedirect, BasicTest) {
 
 
     Base* test = new InRedirect(cmd1, cmd2);
-    test->execute();
+    testing::internal::CaptureStdout();
+    EXPECT_TRUE(test->execute());
+
+    string output = testing::internal::GetCapturedStdout();
+    EXPECT_EQ(output, "Greetings, from inside text file!\n");
+
     EXPECT_EQ(test->stringify(), "cat < text_files/InRedirect_BasicTest.txt");
 }
 
