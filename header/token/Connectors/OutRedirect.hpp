@@ -1,5 +1,5 @@
-#ifndef __INREDIRECT_HPP__
-#define __INREDIRECT_HPP__
+#ifndef __OUTREDIRECT_HPP__
+#define __OUTREDIRECT_HPP__
 
 #include<iostream>
 #include<string>
@@ -13,12 +13,12 @@
 
 using namespace std;
 
-class InRedirect : public Base {
+class OutRedirect : public Base {
 
 public:
 
 	/* Constructors */
-	InRedirect(Base* lhs_ = nullptr, Base* rhs_ = nullptr):lhs(lhs_),rhs(rhs_) {}
+	OutRedirect(Base* lhs_ = nullptr, Base* rhs_ = nullptr):lhs(lhs_),rhs(rhs_) {}
 
 	/* Pure Virtual Functions */
 	virtual bool execute(){
@@ -28,7 +28,7 @@ public:
 		mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 
 
-		int savestdin = dup(0);
+		int savestdout = dup(1);
 
 		int outputfd = open(file, O_WRONLY | O_CREAT | O_TRUNC, mode);
 
@@ -43,7 +43,6 @@ public:
 
         	perror("dup(2)");
         	close(outputfd);
-        	cout << "CHECK IT";
         	exit(EXIT_FAILURE);
     	}
 
@@ -51,7 +50,7 @@ public:
 
 			lhs->execute();
 			close(outputfd);
-			dup2(1, outputfd);
+			dup2(savestdout, 1);
 		}
 
 		//implement
@@ -60,7 +59,7 @@ public:
 
 	virtual string stringify(){
 
-		string cmdString = lhs->stringify() + " < " + rhs->stringify();
+		string cmdString = lhs->stringify() + " > " + rhs->stringify();
 
 		return cmdString;
 	}
@@ -86,7 +85,7 @@ protected:
 
 	Base* lhs;
 	Base* rhs;
-	const string connectorID = "<";
+	const string connectorID = ">";
 
 };
 

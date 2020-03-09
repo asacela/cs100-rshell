@@ -1,0 +1,42 @@
+.
+..
+.DS_Store
+.git
+.gitignore
+.gitmodules
+CMakeCache.txt
+CMakeFiles
+CMakeLists.txt
+Makefile
+README.md
+bin
+cmake_install.cmake
+googletest
+header
+images
+integration_tests
+lib
+names.txt
+prototype
+rshell
+src
+test
+test.cpp
+text_files
+unit_tests
+ls -a  [status-code:  0]
+/Users/alecasatoorian/Documents/School/Junior Year 2019-2020/Winter/CS100/assignment-git_got/unit_tests/InRedirect_Test.hpp:22: Failure
+Expected equality of these values:
+  test->stringify()
+    Which is: "ls -a < text_files/echo.txt"
+  "echo hello < text_files/new.txt"
+[0;31m[  FAILED  ] [mInRedirect.BasicTest (4 ms)
+[0;32m[----------] [m1 test from InRedirect (4 ms total)
+
+[0;32m[----------] [mGlobal test environment tear-down
+[0;32m[==========] [m79 tests from 9 test suites ran. (175 ms total)
+[0;32m[  PASSED  ] [m78 tests.
+[0;31m[  FAILED  ] [m1 test, listed below:
+[0;31m[  FAILED  ] [mInRedirect.BasicTest
+
+ 1 FAILED TEST

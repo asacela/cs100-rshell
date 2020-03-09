@@ -6,6 +6,8 @@
 #include "unit_tests/Parser_Test.hpp"
 #include "unit_tests/Semicolon_Test.hpp"
 #include "unit_tests/InRedirect_Test.hpp"
+#include "unit_tests/OutRedirect_Test.hpp"
+#include "unit_tests/OverwriteRedirect_Test.hpp"
 
 
 int main(int argc, char **argv) {
