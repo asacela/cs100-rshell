@@ -11,16 +11,16 @@
 TEST(Pipe, BasicTest) {
 
     vector<string> vct1 = {"ls",  "-a"};
-    vector<string> vct2 = {"text_files/Pipe_BasicTest.txt"};
+    vector<string> vct2 = {"less"};
 
 
     Base* cmd1 = new Command(vct1);
     Base* cmd2 = new Command(vct2);
 
 
-    Base* test = new OutRedirect(cmd1, cmd2);
+    Base* test = new Pipe(cmd1, cmd2);
     EXPECT_TRUE(test->execute());
-    EXPECT_EQ(test->stringify(), "ls -a | text_files/Pipe_BasicTest.txt");
+    EXPECT_EQ(test->stringify(), "ls -a | less");
 }
 
 

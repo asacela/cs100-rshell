@@ -23,8 +23,34 @@ public:
 	/* Pure Virtual Functions */
 	virtual bool execute(){
 
-		//implement
-		return false;
+			const char* file = (rhs->stringify()).c_str();
+
+			int savestdin = dup(0);
+
+			int inputfd = open(file, O_RDONLY);
+
+			if(inputfd < 0){
+
+				perror("open(2) file: Error");
+				cout << rhs->stringify();
+	        	return false;
+			}
+
+			else if (dup2(inputfd,0) != STDIN_FILENO) {
+
+	        	perror("dup(2)");
+	        	close(inputfd);
+	        	exit(EXIT_FAILURE);
+	    	}
+
+			else{
+
+				lhs->execute();
+				close(inputfd);
+				dup2(savestdin, 0);
+			}
+
+			return true;
 	}
 
 	virtual string stringify(){

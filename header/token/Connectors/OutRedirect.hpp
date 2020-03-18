@@ -65,6 +65,8 @@ public:
 		return true;
 	}
 
+	
+
 	virtual string stringify(){
 
 		string cmdString = lhs->stringify() + " " + connectorID + " " + rhs->stringify();
