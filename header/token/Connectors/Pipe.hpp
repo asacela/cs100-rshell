@@ -23,7 +23,64 @@ public:
 	/* Pure Virtual Functions */
 	virtual bool execute(){
 
-		//implement
+		int pipefd[2];
+		int pid1;
+		int pid2;
+
+		int status;
+
+		pipe(pipefd);
+
+		// Process 1
+		pid1 = fork();
+		if(pid1 < 0){
+
+			perror("rshell: error forking child process");
+			return false;
+		}
+
+		else if(pid1 == 0)
+		{
+
+			dup2(pipefd[0], 0);
+			close(pipefd[1]);
+			lhs->execute();
+		}
+
+		else{
+
+			pid_t check = wait(&status);
+			while(check != pid1);
+		}
+
+
+		// Process 2
+		pid2 = fork();
+		if(pid2 < 0){
+			
+			perror("rshell: error forking child process");
+			return false;
+		}
+
+		else if(pid2 == 0)
+		{
+
+			dup2(pipefd[1], 1);
+
+			close(pipefd[0]);
+
+			rhs->execute();
+
+			return true;
+		}
+
+		else
+		{
+
+			pid_t check = wait(&status);
+			while(check != pid2);
+		}
+
 		return false;
 	}
 
