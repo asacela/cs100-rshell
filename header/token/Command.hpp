@@ -73,13 +73,13 @@ public:
 
 		perror("rshell: called");
 
-		for(int i = 0; i < parsed.size(); ++i){
-
-		 	cout << parsed.at(i) << " ";
-		}
-
-
-		cout << " [status-code:  " << status << "]" << endl;
+		// for(int i = 0; i < parsed.size(); ++i){
+		//
+		//  	cout << parsed.at(i) << " ";
+		// }
+		//
+		//
+		// cout << " [status-code:  " << status << "]" << endl;
 
 		//Failed Status Code for Hammer: 512, for Local: 256
 		if(status == 512 || status == 256){
@@ -88,7 +88,7 @@ public:
 			return false;
 		}
 
-		// perror(" succeeded");
+		perror(" succeeded");
 
 		return true;
 	}

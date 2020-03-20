@@ -1,0 +1,13 @@
+echo hello > text_files/OutRedirectOverwrite.txt
+git status > text_files/OutRedirectOverwrite.txt
+cat text_files/OutRedirectOverwrite.txt > text_files/OutRedirectOverwrite.txt
+(ls -a > text_files/OutRedirectOverwrite.txt) && (ls -j)
+((echo hello) || (hey whatsup) && (git status > text_files/OutRedirectOverwrite.txt))
+ls -j && (cat text_files/OutRedirectOverwrite.txt > text_files/OutRedirectOverwrite.txt)
+
+echo hello >> text_files/OutRedirectOverwrite.txt
+git status >> text_files/OutRedirectOverwrite.txt
+cat text_files/OutRedirectOverwrite.txt >> text_files/OutRedirectOverwrite.txt
+(ls -a >> text_files/OutRedirectOverwrite.txt) && (ls -j)
+((echo hello) || (hey whatsup) && (git status >> text_files/OutRedirectOverwrite.txt))
+ls -j && (cat text_files/OutRedirectOverwrite.txt >> text_files/OutRedirectOverwrite.txt)
