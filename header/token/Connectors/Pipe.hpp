@@ -23,34 +23,40 @@ public:
 	/* Pure Virtual Functions */
 	virtual bool execute(){
 
-			const char* file = (rhs->stringify()).c_str();
+		int pipefd[2];
 
-			int savestdin = dup(0);
+		int pid;
 
-			int inputfd = open(file, O_RDONLY);
+		pipe(pipefd);
 
-			if(inputfd < 0){
+		pid = fork();
 
-				perror("open(2) file: Error");
-				cout << rhs->stringify();
-	        	return false;
+		if(pid < 0){
+
+			perror("rshell: error forking child process");
+			return false;
+		}
+
+		if(pid == 0) {
+
+			dup2(pipefd[0], 0);
+			close(pipefd[1]);
+			if(!rhs->execute()){
+				return false;
 			}
+			
+		}
 
-			else if (dup2(inputfd,0) != STDIN_FILENO) {
-
-	        	perror("dup(2)");
-	        	close(inputfd);
-	        	exit(EXIT_FAILURE);
-	    	}
-
-			else{
-
-				lhs->execute();
-				close(inputfd);
-				dup2(savestdin, 0);
+		else {
+			dup2(pipefd[1], 1);
+			close(pipefd[0]);
+			if(!lhs->execute()){
+				return false;
 			}
-
-			return true;
+			
+		}
+    	
+    	return true;
 	}
 
 	virtual string stringify(){

@@ -1,0 +1,8 @@
+ls -l | less
+cat text_files/Pipe_BasicTest.txt | more
+cat text_files/Pipe_BasicTest.txt | less
+cat text_files/Pipe_BasicTest.txt | sort
+ls -j | hello
+cat < text_files/InRedirect.txt | tr A-Z a-z | tee OutRedirectOverwrite.txt | tr a-z A-Z > OutRedirectOverwrite.txt
+cat < text_files/Pipe_BasicTest.txt | tr A-Z a-z
+cat < text_files/Pipe_BasicTest.txt | tr A-Z a-z | hello

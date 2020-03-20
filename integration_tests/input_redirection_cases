@@ -1,0 +1,11 @@
+sort < text_files/InRedirect.txt
+cat < text_files/InRedirect.txt
+cat < text_files/InRedirect.txt
+cat text_files/InRedirect.txt || (cat < text_files/InRedirect.txt && echo hello)
+(cat text_files/InRedirect.txt | sort) && cat text_files/InRedirect.txt || (cat < text_files/InRedirect.txt && echo hello)
+cat < text_files/Pipe_BasicTest.txt | tr A-Z a-z | sort
+cat < text_files/Pipe_BasicTest.txt | tr A-Z a-z | sort && cat < text_files/Pipe_BasicTest.txt
+cat < text_files/Pipe_BasicTest.txt | sort
+cat < text_files/InRedirect.txt | tr A-Z a-z | tee OutRedirectOverwrite.txt
+sort < text_files/InRedirect.txt | tr A-Z a-z | tee OutRedirectOverwrite.txt
+sort < text_files/InRedirect.txt
